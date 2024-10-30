@@ -1,0 +1,20 @@
+{
+    "inputs": [
+        {
+            "id": "username",
+            "name": "username",
+            "type": "text",
+            "placeholder": "Escribe tu nombre",
+            "className": "input-text",
+            "required": true
+        },
+        {
+            "id": "email",
+            "name": "email",
+            "type": "email",
+            "placeholder": "Escribe tu correo",
+            "className": "input-email",
+            "required": true
+        }
+    ]
+}

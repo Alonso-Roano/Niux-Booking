@@ -1,0 +1,27 @@
+{
+    "inputs": [
+        {
+            "id": "password",
+            "name": "password",
+            "type": "password",
+            "placeholder": "Escribe tu contraseña",
+            "className": "input-password",
+            "required": true,
+            "minLength": 8
+        },
+        {
+            "id": "phone",
+            "name": "phone",
+            "type": "tel",
+            "placeholder": "Escribe tu teléfono",
+            "className": "input-tel"
+        },
+        {
+            "id": "submit",
+            "name": "submit",
+            "type": "submit",
+            "value": "Enviar",
+            "className": "button-submit"
+        }
+    ]
+}
