@@ -15,7 +15,6 @@ async function readJson(filePath: string) {
 const read = async (setData: React.Dispatch<React.SetStateAction<any[]>>, data:string) => {
   const jsonData = await readJson(data);
   setData(jsonData);
-  console.log(jsonData);
 };
 
 export default {read};
