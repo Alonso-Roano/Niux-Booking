@@ -1,7 +1,7 @@
-import './App.css'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Dashboard from './constructors/Dashboard';
 import data from './json/data.json'
+import './App.css'
 
 function App() {
 

@@ -1,22 +1,71 @@
 {
     "inputs": [
         {
-            "id": "username",
-            "name": "username",
-            "type": "text",
-            "placeholder": "Escribe tu nombre",
-            "className": "input-text",
-            "required": true,
-            "cantWrite":"/.()"
+            "props":{
+                "id": "username",
+                "name": "username",
+                "placeholder": "Escribe tu nombre",
+                "className": "input-text",
+                "type": "text",
+                "required": true
+            },
+            "className":"css",
+            "cantWrite":"/.()",
+            "labelContent":"Label",
+            "labelCss":"css"
         },
         {
-            "id": "email",
-            "name": "email",
-            "type": "email",
-            "placeholder": "Escribe tu correo",
-            "className": "input-email",
-            "required": true,
-            "cantWrite":"/.()"
+            "props":{
+                "identifier":"email",
+                "type": "email",
+                "required": true
+            },
+            "cantWrite":"/.()",
+            "labelContent":"Label",
+            "labelCss":"css",
+            "className":"css"
+        }
+    ],
+    "textarea": [
+        {
+            "props":{
+                "id": "info",
+                "name": "info",
+                "placeholder": "Escribe tu info",
+                "className": "textarea-info",
+                "type": "text",
+                "required": true
+            },
+            "className":"css",
+            "cantWrite":"*",
+            "labelContent":"Escribe tu info",
+            "labelCss":"label-css"
+        }
+    ],
+    "buttons": [
+        {
+            "props": {
+                "id": "submitBtn",
+                "name": "submit",
+                "type": "button",
+                "label": "Enviar",
+                "className":"bg-gray-200"
+            },
+            "className": "bg-gray-200"
+        },
+        {
+            "props": {
+                "identifier":"borrar",
+                "label":"borrar"
+            },
+            "className": "bg-gray-200"
+        },
+        {
+            "props": {
+                "identifier":"editar",
+                "label":"editar"
+            },
+            "className": "bg-gray-200"
         }
     ]
 }

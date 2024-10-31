@@ -1,29 +1,35 @@
 {
     "inputs": [
         {
-            "id": "password",
-            "name": "password",
-            "type": "password",
-            "placeholder": "Escribe tu contraseña",
-            "className": "input-password",
-            "required": true,
-            "minLength": 8,
+            "props":{
+                "id": "password",
+                "name": "password",
+                "type": "password",
+                "placeholder": "Escribe tu contraseña",
+                "className": "input-password",
+                "required": true,
+                "minLength": 8
+            },
             "cantWrite":"0"
         },
         {
-            "id": "phone",
-            "name": "phone",
-            "type": "tel",
-            "placeholder": "Escribe tu teléfono",
-            "className": "input-tel",
+            "props":{
+                "id": "phone",
+                "name": "phone",
+                "type": "tel",
+                "placeholder": "Escribe tu teléfono",
+                "className": "input-tel"
+            },
             "cantWrite":"0"
         },
         {
-            "id": "submit",
-            "name": "submit",
-            "type": "submit",
-            "value": "Enviar",
-            "className": "button-submit"
+            "props":{
+                "id": "submit",
+                "name": "submit",
+                "type": "submit",
+                "value": "Enviar",
+                "className": "button-submit"
+            }
         }
     ]
 }

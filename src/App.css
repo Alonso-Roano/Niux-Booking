@@ -1,3 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "https://www.nerdfonts.com/assets/css/webfont.css";
+
+.buttonContainer button{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    padding: 5px 10px;
+    transition: all .3s ease-in-out;
+}
+.buttonContainer button:hover{
+    background-color: #222;
+}
+.buttonContainer button:active{
+    transform: scale(.90);
+}
