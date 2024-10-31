@@ -51,6 +51,7 @@
                 "label": "Enviar",
                 "className":"bg-gray-200"
             },
+            "onClickId":"si",
             "className": "bg-gray-200"
         },
         {

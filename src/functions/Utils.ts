@@ -1,6 +1,8 @@
-const checkJson = (json:any) => {return typeof json === 'object' && json !== null && Object.keys(json).length > 0}
+import Swal from "sweetalert2";
 
-const inputBody = (params:any) => {
+const checkJson = (json: any) => { return typeof json === 'object' && json !== null && Object.keys(json).length > 0 }
+
+const inputBody = (params: any) => {
     const { e, body, setBody, cantWrite = "." } = params;
     const { name, value } = e.target;
     const regex = new RegExp(`[${cantWrite}]`);
@@ -72,7 +74,7 @@ const formatProps = (type: string, { identifier, ...rest }: any) => {
                 ...rest,
                 id: rest.id || identifier,
                 href: rest.href || '#',
-                target: rest.target || '_self', 
+                target: rest.target || '_self',
                 className: rest.className || `link-${identifier}`,
                 text: rest.text || ''
             };
@@ -90,5 +92,39 @@ const formatProps = (type: string, { identifier, ...rest }: any) => {
     }
 };
 
+const Toast = Swal.mixin({
+    toast: true,
+    icon: 'success',
+    title: 'General Title',
+    animation: false,
+    position: 'bottom-right',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
 
-export default {checkJson, inputBody, formatProps};
+const showToast = (params: any) => {
+    Toast.fire(params)
+}
+
+const confirmToast = (params: any, confirmFunction: any) => {
+    Toast.fire({
+        ...params,
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonText: "Confirmar",
+        cancelButtonText: 'Cancelar',
+        timer: false,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            confirmFunction();
+        }
+    });
+}
+
+
+export default { checkJson, inputBody, formatProps, showToast, confirmToast };

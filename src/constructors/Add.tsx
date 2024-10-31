@@ -15,7 +15,7 @@ function Add({ data }: any) {
     const click = (event:React.MouseEvent<HTMLButtonElement>, type:string, params:any) => {
         console.log(event, params)
         switch (type) {
-            case 'ver':  return;
+            case 'si': utils.showToast({title:"Esta seguro "+params+"?", icon: "error"} ); return;
         }
     }
 
@@ -24,7 +24,7 @@ function Add({ data }: any) {
         {utils.checkJson(datos) ? ( 
             <>
                 <Input data={datos} setBody={setBody} body={body} errors={error}/>
-                <Button data={datos} Click={click} params={[{id:1},{id:1,nombre:"hola",correo:"sijaja"},1]}></Button>
+                <Button data={datos} Click={click} params={["Carlos",{id:1,nombre:"hola",correo:"sijaja"},1]}></Button>
             </>
            ) : (
             <>Cargando...</>
