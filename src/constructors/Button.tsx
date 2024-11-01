@@ -7,6 +7,7 @@ interface ButtonProps {
 }
 
 function Button({ data, Click, params}: ButtonProps) {
+    if(!data.buttons) return null;
     return (
         <div className="buttonContainer">
             {data.buttons.map((prop, index) => {

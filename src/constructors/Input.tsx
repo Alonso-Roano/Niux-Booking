@@ -1,16 +1,17 @@
 import utils from "../functions/Utils";
 
 interface DataProps {
-    data: { inputs: Array<{ [key: string]: any }> };
+    data: { input: Array<{ [key: string]: any }> };
     setBody: (event: React.ChangeEvent<HTMLInputElement>) => void;
     body: { [key: string]: any };
     errors: { [key: string]:boolean };
 }
 
 function Input({ data, setBody, body, errors}: DataProps) {
+    if(!data.input) return null;
     return (
         <div className="inputsContainer">
-            {data.inputs.map((prop, index) => {
+            {data.input.map((prop, index) => {
                 const { cantWrite, className = "css", labelCss = "css", errorContent="Este campo es necesario", errorCss="input-error", props } = prop;
                 const inputProp = utils.formatProps("input", props);
                 return (

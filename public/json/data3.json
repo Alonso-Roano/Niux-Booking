@@ -1,23 +1,23 @@
 {
-    "inputs": [
+    "input": [
         {
             "props":{
-                "id": "username",
-                "name": "username",
+                "id": "title",
+                "name": "title",
                 "placeholder": "Escribe tu nombre",
                 "className": "input-text",
                 "type": "text",
                 "required": true
             },
             "className":"css",
-            "cantWrite":"/.()",
+            "cantWrite":"yogr",
             "labelContent":"Label",
             "labelCss":"css"
         },
         {
             "props":{
-                "identifier":"email",
-                "type": "email",
+                "identifier":"userId",
+                "type": "number",
                 "required": true
             },
             "cantWrite":"/.()",
@@ -29,16 +29,16 @@
     "textarea": [
         {
             "props":{
-                "id": "info",
-                "name": "info",
-                "placeholder": "Escribe tu info",
-                "className": "textarea-info",
+                "id": "body",
+                "name": "body",
+                "placeholder": "Escribe tu body",
+                "className": "textarea-body",
                 "type": "text",
                 "required": true
             },
             "className":"css",
             "cantWrite":"*",
-            "labelContent":"Escribe tu info",
+            "labelContent":"Escribe tu body",
             "labelCss":"label-css"
         }
     ],
@@ -49,24 +49,9 @@
                 "name": "submit",
                 "type": "button",
                 "label": "Enviar",
-                "className":"bg-gray-200"
+                "className":"h-10 px-6 font-semibold rounded-md bg-black text-white"
             },
-            "onClickId":"si",
-            "className": "bg-gray-200"
-        },
-        {
-            "props": {
-                "identifier":"borrar",
-                "label":"borrar"
-            },
-            "className": "bg-gray-200"
-        },
-        {
-            "props": {
-                "identifier":"editar",
-                "label":"editar"
-            },
-            "className": "bg-gray-200"
+            "onClickId":"si"
         }
     ]
 }

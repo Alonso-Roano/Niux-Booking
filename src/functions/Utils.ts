@@ -126,5 +126,38 @@ const confirmToast = (params: any, confirmFunction: any) => {
     });
 }
 
+const getInputs = (data: any): string[] => {
+    const result: string[] = [];
 
-export default { checkJson, inputBody, formatProps, showToast, confirmToast };
+    const inputTypes = ['input', 'textarea', 'select', 'radio', 'checkbox'];
+
+    inputTypes.forEach((type) => {
+        if (data[type]) {
+            data[type]?.forEach((element: any) => {
+                const nameOrIdentifier = element.props.name || element.props.identifier;
+                if (nameOrIdentifier) {
+                    result.push(nameOrIdentifier);
+                }
+            });
+        }
+    });
+
+    return result;
+};
+
+const validateInputs = (body: { [key: string]: any }, data: any, setErrors:any) => {
+    if(!(setErrors && data)) return true;
+    setErrors((prevState:any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
+    const names = getInputs(data);
+    const emptyFields = names.filter(name => !body[name] && body[name] !== true);
+
+    if(emptyFields.length === 0) return true;
+
+    console.log(emptyFields);
+    console.log(body)
+
+    emptyFields.forEach(field => setErrors((prevErrors:any) => ({...prevErrors, [field]: true })));
+    return false;
+};
+
+export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs };

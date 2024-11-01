@@ -8,6 +8,7 @@ interface DataProps {
 }
 
 function Textarea({ data, setBody, body, errors}: DataProps) {
+    if(!data.textarea) return null;
     return (
         <div className="textareaContainer">
             {data.textarea.map((prop, index) => {
