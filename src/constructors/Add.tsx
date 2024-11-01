@@ -10,21 +10,35 @@ function Add({ data }: any) {
     const [datos, setDatos] = useState<any>([]);
     const [body, setBody] = useState<{ [key: string]: any }>({});
     const [error, setError] = useState<{ [key: string]: any }>({});
+    const [response, setReponse] = useState<any>(null);
 
     useEffect(() => { 
-        Request.read(setDatos, data); setError({})
+        Request.Read(setDatos, data); setError({})
     }, [data]);
 
     const click = (event:React.MouseEvent<HTMLButtonElement>, type:string, params:any) => {
         console.log(event, params)
         switch (type) {
             case 'si': enviar(); return;
+            case 'no': actualizar(); return;
+            case 'eliminar': Delete(); return;
         }
     }
 
     const enviar = () => {
         const url="https://jsonplaceholder.typicode.com/posts";
-        Request.post(url, body, null, {data:datos, setErrors:setError, setBody:setBody});
+        Request.Post(url, body, null, {data:datos, setErrors:setError, setBody:setBody, setReponse:setReponse});
+    }
+
+    const actualizar = () => {
+        const url="https://jsonplaceholder.typicode.com/posts/1";
+        const bodysi = {...body, ["id"]:101}
+        Request.Put(url, bodysi, null, {data:datos, setErrors:setError, setBody:setBody, setReponse:setReponse});
+    }
+
+    const Delete = () => {
+        const url="https://jsonplaceholder.typicode.com/posts/1";
+        Request.Delete(url, null, {setReponse:setReponse});
     }
 
     return (
@@ -39,6 +53,7 @@ function Add({ data }: any) {
             <>Cargando...</>
            ) 
         }
+        {response && JSON.stringify(response)}
     </>
     );
 }

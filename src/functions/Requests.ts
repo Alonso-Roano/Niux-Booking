@@ -7,6 +7,11 @@ interface PostParams {
   mensaje?: string;
   setReponse?: React.Dispatch<React.SetStateAction<any[]>>;
 }
+interface DeleteParams {
+  mensaje?: string;
+  mensajeConfirm?: string;
+  setReponse?: React.Dispatch<React.SetStateAction<any[]>>;
+}
 
 async function readJson(filePath: string) {
   try {
@@ -24,12 +29,12 @@ async function readJson(filePath: string) {
 
 const setToken = (token: any) => { return { headers: { 'Authorization': `Bearer ${token ? token : "token"}` } } }
 
-const read = async (setData: React.Dispatch<React.SetStateAction<any[]>>, data: string) => {
+const Read = async (setData: React.Dispatch<React.SetStateAction<any[]>>, data: string) => {
   const jsonData = await readJson(data);
   setData(jsonData);
 };
 
-const get = async (url: string, setData: React.Dispatch<React.SetStateAction<any[]>>, token?: any) => {
+const Get = async (url: string, setData: React.Dispatch<React.SetStateAction<any[]>>, token?: any) => {
   const headers = setToken(token);
   try {
     const response = await axios.get(url, headers);
@@ -44,13 +49,14 @@ const get = async (url: string, setData: React.Dispatch<React.SetStateAction<any
   }
 }
 
-const post = async (url: string, body: any, token?: any, params: PostParams = {}) => {
+const Post = async (url: string, body: any, token?: any, params: PostParams = {}) => {
   const { setBody, mensaje = "Datos enviados correctamente", setReponse, setErrors, data } = params;
   const headers = setToken(token);
-  if(Utils.validateInputs(body, data, setErrors)){
+  if (Utils.validateInputs(body, data, setErrors)) {
     try {
       const response = await axios.post(url, body, headers);
       if (!response.data) {
+        Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
         throw new Error('Error al enviar los datos');
       }
       if (setReponse) setReponse(response.data)
@@ -58,10 +64,52 @@ const post = async (url: string, body: any, token?: any, params: PostParams = {}
       Utils.showToast({ title: mensaje, icon: "success" })
     } catch (error) {
       console.error("Error al enviar los datos:", error);
+      Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
     }
   }
-  
 }
 
+const Put = async (url: string, body: any, token?: any, params: PostParams = {}) => {
+  const { setBody, mensaje = "Datos actualizados correctamente", setReponse, setErrors, data } = params;
+  const headers = setToken(token);
+  console.log(body)
+  if (Utils.validateInputs(body, data, setErrors)) {
+    try {
+      const response = await axios.put(url, body, headers);
+      if (!response.data) {
+        Utils.showToast({ title: "Error al actualizar los datos:", icon: "error" });
+        throw new Error('Error al actualizar los datos');
+      }
+      if (setReponse) setReponse(response.data)
+      if (setBody) setBody({});
+      Utils.showToast({ title: mensaje, icon: "success" })
+    } catch (error) {
+      console.error("Error al actualizar los datos:", error);
+      Utils.showToast({ title: "Error al actualizar los datos:", icon: "error" });
+    }
+  }
+}
 
-export default { read, get, post };
+const Delete = async (url: string, token?: any, params: DeleteParams = {}) => {
+  const { mensaje = "Borrado con exito", mensajeConfirm = "¿Esta seguro?", setReponse } = params;
+  const headers = setToken(token);
+  Utils.confirmToast({title:mensajeConfirm}, deleteFunction, {url, headers, mensaje, setReponse})
+}
+
+const deleteFunction = async (deleteParams:any) => {
+  const { url, headers, mensaje, setReponse } = deleteParams;
+  try {
+    const response = await axios.delete(url, headers);
+    if (!response.data) {
+      Utils.showToast({ title: "Error al borrar los datos:", icon: "error" });
+      throw new Error('Error al borrar los datos');
+    }
+    if (setReponse) setReponse(response.data)
+    Utils.showToast({ title: mensaje, icon: "success" })
+  } catch (error) {
+    Utils.showToast({ title: "Error al borrar los datos:", icon: "error" });
+    console.error("Error al enviar los datos:", error);
+  }
+}
+
+export default { Read, Get, Post, Put, Delete };

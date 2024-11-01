@@ -111,20 +111,21 @@ const showToast = (params: any) => {
     Toast.fire(params)
 }
 
-const confirmToast = (params: any, confirmFunction: any) => {
+const confirmToast = (params: any, confirmFunction: any, functionParams:any) => {
     Toast.fire({
         ...params,
         showCancelButton: true,
         showConfirmButton: true,
+        icon: params.icon || "warning",
         confirmButtonText: "Confirmar",
-        cancelButtonText: 'Cancelar',
-        timer: false,
+        cancelButtonText: "Cancelar",
+        timer:false
     }).then((result) => {
         if (result.isConfirmed) {
-            confirmFunction();
+            confirmFunction(functionParams);
         }
     });
-}
+};
 
 const getInputs = (data: any): string[] => {
     const result: string[] = [];
