@@ -147,6 +147,7 @@ const getInputs = (data: any): string[] => {
 };
 
 const validateInputs = (body: { [key: string]: any }, data: any, setErrors:any) => {
+    console.log(setErrors, data)
     if(!(setErrors && data)) return true;
     setErrors((prevState:any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
     const names = getInputs(data);

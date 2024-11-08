@@ -27,18 +27,18 @@ function Add({ data }: any) {
 
     const enviar = () => {
         const url="https://jsonplaceholder.typicode.com/posts";
-        Request.Post(url, body, null, {data:datos, setErrors:setError, setBody:setBody, setReponse:setReponse});
+        new Request.Post(url, body).SetErrors(setError).Data(datos).send();
     }
 
     const actualizar = () => {
         const url="https://jsonplaceholder.typicode.com/posts/1";
         const bodysi = {...body, ["id"]:101}
-        Request.Put(url, bodysi, null, {data:datos, setErrors:setError, setBody:setBody, setReponse:setReponse});
+        new Request.Put(url, bodysi).SetErrors(setError).Data(datos).SetReponse(setReponse).send();
     }
 
     const Delete = () => {
         const url="https://jsonplaceholder.typicode.com/posts/1";
-        Request.Delete(url, null, {setReponse:setReponse});
+        new Request.Delete(url).setSetReponse(setReponse).send();
     }
 
     return (
