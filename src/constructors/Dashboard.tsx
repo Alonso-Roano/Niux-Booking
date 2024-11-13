@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import DashContent from "./DashContent";
 import Tooltips from "./Tooltip";
+import Tables from "./Tables";
 type DataProps = {
     data: any;
 };
