@@ -43,3 +43,55 @@
     ); /* Ajusta el valor para el desplazamiento deseado */
   }
 }
+
+.animation-description {
+  animation: animation-reveal linear both;
+  animation-timeline: view();
+  animation-range: entry 20% cover 30%;
+}
+
+@keyframes animation-reveal {
+  0% {
+    opacity: 0;
+    translate: 0 100px;
+  }
+
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.carrusel-scroll::-webkit-scrollbar {
+  display: none;
+  /* Oculta la barra de desplazamiento en navegadores WebKit como Chrome y Safari */
+}
+
+/*  firefox */
+.carrusel-scroll {
+  scrollbar-width: none;
+  -webkit-scrollbar-width: none;
+}
+
+.carrusel-scroll {
+  -ms-overflow-style: none;
+  /* Oculta la barra de desplazamiento en IE y Edge */
+}
+
+.section-recent {
+  animation: animation-reveal linear both;
+  animation-timeline: view();
+  animation-range: entry 20% cover 30%;
+}
+
+@keyframes animation-reveal {
+  0% {
+    opacity: 0;
+    translate: 0 100px;
+  }
+
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
