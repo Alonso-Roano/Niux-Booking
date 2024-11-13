@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import DashContent from "./DashContent";
+import Tooltips from "./Tooltip";
 type DataProps = {
     data: any;
 };
@@ -11,6 +12,7 @@ function Dashboard({data}:DataProps) {
   return <>
   {data.props.map((prop:any, index:number) => <button onClick={() => setOpcion(prop)} key={index}>{prop}</button>)}
   <DashContent data={opcion}/>
+  <Tooltips></Tooltips>
   </>;
 }
 

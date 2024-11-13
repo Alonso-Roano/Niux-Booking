@@ -48,8 +48,8 @@
                 "id": "submitBtn",
                 "name": "submit",
                 "type": "button",
-                "label": "Enviar",
-                "className":"h-10 px-6 font-semibold rounded-md bg-black text-white"
+                "label": "Guardar",
+                "className":"button-guardar"
             },
             "onClickId":"si"
         },
