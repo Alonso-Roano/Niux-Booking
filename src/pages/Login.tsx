@@ -7,7 +7,7 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center "  style={{
         background: 'linear-gradient(90deg, rgba(123,111,204,1) 0%, rgba(178,169,242,1) 16%, rgba(255,255,255,1) 55%, rgba(255,255,255,1) 100%)',
       }}>
-      <div className="flex w-full max-w-6xl justify-center rounded-lg overflow-hidden space-x-10">
+      <div className="flex w-full max-w-7xl justify-center rounded-lg overflow-hidden gap-x-20">
         
         {/* Imagen lateral */}
         <div className="hidden lg:flex lg:w-1/2 items-center justify-center shadow-lg p-10 bg-gray-50/10 backdrop-blur-md">
@@ -72,7 +72,7 @@ export default function Login() {
           {/* Registro */}
           <div className="text-center mt-6 text-gray-700">
             ¿Aún no tienes cuenta?{' '}
-            <Link to="/register" className="text-[#7B6FCC] font-semibold hover:underline">
+            <Link to="/registro" className="text-[#7B6FCC] font-semibold hover:underline">
               Registrarse
             </Link>
           </div>
