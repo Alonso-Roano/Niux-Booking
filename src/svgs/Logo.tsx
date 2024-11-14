@@ -7,7 +7,7 @@ export default function Logo() {
       height="420.000000pt"
       viewBox="0 0 396.000000 420.000000"
       preserveAspectRatio="xMidYMid meet"
-      className="size-8"
+      className="size-12"
     >
       <g
         transform="translate(0.000000,420.000000) scale(0.100000,-0.100000)"
