@@ -1,7 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logoniux10 from '../svgs/Logoniux10';
 
 export default function TipoUsuario() {
+  const navigate = useNavigate();
+
+  const handleUserTypeSelection = (tipoUsuario: 'cliente' | 'socio') => {
+    navigate(`/registro/${tipoUsuario}`);
+  };
   return (
     <div className="flex min-h-screen items-center justify-center" style={{
         background: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 44%, rgba(178,169,242,1) 65%, rgba(123,111,204,1) 100%)',
@@ -29,7 +34,7 @@ export default function TipoUsuario() {
 
     {/* Opciones de usuario */}
     <div className="space-y-6 w-full">
-      <div className="flex items-center border border-gray-300 rounded-lg p-4 hover:bg-gray-50 hover:cursor-pointer">
+      <div onClick={() => handleUserTypeSelection('cliente')} className="flex items-center border border-gray-300 rounded-lg p-4 hover:bg-gray-50 hover:cursor-pointer">
         <div>
           <p className="text-[#7B6FCC] text-md font-bold">Para Todos</p>
           <p className="text-[#707070] text-sm">Encuentra y reserva en centros de belleza y spas cerca de ti.</p>
@@ -40,7 +45,7 @@ export default function TipoUsuario() {
           className="w-5 h-5 ml-auto"
         />
       </div>
-      <div className="flex items-center border border-gray-300 rounded-lg p-4 hover:bg-gray-50 hover:cursor-pointer">
+      <div onClick={() => handleUserTypeSelection('socio')} className="flex items-center border border-gray-300 rounded-lg p-4 hover:bg-gray-50 hover:cursor-pointer">
         <div>
           <p className="text-[#7B6FCC] text-md font-bold">Para Negocios</p>
           <p className="text-[#707070] text-sm">Administra tu negocio y aumenta tu visibilidad en línea.</p>
@@ -63,15 +68,15 @@ export default function TipoUsuario() {
   </div>
 </div>
 
-
-     
-        
-        {/* Imagen lateral */}
-        <div className="hidden lg:flex lg:w-1/2 items-center justify-center shadow-lg p-10 bg-gray-50/10 backdrop-blur-md">
+       {/* Imagen lateral */}
+       <div
+          className="hidden lg:flex items-center justify-center shadow-lg bg-gray-50/10 backdrop-blur-md"
+          style={{ width: '580px', height: '535px', borderRadius: '8px' }}
+        >
           <img
             src="../../public/Images/login-niux.svg"
             alt="Imagen de registro"
-            className="w-full h-full object-cover"
+            style={{ width: '500px', height: '500px', objectFit: 'cover' }}
           />
         </div>
       </div>

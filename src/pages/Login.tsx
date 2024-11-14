@@ -9,12 +9,15 @@ export default function Login() {
       }}>
       <div className="flex w-full max-w-7xl justify-center rounded-lg overflow-hidden gap-x-20">
         
-        {/* Imagen lateral */}
-        <div className="hidden lg:flex lg:w-1/2 items-center justify-center shadow-lg p-10 bg-gray-50/10 backdrop-blur-md">
+       {/* Imagen lateral */}
+       <div
+          className="hidden lg:flex items-center justify-center shadow-lg bg-gray-50/10 backdrop-blur-md"
+          style={{ width: '580px', height: '535px', borderRadius: '8px' }}
+        >
           <img
             src="../../public/Images/login-niux.svg"
-            alt="Imagen de inicio de sesión"
-            className="w-full h-full object-cover"
+            alt="Imagen de registro"
+            style={{ width: '500px', height: '500px', objectFit: 'cover' }}
           />
         </div>
         
@@ -41,6 +44,7 @@ export default function Login() {
                 type="email"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
                 placeholder="Correo electrónico"
+                required 
               />
             </div>
             <div>
@@ -52,6 +56,7 @@ export default function Login() {
                 type="password"
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
                 placeholder="Contraseña"
+                required 
               />
             </div>
             <button
