@@ -77,7 +77,7 @@ export default function Login() {
           {/* Registro */}
           <div className="text-center mt-6 text-gray-700">
             ¿Aún no tienes cuenta?{' '}
-            <Link to="/registro" className="text-[#7B6FCC] font-semibold hover:underline">
+            <Link to="/registro-type" className="text-[#7B6FCC] font-semibold hover:underline">
               Registrarse
             </Link>
           </div>
