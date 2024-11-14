@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import utils from "../functions/Utils"
 import Request from "../functions/Requests";
-import Input from "./Input";
-import Button from "./Button";
+import Inputs from "./Input";
+import Buttons from "./Button";
 import Textarea from "./Textarea";
 
 function Add({ data }: any) {
@@ -16,7 +16,7 @@ function Add({ data }: any) {
         Request.Read(setDatos, data); setError({})
     }, [data]);
 
-    const click = (event:React.MouseEvent<HTMLButtonElement>, type:string, params:any) => {
+    const click = (event:React.MouseEvent<HTMLAnchorElement>, type:string, params:any) => {
         console.log(event, params)
         switch (type) {
             case 'si': enviar(); return;
@@ -45,9 +45,9 @@ function Add({ data }: any) {
     <>
         {utils.checkJson(datos) ? ( 
             <>
-                <Input data={datos} setBody={setBody} body={body} errors={error}/>
+                <Inputs data={datos} setBody={setBody} body={body} errors={error}/>
                 <Textarea data={datos} setBody={setBody} body={body} errors={error}/>
-                {datos.buttons ? <Button data={datos} Click={click} params={["Carlos",{id:1,nombre:"hola",correo:"sijaja"},1]}></Button> : <></>}
+                {datos.buttons ? <Buttons data={datos} Click={click} params={["Carlos",{id:1,nombre:"hola",correo:"sijaja"},1]}></Buttons> : <></>}
             </>
            ) : (
             <>Cargando...</>

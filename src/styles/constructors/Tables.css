@@ -1,0 +1,60 @@
+.dashConstructorRowTable{
+    background-color: #fff !important;
+    box-shadow: #0008 0px 0px 5px;
+    border-radius: 10px;
+}
+.dashConstructorRowTable td{
+    color: #474747 !important;
+    font-size: 18px;
+}
+.dashConstructorRowTable td:first-child{
+    border-radius: 10px 0 0 10px;
+}
+.dashConstructorRowTable td:last-child{
+    border-radius: 0px 10px 10px 0px;
+    width: fit-content !important;
+}
+.dashTableContainer{
+    width: 100%;
+}
+.dashConstructorRowTable td button{
+    height: 100%;
+    margin: 5px 10px 0 10px;
+}
+.dashConstructorRowTable td svg{
+    font-size: 25px;
+    
+}
+.dashConstructorRowTableHeader th{
+    
+    color: #474747 !important;
+    font-size: 20px !important;
+    
+}
+.tableIcon{
+    transition: all .3s ease;
+}
+.tableIcon:hover{
+    transform: scale(1.2);
+}
+.tableIcon:active{
+    transform: scale(0.9);
+}
+.dashList:hover{color: #9747FF;}
+.dashUpdate:hover{color: #8FBCFF;}
+.dashDelete:hover{color: #FF3535;}
+.dashPay:hover{color: #F9FF45;}
+.MuiTablePagination-root{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    color: #fff !important;
+    margin-bottom: 10px;
+}
+.MuiTablePagination-root .MuiTablePagination-toolbar{
+    background-color: #8FBCFF;
+    border-radius: 20px;
+}
+.MuiTablePagination-root .MuiTablePagination-toolbar p{
+    font-size: 16px;
+}
