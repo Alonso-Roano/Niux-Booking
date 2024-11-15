@@ -1,0 +1,15 @@
+.services-scroll::-webkit-scrollbar {
+  display: none;
+  /* Oculta la barra de desplazamiento en navegadores WebKit como Chrome y Safari */
+}
+
+/*  firefox */
+.services-scroll {
+  scrollbar-width: none;
+  -webkit-scrollbar-width: none;
+}
+
+.services-scroll {
+  -ms-overflow-style: none;
+  /* Oculta la barra de desplazamiento en IE y Edge */
+}
