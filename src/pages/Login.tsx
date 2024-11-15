@@ -21,8 +21,11 @@ export default function Login() {
       setErrorMessage(null); // Limpiar mensaje de error si el inicio de sesión es exitoso
       navigate('/'); // Redirigir al usuario a la página de destino
     } catch (error) {
-      setErrorMessage('Correo o contraseña incorrectos.'); // Establecer mensaje de error
-      console.error(error);
+      if (error instanceof Error) {
+        setErrorMessage(error.message); // Establecer mensaje de error capturado desde el store
+      } else {
+        setErrorMessage('Ocurrió un error inesperado.'); // Mensaje genérico en caso de un error desconocido
+      }
     }
   };
 
@@ -53,7 +56,7 @@ export default function Login() {
           <div className="flex gap-2 justify-center items-center">
             <Logoniux10 />
             <span className="font-medium text-2xl text-[#484748]">
-              NIUXBOOKING2
+              NIUXBOOKING
             </span>
           </div>
           <div className="text-center mb-6">
@@ -105,13 +108,6 @@ export default function Login() {
               Iniciar Sesión
             </button>
           </form>
-
-          {/* Recuperar contraseña */}
-          {/* <div className="text-center mt-4">
-            <Link to="#" className="text-md text-[#7B6FCC] hover:underline">
-              ¿Olvidaste tu contraseña?
-            </Link>
-          </div> */}
 
           {/* Registro */}
           <div className="text-center mt-6 text-gray-700">

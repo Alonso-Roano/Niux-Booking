@@ -20,13 +20,13 @@ export default function Header() {
           </div>
           <div className=" md:flex items-center gap-5 hidden   ">
             <Link
-              to={"/"}
+              to={"/registro-type"}
               className="  border-transparent border-b-2 duration-300 font-medium    hover:border-[#7B6FCC] m-1"
             >
               Registrarse
             </Link>
             <Link
-              to={"/"}
+              to={"/login"}
               className="    p-1  bg-[#7B6FCC] px-2 text-white rounded-md font-medium hover:bg-[#5448A1] duration-300"
             >
               Iniciar Sesión
