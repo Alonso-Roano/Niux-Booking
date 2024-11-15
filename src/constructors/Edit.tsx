@@ -4,9 +4,8 @@ import Request from "../functions/Requests";
 import Inputs from "./Input";
 import Buttons from "./Button";
 import Textarea from "./Textarea";
-import "../styles/constructors/Inputs.css";
 
-function Add({ data, setClose}: any) {
+function Edit({ data, bodyDatos, setClose }: any) {
 
     const [datos, setDatos] = useState<any>([]);
     const [body, setBody] = useState<{ [key: string]: any }>({});
@@ -18,18 +17,18 @@ function Add({ data, setClose}: any) {
 
     const click = (type:string) => {
         switch (type) {
-            case 'guardarServicio': enviar(); return;
+            case 'editarServicio': enviar(); return;
         }
     }
 
     const enviar = () => {
-        const bodySend = {...body, "idEmpresa":1, "isDeleted": false}
-        new  Request.Post(datos.url, bodySend)
-                    .SetErrors(setError)
-                    .Data(datos)
-                    .SetClose(setClose)
-                    .SetBody(setBody)
-                    .send();
+        const url=datos.url+bodyDatos.id;
+        const bodySend = {...body, "idEmpresa":1, "id":bodyDatos.id, "isDeleted": false}
+        new Request.Put(url, bodySend)
+            .SetErrors(setError)
+            .Data(datos)
+            .SetClose(setClose)
+            .send();
     }
 
     return (
@@ -37,8 +36,8 @@ function Add({ data, setClose}: any) {
         {utils.checkJson(datos) ? ( 
             <>
                 <h2 className="titleDrawer">{datos.title}</h2>
-                <Inputs data={datos.input} setBody={setBody} body={body} errors={error}/>
-                <Textarea data={datos.textarea} setBody={setBody} body={body} errors={error}/>
+                <Inputs data={datos.input} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
+                <Textarea data={datos.textarea} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
                 {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}
             </>
            ) : (
@@ -49,4 +48,4 @@ function Add({ data, setClose}: any) {
     );
 }
 
-export default Add;
+export default Edit;

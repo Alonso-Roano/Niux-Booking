@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { dictionary } from "./Dictionary";
 
 const checkJson = (json: any) => { return typeof json === 'object' && json !== null && Object.keys(json).length > 0 }
 
@@ -111,7 +112,7 @@ const showToast = (params: any) => {
     Toast.fire(params)
 }
 
-const confirmToast = (params: any, confirmFunction: any, functionParams:any) => {
+const confirmToast = (params: any, confirmFunction: any, functionParams: any) => {
     Toast.fire({
         ...params,
         showCancelButton: true,
@@ -119,7 +120,7 @@ const confirmToast = (params: any, confirmFunction: any, functionParams:any) => 
         icon: params.icon || "warning",
         confirmButtonText: "Confirmar",
         cancelButtonText: "Cancelar",
-        timer:false
+        timer: false
     }).then((result) => {
         if (result.isConfirmed) {
             confirmFunction(functionParams);
@@ -146,20 +147,76 @@ const getInputs = (data: any): string[] => {
     return result;
 };
 
-const validateInputs = (body: { [key: string]: any }, data: any, setErrors:any) => {
+const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any) => {
     console.log(setErrors, data)
-    if(!(setErrors && data)) return true;
-    setErrors((prevState:any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
+    if (!(setErrors && data)) return true;
+    setErrors((prevState: any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
     const names = getInputs(data);
     const emptyFields = names.filter(name => !body[name] && body[name] !== true);
 
-    if(emptyFields.length === 0) return true;
+    if (emptyFields.length === 0) return true;
 
     console.log(emptyFields);
     console.log(body)
 
-    emptyFields.forEach(field => setErrors((prevErrors:any) => ({...prevErrors, [field]: true })));
+    emptyFields.forEach(field => setErrors((prevErrors: any) => ({ ...prevErrors, [field]: true })));
     return false;
 };
 
-export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs };
+
+
+
+function getDefinition(word: string): string {
+    const translation = dictionary[word.toLowerCase()];
+    if (translation) {
+        return translation;
+    } else {
+        return "Traducción no encontrada.";
+    }
+}
+
+function flattenObject(obj: any, prefix: string = ''): Record<string, any> {
+    let result: Record<string, any> = {};
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            const newKey = prefix ? `${prefix}.${key}` : key;
+            if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                Object.assign(result, flattenObject(obj[key], newKey));
+            } else {
+                result[newKey] = obj[key];
+            }
+        }
+    }
+
+    return result;
+}
+
+function mapJsonToHtml(json: Record<string, any>): string {
+    let html = '';
+
+    for (const key in json) {
+        if (key!=="id") {
+            if (json.hasOwnProperty(key)) {
+                const value = json[key];
+                const traduccion = getDefinition(key)
+                
+                if (typeof value === 'object' && value !== null) {
+                    html += `<p><strong>${traduccion}:</strong></p>`;
+                    html += mapJsonToHtml(value);
+                } else {
+                    if (typeof value === 'string' && value.startsWith('http')) {
+                        html += `<p><span>${traduccion}:</span> <img src="${value}" alt="${traduccion}" /></p>`;
+                    } else {
+                        html += `<p><span>${traduccion}:</span> ${value}</p>`;
+                    }
+                }
+            }
+        }
+    }
+
+    return html;
+}
+
+
+export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml };

@@ -53,6 +53,7 @@ class Post {
   private setBody?: (body: any) => void;
   private setReponse?: (response: any) => void;
   private setErrors?: (errors: any) => void;
+  private setClose?: (close: any) => void;
   private data?: any;
 
   constructor(url: string, body: any) {
@@ -84,6 +85,10 @@ class Post {
     this.setErrors = setErrors;
     return this;
   }
+  SetClose(setClose: (close: any) => void): Post {
+    this.setClose = setClose;
+    return this;
+  }
 
   Data(data: any): Post {
     this.data = data;
@@ -102,6 +107,7 @@ class Post {
         }
         if (this.setReponse) this.setReponse(response.data);
         if (this.setBody) this.setBody({});
+        if (this.setClose) this.setClose(false);
         Utils.showToast({ title: this.mensaje, icon: "success" });
       } catch (error) {
         console.error("Error al enviar los datos:", error);
@@ -119,6 +125,7 @@ class Put {
   private setBody?: (body: any) => void;
   private setReponse?: (response: any) => void;
   private setErrors?: (errors: any) => void;
+  private setClose?: (close: any) => void;
   private data?: any;
 
   constructor(url: string, body: any) {
@@ -145,6 +152,11 @@ class Put {
     this.setReponse = setReponse;
     return this;
   }
+  
+  SetClose(setClose: (close: any) => void): Put {
+    this.setClose = setClose;
+    return this;
+  }
 
   SetErrors(setErrors: (errors: any) => void): Put {
     this.setErrors = setErrors;
@@ -169,6 +181,7 @@ class Put {
         }
         if (this.setReponse) this.setReponse(response.data);
         if (this.setBody) this.setBody({});
+        if (this.setClose) this.setClose(false);
         Utils.showToast({ title: this.mensaje, icon: "success" });
       } catch (error) {
         console.error("Error al actualizar los datos:", error);

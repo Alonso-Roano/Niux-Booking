@@ -1,25 +1,29 @@
 .dashConstructorRowTable{
     background-color: #fff !important;
-    box-shadow: #0008 0px 0px 5px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
-.dashConstructorRowTable td{
+.dashConstructorRowTable td, .dashConstructorRowTable th{
     color: #474747 !important;
     font-size: 18px;
 }
-.dashConstructorRowTable td:first-child{
-    border-radius: 10px 0 0 10px;
+.dashConstructorRowTable td:first-child, .dashConstructorRowTable th:first-child{
+    border-radius: 3px 0 0 3px;
 }
-.dashConstructorRowTable td:last-child{
-    border-radius: 0px 10px 10px 0px;
+.dashConstructorRowTable td:last-child, .dashConstructorRowTable th:last-child{
+    border-radius: 0px 3px 3px 0px;
     width: fit-content !important;
+}
+.dashConstructorRowTable th, .dashConstructorRowTable td{
+    border-radius: 3px;
 }
 .dashTableContainer{
     width: 100%;
+    overflow-x: scroll;
 }
 .dashConstructorRowTable td button{
     height: 100%;
     margin: 5px 10px 0 10px;
+    padding: 0 !important;
 }
 .dashConstructorRowTable td svg{
     font-size: 25px;
@@ -43,7 +47,7 @@
 .dashList:hover{color: #9747FF;}
 .dashUpdate:hover{color: #8FBCFF;}
 .dashDelete:hover{color: #FF3535;}
-.dashPay:hover{color: #F9FF45;}
+.dashPay:hover{color: #f7c02a;}
 .MuiTablePagination-root{
     display: flex !important;
     justify-content: center;
@@ -52,9 +56,153 @@
     margin-bottom: 10px;
 }
 .MuiTablePagination-root .MuiTablePagination-toolbar{
-    background-color: #8FBCFF;
+    background-color: #7B6FCC;
     border-radius: 20px;
 }
 .MuiTablePagination-root .MuiTablePagination-toolbar p{
     font-size: 16px;
+}
+
+
+.MuiInputBase-root{
+    height: 40px !important;
+}
+
+.dashBusqueda{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    gap: 70px;
+    margin-bottom: 20px;
+    padding-inline: 4px;
+}
+.dashBusqueda .MuiFormControl-root{
+    width: 70% !important;
+    border-radius: 10px;
+}
+.dashBusqueda button{
+    width: 30% !important;
+    border-radius: 10px;
+    font-size: 20px;
+    transition: all .3s ease;
+    height: 40px;
+}
+.dashBusqueda button:hover{
+    background-color: #6b61b3;
+}
+.Mui-focused:focus svg{
+    background-color: #8FBCFF;
+}
+
+.dashTitle{
+    width: 100%;
+    margin-bottom: 30px !important;
+    font-size: 40px;
+    font-weight: 600;
+    color: #474747;
+    padding-left: 4px;
+}
+
+.dashAction{
+    width: 400px !important;
+}
+.dashIconos{
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center;
+    margin-top: 20px !important;
+}
+.dashIconos li{
+    display: flex !important;
+    justify-content: center;
+}
+.dashIconos svg{
+    font-size: 40px;
+    color: #7B6FCC;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.3));
+}
+.dashSelection{
+    display: flex;
+    flex-direction: column;
+}
+.dashSelection button{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color: #474747;
+    font-size: 25px;
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    transition: all .1s ease;
+}
+.dashSelection button:hover{
+    background-color: #47474711;
+    border-radius: 10px;
+}
+.dashSelection button svg{
+    color: #7B6FCC;
+    margin-right: 10px;
+    font-size: 40px;
+}
+.dashSelection button:active{
+    transform: scale(.95);
+}
+.dashInfo {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+.dashInfo p {
+    margin: 0 0 10px 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 18px;
+    color: #474747;
+}
+.dashInfo p span{
+    color: #7B6FCC;
+    font-weight: 600;
+}
+.titleDrawer{
+    font-weight: 700;
+    font-size: 30px;
+    color: #474747;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+@media (max-width: 650px) {
+    .dashTitle{
+        width: 100%;
+        margin-bottom: 20px !important;
+        font-size: 35px;
+    }
+    .dashBusqueda{
+        flex-direction: column;
+        gap: 20px;
+        flex-flow: column-reverse;
+        margin-bottom: 10px !important;
+    }
+    .dashBusqueda button{
+        width: 100% !important;
+        height: 40px;
+    }
+    .dashBusqueda .MuiFormControl-root{
+        width: 100% !important;
+    }
+    
+    .MuiTablePagination-selectLabel{
+        display: none !important;
+    }
+    .MuiTablePagination-input {
+        display: none !important;
+    }
+    .hide-on-mobile {
+        display: none !important;
+    }
+    .dashIconos svg{
+        font-size: 35px;
+    }
 }
