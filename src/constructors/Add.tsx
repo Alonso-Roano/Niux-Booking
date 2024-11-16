@@ -42,7 +42,7 @@ function Add({ data, setClose}: any) {
                 {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}
             </>
            ) : (
-            <>Cargando...</>
+            <div className='loaderContent'><div className='loader'></div></div>
            ) 
         }
     </>

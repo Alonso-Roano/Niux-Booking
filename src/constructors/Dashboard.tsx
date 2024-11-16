@@ -9,13 +9,10 @@ import Reservation from "../svgs/Reservation";
 import Tooltip, { TooltipProps } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import HeaderDashEmpresa from "../components/HeaderDashEmpresa";
+import data from "../json/dashboardEmpresa.json";
 
-type DataProps = {
-  data: any;
-};
-
-function Dashboard({ data }: DataProps) {
-  const [opcion, setOpcion] = useState(data.service);
+function DashboardEmpresa() {
+  const [opcion, setOpcion] = useState<any>(data.dashboard);
 
   const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -39,14 +36,14 @@ function Dashboard({ data }: DataProps) {
     <List className="dashIconos">
       <ListItem>
         <CustomTooltip title="Dashboard" arrow placement="right">
-          <Button>
+          <Button onClick={() => setOpcion(data.dashboard)}>
             <DashboardIcon />
           </Button>
         </CustomTooltip>
       </ListItem>
       <ListItem>
         <CustomTooltip title="Servicios" arrow placement="right">
-          <Button>
+          <Button onClick={() => setOpcion(data.service)}>
             <Service />
           </Button>
         </CustomTooltip>
@@ -76,15 +73,9 @@ function Dashboard({ data }: DataProps) {
   );
 
   return (
-    <>{/*
-      {data.props.map((prop: any, index: number) => (
-        <button onClick={() => setOpcion(prop)} key={index}>
-          {prop}
-        </button>
-      ))}*/}
-
-      <HeaderDashEmpresa setOption={setOpcion}></HeaderDashEmpresa>
-      <Box sx={{ display: 'flex', backgroundColor:"#f4f4f4", minHeight: "calc(100vh - 75px)" }}>
+    <>
+      <HeaderDashEmpresa setOption={setOpcion} />
+      <Box sx={{ display: 'flex', backgroundColor: "#f4f4f4", minHeight: "calc(100vh - 75px)" }}>
         <Drawer
           variant="permanent"
           sx={{
@@ -97,18 +88,16 @@ function Dashboard({ data }: DataProps) {
               top: "70px",
               zIndex: 10,
             },
-            display: { xs: 'none', sm: 'block' } 
+            display: { xs: 'none', sm: 'block' }
           }}
         >
           {drawer}
         </Drawer>
-        
-        <DashContent data={opcion} />
-      </Box>
 
+        <DashContent data={opcion} setOpcion={setOpcion} />
+      </Box>
     </>
   );
 }
 
-export default Dashboard;
-
+export default DashboardEmpresa;

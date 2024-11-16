@@ -37,7 +37,7 @@ const Get = async (url: string, setData: React.Dispatch<React.SetStateAction<any
     if (!response.data) {
       throw new Error('Error al cargar los datos');
     }
-    const data = response.data.results;
+    const data = response.data;
     setData(data);
   } catch (error) {
     console.error("Error al obtener los datos:", error);

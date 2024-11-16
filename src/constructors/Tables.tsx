@@ -8,6 +8,7 @@ import Update from '../svgs/Update';
 import Delete from '../svgs/Delete';
 import Search from '../svgs/Search';
 import Utils from '../functions/Utils';
+import ExpandList from '../svgs/ExpandList';
 
 interface ApiData {
     [key: string]: any;
@@ -75,10 +76,10 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
                 }));
                 setRows(formattedRows);
                 setOrderBy(displayColumns[0] || '');
-                setHasError(false); // Resetear error si la petición es exitosa
+                setHasError(false);
             } catch (error) {
                 console.error("Error al cargar datos:", error);
-                setHasError(true); // Indicar que hubo un error
+                setHasError(true);
             }
         };
         fetchData();
@@ -123,7 +124,7 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
             <h1 className='dashTitle'>{name}</h1>
 
             {hasError ? (
-                <p style={{ textAlign: 'center', color: 'red' }}>Algo falló al cargar los datos</p>
+                <div className='loaderContent'><div className='loader'></div></div>
             ) : (
                 <>
                     <span className='dashBusqueda'>
@@ -167,8 +168,9 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
                     <TableContainer sx={{  mb: 3 }}>
                         <Table sx={{ borderCollapse: 'separate', borderSpacing: '4px 4px' }} aria-labelledby="tableTitle" size="medium">
                             <TableHead>
+                                {visibleRows.length > 0 ? 
                                 <TableRow className='dashConstructorRowTableHeader dashConstructorRowTable'>
-                                    {leer && <TableCell sx={{width:"40px"}}></TableCell>}
+                                    {leer && <TableCell sx={{width:"40px"}} className='infoIcon'><ExpandList/></TableCell>}
                                     {columns[0] && <TableCell sx={{ border: 'none' }} style={{ textAlign: 'left', verticalAlign: 'middle' }}
                                     sortDirection={orderBy === columns[0] ? order : false}
                                     onClick={() => handleRequestSort(columns[0])} className=''
@@ -211,7 +213,8 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
                                     <TableCell sx={{ border: 'none' }} style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                         Acciones
                                     </TableCell>
-                                </TableRow>
+                                </TableRow>: <></>}
+                                
                             </TableHead>
                             <TableBody>
                                 {visibleRows.length > 0 ? (
@@ -242,15 +245,16 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={3} sx={{ textAlign: 'center', color: '#888' }}>
-                                            No se encontraron datos
+                                        <TableCell colSpan={3} sx={{ textAlign: 'center', color: '#888', border:"none" }}>
+                                            <div className='loaderContent'><div className='loader'></div></div>
                                         </TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination
+                    {visibleRows.length > 0 ? 
+                        <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
                         count={filteredRows.length}
@@ -261,6 +265,9 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
                         labelRowsPerPage="Numero de filas" 
                         labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`} // Cambia "of"
                         />
+                        : <></>    
+                    }
+                    
                 </>
             )}
         </Box>
