@@ -11,7 +11,7 @@ const Axios = axios.create({
 
 async function readJson(filePath: string) {
   try {
-    const response = await fetch(`./json/${filePath}`);
+    const response = await fetch(`/json/${filePath}`);
     if (!response.ok) {
       throw new Error('Error al cargar el archivo JSON');
     }
