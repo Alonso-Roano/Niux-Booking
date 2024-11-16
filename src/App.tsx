@@ -11,8 +11,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<DashboardEmpresa />} />
-        <Route path="/inicio" element={<Home />} />
+        <Route path="/Dasboard/Empresa" element={<DashboardEmpresa />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro-type" element={<TipoUsuario />} />
         <Route path="/registro/:tipoUsuario" element={<Registro />} />
