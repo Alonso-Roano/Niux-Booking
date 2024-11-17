@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import TipoUsuario from "./pages/TipoUsuario";
 import Registro from "./pages/Registro";
 import Business from "./pages/Business";
+import Schedule from "./pages/Schedule";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/registro-type" element={<TipoUsuario />} />
         <Route path="/registro/:tipoUsuario" element={<Registro />} />
         <Route path="/negocio" element={<Business />} />
+        <Route path="/horario" element={<Schedule />} />
       </Routes>
     </Router>
   );
