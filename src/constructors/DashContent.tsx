@@ -1,9 +1,17 @@
-import Add from "./Add";
+import DashCrud from "./DashCrud";
+import DashMenu from "./DashMenu";
 
-function DashContent({ data }: any) {
+function DashContent({ data, setOpcion }: any) {
 
   return (
-    <Add data={data}></Add>
+    <>
+      {data.name === "Dashboard" ? 
+        <DashMenu data={data} setOpcion={setOpcion}></DashMenu>
+      :
+        <DashCrud data={data}></DashCrud>
+      }
+    </>
+
   );
 }
 

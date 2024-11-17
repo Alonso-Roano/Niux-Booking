@@ -1,0 +1,24 @@
+.inputsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.textareaContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.textareaContainer .MuiInputBase-multiline{
+    height: auto !important;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.buttonContainer button{
+    width: 100px;
+    border-radius: 10px !important;
+}

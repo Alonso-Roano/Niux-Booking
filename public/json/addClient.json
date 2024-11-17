@@ -1,0 +1,123 @@
+{
+    "title": "Agregar Cliente",
+    "url":"https://jsonplaceholder.typicode.com/posts",
+    "imageUrl":"https://jsonplaceholder.typicode.com/posts",
+    "input": [
+        {
+            "props": {
+                "id": "nombre",
+                "name": "nombre",
+                "placeholder": "Escribe el nombre del cliente",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Nombre",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "Apellido1",
+                "name": "Apellido1",
+                "placeholder": "Escribe el primer apellido",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Primer apellido",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "Apellido2",
+                "name": "Apellido2",
+                "placeholder": "Escribe el segundo apellido",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Segundo apellido",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "edad",
+                "name": "edad",
+                "placeholder": "Escribe la edad",
+                "className": "input-number",
+                "type": "number"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Edad",
+            "labelCss": "css"
+        }
+    ],
+    "select":[
+        {
+            "props": {
+                "id": "sexo",
+                "name": "sexo",
+                "placeholder": "Selecciona el sexo",
+                "className": "input-select"
+            },
+            "options":[
+                {"label":"-- Selecciona el sexo --", "value":"0"},
+                {"label":"Hombre", "value":"H"},
+                {"label":"Mujer", "value":"M"},
+                {"label":"No especifico", "value":"N"}
+            ],
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Sexo",
+            "labelCss": "css"
+        }
+    ],
+    "textarea": [
+        {
+            "props": {
+                "id": "descripcion",
+                "name": "descripcion",
+                "placeholder": "Escribe la descripción del servicio",
+                "type": "text",
+                "rows": 5
+            },
+            "cantWrite": "",
+            "labelContent": "Descripción",
+            "labelCss": "css",
+            "className": "css"
+        }
+    ],
+    "inputsFile":[
+        {
+            "props": {
+                "id": "foto",
+                "name": "foto",
+                "placeholder": "Selecciona una foto",
+                "className": "input-file",
+                "type": "file",
+                "accept": "image/*"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Foto",
+            "labelCss": "css"
+        }
+    ],
+    "buttons": [
+        {
+            "props": {
+                "id": "submitBtn",
+                "name": "submit",
+                "type": "button",
+                "label": "Guardar",
+                "className": "button-guardar"
+            },
+            "onClickId": "guardarServicio"
+        }
+    ]
+}
+

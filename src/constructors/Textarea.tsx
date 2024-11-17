@@ -1,19 +1,42 @@
 import { TextField, FormControl } from '@mui/material';
 import utils from "../functions/Utils";
+import { useEffect } from 'react';
 
 interface DataProps {
-    data: { textarea: Array<{ [key: string]: any }> };
-    setBody: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    data: Array<{ [key: string]: any }>;
+    setBody: any;
     body: { [key: string]: any };
     errors: { [key: string]: boolean };
+    editDatos?: any;
 }
 
-function Textarea({ data, setBody, body, errors }: DataProps) {
-    if (!data.textarea) return null;
+function Textarea({ data, setBody, body, errors, editDatos }: DataProps) {
+    if (!data) return null;
+    
+    useEffect(() => {
+        if (editDatos) {
+            const updates: { [key: string]: any } = {};
+
+            data.forEach((prop) => {
+                const inputProp = utils.formatProps("textarea", prop.props);
+                const name = inputProp.name;
+
+                if (name && editDatos[name] !== undefined) {
+                    updates[name] = editDatos[name];
+                }
+            });
+
+            setBody((prevBody: any) => ({
+                ...prevBody,
+                ...updates,
+            }));
+        }
+    }, [editDatos, data, setBody]);
+
 
     return (
         <div className="textareaContainer">
-            {data.textarea.map((prop, index) => {
+            {data.map((prop, index) => {
                 const {
                     cantWrite,
                     className = "css",

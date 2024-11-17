@@ -1,0 +1,72 @@
+{
+    "title":"Editar Servicio",
+    "url":"https://jsonplaceholder.typicode.com/posts/",
+    "input": [
+        {
+            "props": {
+                "id": "titulo",
+                "name": "title",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "precio",
+                "name": "price",
+                "placeholder": "Escribe el precio",
+                "className": "input-number",
+                "type": "number"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Precio",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "duracion",
+                "name": "rating",
+                "placeholder": "Escribe la duración en horas",
+                "className": "input-number",
+                "type": "number"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Duración",
+            "labelCss": "css"
+        }
+    ],
+    "textarea": [
+        {
+            "props": {
+                "id": "descripcion",
+                "name": "description",
+                "placeholder": "Escribe la descripción del servicio",
+                "type": "text",
+                "rows": 5
+            },
+            "cantWrite": "",
+            "labelContent": "Descripción",
+            "labelCss": "css",
+            "className": "css"
+        }
+    ],
+    "buttons": [
+        {
+            "props": {
+                "id": "submitBtn",
+                "name": "submit",
+                "type": "button",
+                "label": "Guardar",
+                "className": "button-guardar"
+            },
+            "onClickId": "editarServicio"
+        }
+    ]
+}
