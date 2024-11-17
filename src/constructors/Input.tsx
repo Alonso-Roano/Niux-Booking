@@ -1,20 +1,43 @@
+import { useEffect } from "react";
 import utils from "../functions/Utils";
+import "../styles/constructors/Inputs.css";
 
 interface DataProps {
-    data: { input: Array<{ [key: string]: any }> };
-    setBody: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    data: Array<{ [key: string]: any }>;
+    setBody: any;
     body: { [key: string]: any };
-    errors: { [key: string]:boolean };
+    errors: { [key: string]: boolean };
+    editDatos?: { [key: string]: any };
 }
 
 import { TextField, FormControl } from '@mui/material';
 
-function Inputs({ data, setBody, body, errors }: DataProps) {
-    if (!data.input) return null;
+function Inputs({ data, setBody, body, errors, editDatos }: DataProps) {
+    if (!data) return null;
+
+    useEffect(() => {
+        if (editDatos) {
+            const updates: { [key: string]: any } = {};
+
+            data.forEach((prop) => {
+                const inputProp = utils.formatProps("input", prop.props);
+                const name = inputProp.name;
+
+                if (name && editDatos[name] !== undefined) {
+                    updates[name] = editDatos[name];
+                }
+            });
+
+            setBody((prevBody: any) => ({
+                ...prevBody,
+                ...updates,
+            }));
+        }
+    }, [editDatos, data, setBody]);
 
     return (
         <div className="inputsContainer">
-            {data.input.map((prop, index) => {
+            {data.map((prop, index) => {
                 const {
                     cantWrite,
                     className = "css",
@@ -43,6 +66,5 @@ function Inputs({ data, setBody, body, errors }: DataProps) {
         </div>
     );
 }
-
 
 export default Inputs;

@@ -4,56 +4,63 @@ import Request from "../functions/Requests";
 import Inputs from "./Input";
 import Buttons from "./Button";
 import Textarea from "./Textarea";
+import "../styles/constructors/Inputs.css";
+import Selects from "./Selects";
+import InputsFile from "./InputsFile";
 
-function Add({ data }: any) {
+function Add({ data, setClose}: any) {
 
     const [datos, setDatos] = useState<any>([]);
     const [body, setBody] = useState<{ [key: string]: any }>({});
     const [error, setError] = useState<{ [key: string]: any }>({});
-    const [response, setReponse] = useState<any>(null);
 
     useEffect(() => { 
         Request.Read(setDatos, data); setError({})
     }, [data]);
 
-    const click = (event:React.MouseEvent<HTMLAnchorElement>, type:string, params:any) => {
-        console.log(event, params)
+    const click = (type:string) => {
         switch (type) {
-            case 'si': enviar(); return;
-            case 'no': actualizar(); return;
-            case 'eliminar': Delete(); return;
+            case 'guardarServicio': enviar(); return;
         }
     }
 
     const enviar = () => {
-        const url="https://jsonplaceholder.typicode.com/posts";
-        new Request.Post(url, body).SetErrors(setError).Data(datos).send();
-    }
-
-    const actualizar = () => {
-        const url="https://jsonplaceholder.typicode.com/posts/1";
-        const bodysi = {...body, ["id"]:101}
-        new Request.Put(url, bodysi).SetErrors(setError).Data(datos).SetReponse(setReponse).send();
-    }
-
-    const Delete = () => {
-        const url="https://jsonplaceholder.typicode.com/posts/1";
-        new Request.Delete(url).setSetReponse(setReponse).send();
+        const bodySend = {...body, "idEmpresa":1, "isDeleted": false}
+        const containsFile = Object.values(bodySend).some((value:any) => value instanceof File);
+        console.log(bodySend)
+        if (containsFile) {
+            new  Request.Post(datos.url, bodySend)
+                        .SetErrors(setError)
+                        .Data(datos)
+                        .SetClose(setClose)
+                        .SetBody(setBody)
+                        .FileUploadUrl(datos.imageUrl)
+                        .send();
+        } else {
+            new  Request.Post(datos.url, bodySend)
+                        .SetErrors(setError)
+                        .Data(datos)
+                        .SetClose(setClose)
+                        .SetBody(setBody)
+                        .send();
+        }
     }
 
     return (
     <>
         {utils.checkJson(datos) ? ( 
             <>
-                <Inputs data={datos} setBody={setBody} body={body} errors={error}/>
-                <Textarea data={datos} setBody={setBody} body={body} errors={error}/>
-                {datos.buttons ? <Buttons data={datos} Click={click} params={["Carlos",{id:1,nombre:"hola",correo:"sijaja"},1]}></Buttons> : <></>}
+                <h2 className="titleDrawer">{datos.title}</h2>
+                <Inputs data={datos.input} setBody={setBody} body={body} errors={error}/>
+                <Selects data={datos.select} setBody={setBody} body={body} errors={error}/>
+                <Textarea data={datos.textarea} setBody={setBody} body={body} errors={error}/>
+                <InputsFile data={datos.inputsFile} setBody={setBody} body={body} errors={error}/>
+                {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}
             </>
            ) : (
-            <>Cargando...</>
+            <div className='loaderContent'><div className='loader'></div></div>
            ) 
         }
-        {response && JSON.stringify(response)}
     </>
     );
 }
