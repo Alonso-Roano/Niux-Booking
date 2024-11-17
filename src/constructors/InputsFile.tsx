@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import utils from "../functions/Utils";
 import "../styles/constructors/Inputs.css";
 
@@ -9,33 +9,12 @@ interface DataProps {
     setBody: any;
     body: { [key: string]: any };
     errors: { [key: string]: boolean };
-    editDatos?: { [key: string]: any };
 }
 
-function InputsFile({ data, setBody, body, errors, editDatos }: DataProps) {
+function InputsFile({ data, setBody, body, errors }: DataProps) {
     const [fileSelected, setFileSelected] = useState<{ [key: string]: boolean }>({});
 
     if (!data) return null;
-
-    useEffect(() => {
-        if (editDatos) {
-            const updates: { [key: string]: any } = {};
-
-            data.forEach((prop) => {
-                const inputProp = utils.formatProps("input", prop.props);
-                const name = inputProp.name;
-
-                if (name && editDatos[name] !== undefined) {
-                    updates[name] = editDatos[name];
-                }
-            });
-
-            setBody((prevBody: any) => ({
-                ...prevBody,
-                ...updates,
-            }));
-        }
-    }, [editDatos, data, setBody]);
 
     return (
         <div className="inputsContainer">

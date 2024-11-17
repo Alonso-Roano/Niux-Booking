@@ -144,9 +144,7 @@ class Post {
 
   async send() {
     const headers = setToken(this.token);
-    console.log(this.body)
     const { formData, fileUploads } = this.body instanceof FormData ? { formData: this.body, fileUploads: {} } : this.parseBodyWithFile();
-    console.log(fileUploads)
     Object.keys(fileUploads).forEach((key) => {
       formData.append(key, fileUploads[key]);
     });

@@ -3,24 +3,32 @@
     "name": "Dashboard",
     "graficas": [
       {
-        "name": "Servicios",
-        "url": "https://dummyjson.com/carts",
-        "opcion": "service"
-      },
-      {
         "name": "Ventas",
         "url": "https://dummyjson.com/carts",
-        "opcion": "sales"
+        "opcion": "sales",
+        "numeroBarras":30,
+        "type":"bar"
+      },
+      {
+        "name": "Servicios",
+        "url": "https://dummyjson.com/carts",
+        "opcion": "service",
+        "numeroBarras":10,
+        "type":"line"
       },
       {
         "name": "Clientes",
         "url": "https://dummyjson.com/carts",
-        "opcion": "clients"
+        "opcion": "clients",
+        "numeroBarras":10,
+        "type":"spark"
       },
       {
         "name": "Reservas",
         "url": "https://dummyjson.com/carts",
-        "opcion": "reservation"
+        "opcion": "reservation",
+        "numeroBarras":10,
+        "type":"line"
       }
     ]
   },
