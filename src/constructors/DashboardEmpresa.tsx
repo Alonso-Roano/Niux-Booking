@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 import HeaderDashEmpresa from "../components/HeaderDashEmpresa";
 import data from "../json/dashboardEmpresa.json";
 
-function Dashboard() {
+function DashboardEmpresa() {
   const [opcion, setOpcion] = useState<any>(data.dashboard);
 
   const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -100,4 +100,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashboardEmpresa;
