@@ -46,5 +46,27 @@
       "desde": 1,
       "hasta": 6
     }
+  },
+  "clients": {
+    "name": "Clientes",
+    "add": "addClient.json",
+    "viewTitle": "Detalle del servicio",
+    "getURL": "https://dummyjson.com/product",
+    "response": "products",
+    "delete": {
+      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
+      "mensaje": "¡Servicio borrado con exito!",
+      "mensajeConfirm": "¿Desea eliminar el servicio?"
+    },
+    "puede": {
+      "leer": true,
+      "pay": false,
+      "update": false,
+      "delete": true
+    },
+    "cantidad": {
+      "desde": 1,
+      "hasta": 6
+    }
   }
 }

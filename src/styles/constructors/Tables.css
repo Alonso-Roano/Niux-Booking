@@ -1,83 +1,117 @@
-.dashConstructorRowTable{
+.dashConstructorRowTable {
     background-color: #fff !important;
     border-radius: 5px;
 }
-.dashConstructorRowTable:hover{
+
+.dashConstructorRowTable:hover {
     background-color: #fbfbfb !important;
 }
-.dashConstructorRowTable td, .dashConstructorRowTable th{
+
+.dashConstructorRowTable td,
+.dashConstructorRowTable th {
     color: #474747 !important;
     font-size: 18px;
 }
-.dashConstructorRowTable:hover td, .dashConstructorRowTable:hover th{
+
+.dashConstructorRowTable:hover td,
+.dashConstructorRowTable:hover th {
     color: #222 !important;
 }
-.dashConstructorRowTable td:first-child, .dashConstructorRowTable th:first-child{
+
+.dashConstructorRowTable td:first-child,
+.dashConstructorRowTable th:first-child {
     border-radius: 3px 0 0 3px;
 }
-.dashConstructorRowTable td:last-child, .dashConstructorRowTable th:last-child{
+
+.dashConstructorRowTable td:last-child,
+.dashConstructorRowTable th:last-child {
     border-radius: 0px 3px 3px 0px;
     width: fit-content !important;
 }
-.dashConstructorRowTable th, .dashConstructorRowTable td{
+
+.dashConstructorRowTable th,
+.dashConstructorRowTable td {
     border-radius: 3px;
 }
-.dashTableContainer{
+
+.dashTableContainer {
     width: 100%;
     overflow-x: scroll;
 }
-.dashConstructorRowTable td button{
+
+.dashConstructorRowTable td button {
     height: 100%;
     margin: 5px 10px 0 10px;
     padding: 0 !important;
 }
-.dashConstructorRowTable td svg{
+
+.dashConstructorRowTable td svg {
     font-size: 25px;
-    
+
 }
-.dashConstructorRowTableHeader th{
-    
+
+.dashConstructorRowTableHeader th {
+
     color: #474747 !important;
     font-size: 20px !important;
-    
+
 }
-.dashConstructorRowTableHeader:hover{
+
+.dashConstructorRowTableHeader:hover {
     background-color: #fff !important;
 }
-.tableIcon{
+
+.tableIcon {
     transition: all .3s ease;
 }
-.tableIcon:hover{
+
+.tableIcon:hover {
     transform: scale(1.2);
 }
-.tableIcon:active{
+
+.tableIcon:active {
     transform: scale(0.9);
 }
-.dashList:hover{color: #9747FF;}
-.dashUpdate:hover{color: #8FBCFF;}
-.dashDelete:hover{color: #FF3535;}
-.dashPay:hover{color: #f7c02a;}
-.MuiTablePagination-root{
+
+.dashList:hover {
+    color: #9747FF;
+}
+
+.dashUpdate:hover {
+    color: #8FBCFF;
+}
+
+.dashDelete:hover {
+    color: #FF3535;
+}
+
+.dashPay:hover {
+    color: #f7c02a;
+}
+
+.MuiTablePagination-root {
     display: flex !important;
     justify-content: center;
     align-items: center;
     color: #fff !important;
     margin-bottom: 10px;
 }
-.MuiTablePagination-root .MuiTablePagination-toolbar{
+
+.MuiTablePagination-root .MuiTablePagination-toolbar {
     background-color: #7B6FCC;
     border-radius: 20px;
 }
-.MuiTablePagination-root .MuiTablePagination-toolbar p{
+
+.MuiTablePagination-root .MuiTablePagination-toolbar p {
     font-size: 16px;
 }
 
 
-.MuiInputBase-root{
+.MuiInputBase-root {
     height: 40px !important;
 }
 
-.dashBusqueda{
+.dashBusqueda {
     width: 100%;
     height: fit-content;
     display: flex;
@@ -85,56 +119,66 @@
     margin-bottom: 20px;
     padding-inline: 4px;
 }
-.dashBusqueda .MuiFormControl-root{
+
+.dashBusqueda .MuiFormControl-root {
     width: 70% !important;
     border-radius: 10px;
 }
-.dashBusqueda button{
+
+.dashBusqueda button {
     width: 30% !important;
     border-radius: 10px;
     font-size: 20px;
     transition: all .3s ease;
     height: 40px;
 }
-.dashBusqueda button:hover{
+
+.dashBusqueda button:hover {
     background-color: #6b61b3;
 }
-.Mui-focused:focus svg{
+
+.Mui-focused:focus svg {
     background-color: #8FBCFF;
 }
 
-.dashTitle{
+.dashTitle {
     width: 100%;
     margin-bottom: 30px !important;
     font-size: 40px;
     font-weight: 600;
     color: #474747;
     padding-left: 4px;
+    margin-top: 10px;
 }
 
-.dashAction{
+.dashAction {
     width: 400px !important;
 }
-.dashIconos{
+
+.dashIconos {
     display: flex !important;
     flex-direction: column !important;
     justify-content: center;
     margin-top: 20px !important;
 }
-.dashIconos li{
+
+.dashIconos li {
     display: flex !important;
     justify-content: center;
 }
-.dashIconos svg{
+
+.dashIconos svg {
     font-size: 40px;
     color: #7B6FCC;
     filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.3));
 }
-.dashSelection{
+
+.dashSelection {
     display: flex;
     flex-direction: column;
 }
-.dashSelection button{
+
+.dashSelection button {
     display: flex;
     justify-content: start;
     align-items: center;
@@ -144,18 +188,22 @@
     margin-bottom: 10px;
     transition: all .1s ease;
 }
-.dashSelection button:hover{
+
+.dashSelection button:hover {
     background-color: #47474711;
     border-radius: 10px;
 }
-.dashSelection button svg{
+
+.dashSelection button svg {
     color: #7B6FCC;
     margin-right: 10px;
     font-size: 40px;
 }
-.dashSelection button:active{
+
+.dashSelection button:active {
     transform: scale(.95);
 }
+
 .dashInfo {
     width: 100%;
     max-width: 100%;
@@ -163,6 +211,7 @@
     overflow: hidden;
     word-wrap: break-word;
 }
+
 .dashInfo p {
     margin: 0 0 10px 0;
     word-wrap: break-word;
@@ -170,11 +219,13 @@
     font-size: 18px;
     color: #474747;
 }
-.dashInfo p span{
+
+.dashInfo p span {
     color: #7B6FCC;
     font-weight: 600;
 }
-.titleDrawer{
+
+.titleDrawer {
     font-weight: 700;
     font-size: 30px;
     color: #474747;
@@ -182,12 +233,14 @@
     text-align: center;
     margin-bottom: 20px;
 }
-.infoIcon svg{
+
+.infoIcon svg {
     font-size: 25px;
     width: 100%;
     color: #474747;
 }
-.loaderContent{
+
+.loaderContent {
     width: 100%;
     height: 100%;
     display: flex;
@@ -195,51 +248,87 @@
     align-items: center;
     margin-top: 100px;
 }
-/* HTML: <div class="loader"></div> */
+
 .loader {
     width: 28px;
     aspect-ratio: 1;
     border-radius: 50%;
     background: #7B6FCC;
-    animation: l2 1.5s infinite;
-  }
-  @keyframes l2 {
+    animation: l2 1s infinite;
+}
+
+@keyframes l2 {
+
     0%,
-    100%{transform:translate(-35px);box-shadow:  0     0 #8FBCFF, 0     0 #2e96ff}
-    40% {transform:translate( 35px);box-shadow: -15px  0 #8FBCFF,-30px  0 #2e96ff}
-    50% {transform:translate( 35px);box-shadow:  0     0 #8FBCFF, 0     0 #2e96ff}
-    90% {transform:translate(-35px);box-shadow:  15px  0 #8FBCFF, 30px  0 #2e96ff}
-  }
+    100% {
+        transform: translate(-35px);
+        box-shadow: 0 0 #8FBCFF, 0 0 #2e96ff
+    }
+
+    40% {
+        transform: translate(35px);
+        box-shadow: -15px 0 #8FBCFF, -30px 0 #2e96ff
+    }
+
+    50% {
+        transform: translate(35px);
+        box-shadow: 0 0 #8FBCFF, 0 0 #2e96ff
+    }
+
+    90% {
+        transform: translate(-35px);
+        box-shadow: 15px 0 #8FBCFF, 30px 0 #2e96ff
+    }
+}
+
+input[type="file"]:focus+.MuiButton-root,
+.file-selected .MuiButton-root {
+    border-color: #4caf50;
+    /* Cambia este color según lo que desees */
+    background-color: #e8f5e9;
+    /* Color de fondo cuando se selecciona un archivo */
+}
+
+.file-selected span{
+    width: 100%;
+}
+
 @media (max-width: 650px) {
-    .dashTitle{
+    .dashTitle {
         width: 100%;
         margin-bottom: 20px !important;
         font-size: 35px;
     }
-    .dashBusqueda{
+
+    .dashBusqueda {
         flex-direction: column;
         gap: 20px;
         flex-flow: column-reverse;
         margin-bottom: 10px !important;
     }
-    .dashBusqueda button{
+
+    .dashBusqueda button {
         width: 100% !important;
         height: 40px;
     }
-    .dashBusqueda .MuiFormControl-root{
+
+    .dashBusqueda .MuiFormControl-root {
         width: 100% !important;
     }
-    
-    .MuiTablePagination-selectLabel{
+
+    .MuiTablePagination-selectLabel {
         display: none !important;
     }
+
     .MuiTablePagination-input {
         display: none !important;
     }
+
     .hide-on-mobile {
         display: none !important;
     }
-    .dashIconos svg{
+
+    .dashIconos svg {
         font-size: 35px;
     }
 }

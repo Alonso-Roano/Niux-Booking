@@ -47,7 +47,7 @@ export default function HeaderDashEmpresa({ setOption }: Params) {
               <button onClick={() => change(data.service)}>
                 <Service /> Servicios
               </button>
-              <button onClick={() => change()}>
+              <button onClick={() => change(data.clients)}>
                 <Client /> Clientes
               </button>
               <button onClick={() => change()}>

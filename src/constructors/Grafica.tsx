@@ -5,6 +5,22 @@ import pureData from '../json/dashboardEmpresa.json'
 
 function Grafica({ data, setOpcion }: any) {
   const [datos, setDatos] = useState<any>(false);
+  const [shadow, setShadow] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const offsetX = (x - rect.width / 2) / 18;
+    const offsetY = (y - rect.height / 2) / 18;
+
+    setShadow({ x: -offsetX, y: -offsetY });
+  };
+
+  const handleMouseLeave = () => {
+    setShadow({ x: 0, y: 0 });
+  };
 
   useEffect(() => {
     Requests.Get(data.url, setDatos);
@@ -32,7 +48,16 @@ function Grafica({ data, setOpcion }: any) {
   };
 
   return (
-    <article className="cardGrafica" onClick={handleClick}>
+    <article 
+        className="cardGrafica" 
+        onClick={handleClick}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+            boxShadow: `${shadow.x}px ${shadow.y}px 7px rgba(0, 0, 0, 0.2)`,
+            transition: "box-shadow 0.2s ease",
+        }}
+    >
       <h2>{data.name}</h2>
       {datos && <h3>{datos.total}</h3>}
       {datos ? (

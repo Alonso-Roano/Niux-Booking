@@ -50,7 +50,7 @@ function DashboardEmpresa() {
       </ListItem>
       <ListItem>
         <CustomTooltip title="Clientes" arrow placement="right">
-          <Button>
+          <Button onClick={() => setOpcion(data.clients)}>
             <Client />
           </Button>
         </CustomTooltip>

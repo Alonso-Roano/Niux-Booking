@@ -1,5 +1,5 @@
-import DashMenu from "./dashMenu";
 import DashCrud from "./DashCrud";
+import DashMenu from "./DashMenu";
 
 function DashContent({ data, setOpcion }: any) {
 

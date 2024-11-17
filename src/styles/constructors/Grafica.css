@@ -26,6 +26,7 @@
 }
 .cardGrafica:hover{
     cursor: pointer;
+    background-color: #fcfcfc;
 }
 .cardGrafica h2{
     width: 100%;

@@ -148,23 +148,18 @@ const getInputs = (data: any): string[] => {
 };
 
 const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any) => {
-    console.log(setErrors, data)
     if (!(setErrors && data)) return true;
+
     setErrors((prevState: any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
+
     const names = getInputs(data);
-    const emptyFields = names.filter(name => !body[name] && body[name] !== true);
+    const emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == 0);
 
     if (emptyFields.length === 0) return true;
-
-    console.log(emptyFields);
-    console.log(body)
-
     emptyFields.forEach(field => setErrors((prevErrors: any) => ({ ...prevErrors, [field]: true })));
+
     return false;
 };
-
-
-
 
 function getDefinition(word: string): string {
     const translation = dictionary[word.toLowerCase()];
