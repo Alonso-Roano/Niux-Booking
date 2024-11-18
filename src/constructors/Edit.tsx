@@ -4,12 +4,14 @@ import Request from "../functions/Requests";
 import Inputs from "./Input";
 import Buttons from "./Button";
 import Textarea from "./Textarea";
+import { useAuthStore } from "../stores/auth/authStore";
 
 function Edit({ data, bodyDatos, setClose }: any) {
 
     const [datos, setDatos] = useState<any>([]);
     const [body, setBody] = useState<{ [key: string]: any }>({});
     const [error, setError] = useState<{ [key: string]: any }>({});
+    const {user} = useAuthStore();
 
     useEffect(() => { 
         Request.Read(setDatos, data); setError({})
@@ -22,8 +24,12 @@ function Edit({ data, bodyDatos, setClose }: any) {
     }
 
     const enviar = () => {
-        const url=datos.url+bodyDatos.id;
-        const bodySend = {...body, "idEmpresa":1, "id":bodyDatos.id, "isDeleted": false}
+        const url=datos.url+"/"+bodyDatos.id;
+        const bodySend = {
+            ...body,
+            ...(user?.rol === "Socio" ? { idEmpresa: user?.idEmpresa } : {}),
+            isDeleted: false
+        };
         new Request.Put(url, bodySend)
             .SetErrors(setError)
             .Data(datos)

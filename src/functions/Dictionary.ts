@@ -77,5 +77,16 @@ export const dictionary: Dictionary = {
     "barcode": "Código de barras",
     "qrcode": "Código QR",
     "images": "Imágenes",
-    "thumbnail": "Miniatura"
+    "thumbnail": "Miniatura",
+    "titulo": "Título",
+    "descripcion": "Descripción del servicio",
+    "precio": "Precio",
+    "duracion": "Duración (minutos)",
+    "idempresa": "ID de la empresa",
+    "empresa": "Empresa",
+    "isdeleted": "Eliminado",
+    "nombres":"Nombres",
+    "apellido1":"Apellido",
+    "apellido2":"Apellido",
+    "edad":"Edad",
 };

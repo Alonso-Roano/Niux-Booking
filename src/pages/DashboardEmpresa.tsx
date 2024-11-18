@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DashContent from "./DashContent";
+import DashContent from "../constructors/DashContent";
 import { Box, Button, Drawer, List, ListItem } from "@mui/material";
 import DashboardIcon from "../svgs/Dashboard";
 import Service from "../svgs/Service";
@@ -8,10 +8,10 @@ import Sale from "../svgs/Sale";
 import Reservation from "../svgs/Reservation";
 import Tooltip, { TooltipProps } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-import HeaderDashEmpresa from "../components/HeaderDashEmpresa";
 import data from "../json/dashboardEmpresa.json";
+import Header from "../components/Header";
 
-function Dashboard() {
+function DashboardEmpresa() {
   const [opcion, setOpcion] = useState<any>(data.dashboard);
 
   const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -57,14 +57,14 @@ function Dashboard() {
       </ListItem>
       <ListItem>
         <CustomTooltip title="Ventas" arrow placement="right">
-          <Button>
+          <Button  onClick={() => setOpcion(data.sales)}>
             <Sale />
           </Button>
         </CustomTooltip>
       </ListItem>
       <ListItem>
         <CustomTooltip title="Reservaciones" arrow placement="right">
-          <Button>
+          <Button  onClick={() => setOpcion(data.reservation)}>
             <Reservation />
           </Button>
         </CustomTooltip>
@@ -74,7 +74,7 @@ function Dashboard() {
 
   return (
     <>
-      <HeaderDashEmpresa setOption={setOpcion} />
+      <Header setOption={setOpcion} />
       <Box sx={{ display: 'flex', backgroundColor: "#f4f4f4", minHeight: "calc(100vh - 75px)" }}>
         <Drawer
           variant="permanent"
@@ -100,4 +100,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashboardEmpresa;

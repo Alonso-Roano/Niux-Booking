@@ -1,6 +1,6 @@
 import Add from "./Add";
 import Tables from "./Tables";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OffCanvas from "./OffCanvas";
 import Requests from "../functions/Requests";
 import View from "./View";
@@ -12,6 +12,9 @@ function DashCrud({ data }: any) {
     const [editOpen, setEditOpen] = useState(false);
     const [paramsView, setParamsView] = useState({});
     const [body, setBody] = useState({});
+    const [render, setRender] = useState(false)
+
+    useEffect(()=>{if(!addOpen || !editOpen ) setRender(!render)},[addOpen, editOpen])
 
     const helper = (type: string, params?: any) => {
         switch (type) {
@@ -21,8 +24,10 @@ function DashCrud({ data }: any) {
             case "Delete":
                 new Requests.Delete(`${data.delete.deleteURL + params.id}`)
                     .setMensaje(data.delete.mensaje)
+                    .SetReder(setRender)
                     .setMensajeConfirm(data.delete.mensajeConfirm)
                     .send();
+                setRender(true)
                 break;
             case "View":
                 setParamsView(params)
@@ -51,7 +56,7 @@ function DashCrud({ data }: any) {
     return (
         <>
             <div className="dashTableContainer">
-                <Tables url={data.getURL} name={data.name} can={actions} helper={helper} cantidad={{ de: data.cantidad.desde, hasta: data.cantidad.hasta }} />
+                <Tables url={data.getURL} name={data.name} can={actions} helper={helper} cantidad={{ de: data.cantidad.desde, hasta: data.cantidad.hasta }} render={render} />
             </div>
 
             <OffCanvas toggleDrawer={setAddOpen} drawerOpen={addOpen}>

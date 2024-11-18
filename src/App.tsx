@@ -6,8 +6,8 @@ import Registro from "./pages/Registro";
 import Business from "./pages/Business";
 import ProtectedRoute from "./services/ProtectedRoute";
 import RestrictedRoute from "./services/RestrictedRoutes";
-import Dashboard from "./constructors/Dashboard";
-import DashboardEmpresa from "./constructors/DashboardEmpresa";
+import Dashboard from "./pages/Dashboard";
+import DashboardEmpresa from "./pages/DashboardEmpresa";
 import Home from "./pages/Home";
 import ProtectedRouteHome from "./services/ProtectedHome";
 

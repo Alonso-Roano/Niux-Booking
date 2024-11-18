@@ -7,7 +7,14 @@ const inputBody = (params: any) => {
     const { e, body, setBody, cantWrite = "." } = params;
     const { name, value } = e.target;
     const regex = new RegExp(`[${cantWrite}]`);
-    if (!regex.test(value)) setBody({ ...body, [name]: value });
+
+    // Intentamos convertir el valor a número
+    const convertedValue = value !== "" && !isNaN(value) ? parseFloat(value) : value;
+
+    // Solo actualizamos el body si no coincide con el patrón de cantWrite
+    if (!regex.test(value)) {
+        setBody({ ...body, [name]: convertedValue });
+    }
 };
 
 const formatProps = (type: string, { identifier, ...rest }: any) => {
@@ -153,7 +160,7 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
     setErrors((prevState: any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
 
     const names = getInputs(data);
-    const emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == 0);
+    const emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == -1);
 
     if (emptyFields.length === 0) return true;
     emptyFields.forEach(field => setErrors((prevErrors: any) => ({ ...prevErrors, [field]: true })));

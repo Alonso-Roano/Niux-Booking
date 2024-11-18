@@ -8,15 +8,32 @@ import { useAuthStore } from "../stores/auth/authStore"; // Importamos el store 
 import iconUser from "../../public/images/icons/icon-user.svg";
 import iconReserva from "../../public/images/icons/icon-reserva.svg";
 import iconLogout from "../../public/images/icons/icon-logout.svg";
+import DashboardIcon from "../svgs/Dashboard";
+import Service from "../svgs/Service";
+import Client from "../svgs/Client";
+import Sale from "../svgs/Sale";
+import Reservation from "../svgs/Reservation";
+import dataEmpresa from "../json/dashboardEmpresa.json";
+import dataAdmin from "../json/dashboardAdmin.json";
+import Company from "../svgs/Company";
+import Tag from "../svgs/Tag";
 
-export default function Header() {
+interface Params {
+  setOption?: (option: any) => void;
+}
+
+export default function Header({ setOption }: Params) {
   const { user, status, logoutUser } = useAuthStore(); // Obtenemos el usuario y el estado de autenticación
   const [open, setOpen] = useState(false); // Estado del menú hamburguesa
   const [profileOpen, setProfileOpen] = useState(false); // Estado del menú del perfil
   const profileMenuRef = useRef<HTMLDivElement>(null); // Referencia al menú de perfil
 
-  const change = () => setOpen(!open);
   const toggleProfileMenu = () => setProfileOpen(!profileOpen);
+
+  const changeOption = (opcion?: any) => {
+    if (opcion && setOption) setOption(opcion);
+    setOpen(!open);
+  };
 
   const avatarUrl = user?.avatarURL || "/images/Avatar.webp"; // Usamos la foto del usuario o un avatar por defecto
 
@@ -67,24 +84,18 @@ export default function Header() {
 
           {/* Menú hamburguesa (para dispositivos móviles) */}
           {open ? (
-            <button
-              onClick={change}
-              className="flex items-center h-fit my-auto md:hidden"
-            >
-              <Close />
-            </button>
-          ) : (
-            <button
-              onClick={change}
-              className="flex items-center h-fit my-auto md:hidden"
-            >
-              <MenuHamburger />
-            </button>
-          )}
+          <button onClick={() => changeOption()} className="flex items-center h-fit my-auto sm:hidden">
+            <Close />
+          </button>
+        ) : (
+          <button onClick={() => changeOption()} className="flex items-center h-fit my-auto sm:hidden">
+            <MenuHamburger />
+          </button>
+        )}
 
           {/* Opciones del usuario autenticado */}
           {status === "authorized" && (
-            <div className="relative flex items-center">
+            <div className="hidden relative sm:flex items-center">
               <img
                 src={avatarUrl}
                 alt="Avatar"
@@ -152,7 +163,7 @@ export default function Header() {
                 <>
                   <Link
                     to=""
-                    className="flex justify-between items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-4 px-2 border"
+                    className="flex justify-between items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-2 px-2 border text-[#474747]"
                   >
                     Perfil
                     <ArrowNext />
@@ -166,6 +177,50 @@ export default function Header() {
                       Reservas
                       <ArrowNext />
                     </Link>
+                  )}
+                  {user?.rol === "Socio" && (
+                    <div className="dashSelection">
+                    <button onClick={() => changeOption(dataEmpresa.dashboard)}>
+                      <span><DashboardIcon /> Dashboard</span> <ArrowNext />
+                    </button>
+                    <button onClick={() => changeOption(dataEmpresa.service)}>
+                      <span><Service /> Servicios</span> <ArrowNext />
+                    </button>
+                    <button onClick={() => changeOption(dataEmpresa.clients)}>
+                      <span><Client /> Clientes</span> <ArrowNext />
+                    </button>
+                    <button onClick={() => changeOption(dataEmpresa.sales)}>
+                      <span><Sale /> Ventas</span> <ArrowNext />
+                    </button>
+                    <button onClick={() => changeOption(dataEmpresa.reservation)}>
+                      <span><Reservation /> Empresas</span> <ArrowNext />
+                    </button>
+                  </div>
+                  )}
+                  {user?.rol === "Admin" && (
+                    <div className="dashSelection">
+                      <button onClick={() => changeOption(dataAdmin.dashboard)}>
+                      <span> <DashboardIcon /> Dashboard</span> <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataAdmin.service)}>
+                        <span> <Service /> Servicios</span> <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataAdmin.clients)}>
+                      <span><Client /> Clientes</span> <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataAdmin.sales)}>
+                        <span><Sale /> Ventas</span> <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataAdmin.reservation)}>
+                      <span><Reservation /> Reservaciones</span> <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataAdmin.company)}>
+                      <span><Company /> Empresas</span> <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataAdmin.tag)}>
+                        <span><Tag /> Etiquetas</span> <ArrowNext />
+                      </button>
+                    </div>
                   )}
                   <button
                     onClick={logoutUser}

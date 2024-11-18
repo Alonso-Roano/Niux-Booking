@@ -1,6 +1,6 @@
 {
     "title": "Agregar Servicio",
-    "url":"https://jsonplaceholder.typicode.com/posts",
+    "url":"Servicio/CrearServicio",
     "input": [
         {
             "props": {
