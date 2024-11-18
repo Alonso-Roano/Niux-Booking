@@ -28,8 +28,10 @@ export default function Header({ setOption }: Params) {
   const [profileOpen, setProfileOpen] = useState(false); // Estado del menú del perfil
   const profileMenuRef = useRef<HTMLDivElement>(null); // Referencia al menú de perfil
 
-  const toggleProfileMenu = () => setProfileOpen(!profileOpen);
-
+  const toggleProfileMenu = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Evita que el clic en el avatar cierre el menú inmediatamente
+    setProfileOpen(!profileOpen);
+  };
   const changeOption = (opcion?: any) => {
     if (opcion && setOption) setOption(opcion);
     setOpen(!open);
@@ -48,9 +50,9 @@ export default function Header({ setOption }: Params) {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside); // Añadimos el listener
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside); // Limpiamos el listener
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -105,7 +107,7 @@ export default function Header({ setOption }: Params) {
               {profileOpen && (
                 <div
                   ref={profileMenuRef}
-                  className="absolute right-0 top-20 bg-white shadow-md rounded-lg w-48 p-4 z-30"
+                  className="absolute right-0 top-12 border border-gray-300 bg-white shadow-md rounded-lg w-48 p-4 z-30"
                 >
                   <p className="font-medium text-center text-gray-800 mb-4">
                     {user?.nombre}
@@ -162,8 +164,8 @@ export default function Header({ setOption }: Params) {
               ) : (
                 <>
                   <Link
-                    to=""
-                    className="flex justify-between items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-2 px-2 border text-[#474747]"
+                    to="/perfil"
+                    className="flex justify-between items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-4 px-2 border  text-[#474747]"
                   >
                     Perfil
                     <ArrowNext />
@@ -171,7 +173,7 @@ export default function Header({ setOption }: Params) {
                   {/* Mostrar el enlace de Reservas solo si el rol es Cliente */}
                   {user?.rol === "Cliente" && (
                     <Link
-                      to="/#"
+                      to="/reservas"
                       className="flex justify-between items-center hover:bg-[#F5F5F6] px-2 py-2 rounded-md mt-1 border"
                     >
                       Reservas
@@ -224,7 +226,7 @@ export default function Header({ setOption }: Params) {
                   )}
                   <button
                     onClick={logoutUser}
-                    className="flex justify-between items-center text-red-600 hover:bg-[#F5F5F6] px-2 py-2 rounded-md mt-1 border"
+                    className="flex justify-between items-center hover:bg-[#F5F5F6] px-2 py-2 rounded-md mt-1 border"
                   >
                     Cerrar Sesión
                     <ArrowNext />
