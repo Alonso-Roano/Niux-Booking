@@ -10,6 +10,7 @@ import Dashboard from "./constructors/Dashboard";
 import DashboardEmpresa from "./constructors/DashboardEmpresa";
 import Home from "./pages/Home";
 import ProtectedRouteHome from "./services/ProtectedHome";
+import DetallesReserva from "./pages/DetallesReserva";
 
 function App() {
   return (
@@ -49,6 +50,11 @@ function App() {
           <ProtectedRouteHome>
             <Home />
           </ProtectedRouteHome>
+        } />
+        <Route path="/reserva/resumen" element={
+          <ProtectedRoute allowedRoles={['Cliente']}>
+            <DetallesReserva />
+          </ProtectedRoute>
         } />
       </Routes>
     </Router>
