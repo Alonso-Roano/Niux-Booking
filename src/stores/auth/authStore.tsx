@@ -51,6 +51,7 @@ export const useAuthStore = create(
                             const apiUrl = `Empresa/Usuario/${loginResponse.user.id}`;
                             const responseCompany = await niuxApi.get(apiUrl);
                             const dataCompany = responseCompany.data[0]
+                            loginResponse.user.avatarURL=import.meta.env.VITE_BACKEND_API+loginResponse.user.avatarURL;
                             set({
                                 status: 'authorized',
                                 token: loginResponse.token,

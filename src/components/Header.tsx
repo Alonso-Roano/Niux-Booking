@@ -17,6 +17,8 @@ import dataEmpresa from "../json/dashboardEmpresa.json";
 import dataAdmin from "../json/dashboardAdmin.json";
 import Company from "../svgs/Company";
 import Tag from "../svgs/Tag";
+import OffCanvas from "../constructors/OffCanvas"; // Importamos OffCanvas
+import EditProfile from "./EditProfile"; // Importamos EditProfile
 
 interface Params {
   setOption?: (option: any) => void;
@@ -27,6 +29,7 @@ export default function Header({ setOption }: Params) {
   const [open, setOpen] = useState(false); // Estado del menú hamburguesa
   const [profileOpen, setProfileOpen] = useState(false); // Estado del menú del perfil
   const profileMenuRef = useRef<HTMLDivElement>(null); // Referencia al menú de perfil
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
 
   const toggleProfileMenu = (event: React.MouseEvent) => {
     event.stopPropagation(); // Evita que el clic en el avatar cierre el menú inmediatamente
@@ -35,6 +38,11 @@ export default function Header({ setOption }: Params) {
   const changeOption = (opcion?: any) => {
     if (opcion && setOption) setOption(opcion);
     setOpen(!open);
+  };
+
+  const openEditProfile = () => {
+    setProfileOpen(false);
+    setEditProfileOpen(true);
   };
 
   const avatarUrl = user?.avatarURL || "/images/Avatar.webp"; // Usamos la foto del usuario o un avatar por defecto
@@ -105,39 +113,30 @@ export default function Header({ setOption }: Params) {
                 onClick={toggleProfileMenu}
               />
               {profileOpen && (
-                <div
-                  ref={profileMenuRef}
-                  className="absolute right-0 top-12 border border-gray-300 bg-white shadow-md rounded-lg w-48 p-4 z-30"
-                >
-                  <p className="font-medium text-center text-gray-800 mb-4">
-                    {user?.nombre}
-                  </p>
-                  <Link
-                    to="/perfil"
-                    className="flex items-center gap-2 hover:bg-gray-100 py-2 px-3 rounded-md"
-                  >
-                    <img className="" src={iconUser} alt="" />
-                    Perfil
-                  </Link>
-                  {/* Mostrar el enlace de Reservas solo si el rol es Cliente */}
-                  {user?.rol === "Cliente" && (
-                    <Link
-                      to="/reservas"
-                      className="flex items-center gap-2 hover:bg-gray-100 py-2 px-3 rounded-md"
-                    >
-                      <img src={iconReserva} alt="" />
-                      Reservas
-                    </Link>
-                  )}
-                  <button
-                    onClick={logoutUser}
-                    className="flex items-center gap-2 hover:bg-gray-100 py-2 px-3 rounded-md w-full text-left"
-                  >
-                    <img src={iconLogout} alt="" />
-                    Cerrar Sesión
-                  </button>
-                </div>
-              )}
+  <div
+    ref={profileMenuRef}
+    className="absolute right-0 top-12 border border-gray-300 bg-white shadow-md rounded-lg w-48 p-4 z-30"
+  >
+    <p className="font-medium text-center text-gray-800 mb-4">
+      {user?.nombre}
+    </p>
+    <button
+      onClick={openEditProfile}
+      className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
+    >
+      <img src={iconUser} alt="Perfil" className="w-5 h-5" />
+      <span>Perfil</span>
+    </button>
+    <button
+      onClick={logoutUser}
+      className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
+    >
+      <img src={iconLogout} alt="Cerrar sesión" className="w-5 h-5" />
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+)}
+
             </div>
           )}
 
@@ -237,6 +236,11 @@ export default function Header({ setOption }: Params) {
           )}
         </div>
       </header>
+
+      <OffCanvas toggleDrawer={setEditProfileOpen} drawerOpen={editProfileOpen}>
+  <EditProfile closeOffcanvas={() => setEditProfileOpen(false)} />
+</OffCanvas>
+
     </>
   );
 }

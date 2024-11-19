@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../stores/auth/authStore';
 
 const niuxApi = axios.create({
-  baseURL: 'https://localhost:7044/api',
+  baseURL: import.meta.env.VITE_BACKEND_API+'api',
 });
 
 niuxApi.interceptors.request.use((config) => {
