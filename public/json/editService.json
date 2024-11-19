@@ -1,11 +1,11 @@
 {
     "title":"Editar Servicio",
-    "url":"https://jsonplaceholder.typicode.com/posts/",
+    "url":"Servicio/ActualizarServicio",
     "input": [
         {
             "props": {
                 "id": "titulo",
-                "name": "title",
+                "name": "titulo",
                 "placeholder": "Escribe el título del servicio",
                 "className": "input-text",
                 "type": "text"
@@ -18,7 +18,7 @@
         {
             "props": {
                 "id": "precio",
-                "name": "price",
+                "name": "precio",
                 "placeholder": "Escribe el precio",
                 "className": "input-number",
                 "type": "number"
@@ -31,7 +31,7 @@
         {
             "props": {
                 "id": "duracion",
-                "name": "rating",
+                "name": "duracion",
                 "placeholder": "Escribe la duración en horas",
                 "className": "input-number",
                 "type": "number"
@@ -46,7 +46,7 @@
         {
             "props": {
                 "id": "descripcion",
-                "name": "description",
+                "name": "descripcion",
                 "placeholder": "Escribe la descripción del servicio",
                 "type": "text",
                 "rows": 5

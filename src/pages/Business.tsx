@@ -5,7 +5,6 @@ import Barber from "../images/services/barbershop-4762345_1280.jpg";
 import { Link } from "react-router-dom";
 import "../styles/components/Business.css";
 import ImgUser from "../images/users/beard-1845166_1280.jpg";
-import StarForReview from "../svgs/StarForReview";
 import Footer from "../components/Footer";
 export default function Business() {
   return (
