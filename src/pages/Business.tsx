@@ -30,27 +30,29 @@ export default function Business() {
             </span>
           </div>
         </div>
-        <section className=" grid grid-cols-3 gap-6 lg:mr-10 mr-5 mt-6 mb-6 max-h-[500px] ">
-          <div className=" col-span-2 max-h-[500px]">
+        <section className=" grid grid-cols-3 gap-6 lg:mr-10 mr-5 mt-6 mb-6 max-h-[500px]  border">
+          <div className=" col-span-2 max-h-[500px] ">
             <img
               src={Barber}
               alt=""
               className=" object-cover rounded-md h-full w-full"
             />
           </div>
-          <div className=" col-span-1 flex flex-col gap-6 max-h-[500px]">
-            <div>
+          <div className=" col-span-1 flex   gap-6   flex-col  max-h-[500px]">
+            <div className="    ">
               <img
                 src={Barber}
                 alt=""
                 className=" object-cover rounded-md h-full w-full"
               />
             </div>
-            <img
-              src={Barber}
-              alt=""
-              className=" object-cover rounded-md h-full w-full"
-            />
+            <div className=" max-h-[226px] ">
+              <img
+                src={Barber}
+                alt=""
+                className=" object-cover rounded-md h-full w-full"
+              />
+            </div>
           </div>
         </section>
         <section className=" mt-12 grid lg:grid-cols-3 gap-5 grid-cols-1 lg:mr-10 mr-5">

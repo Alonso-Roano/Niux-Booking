@@ -11,51 +11,84 @@ import DashboardEmpresa from "./pages/DashboardEmpresa";
 import Home from "./pages/Home";
 import ProtectedRouteHome from "./services/ProtectedHome";
 import DetallesReserva from "./pages/DetallesReserva";
+import Schedule from "./pages/Schedule";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/Dashboard/Empresa" element={
-          <ProtectedRoute allowedRoles={['Socio']}>
-            <DashboardEmpresa />
-          </ProtectedRoute>
-        } />
-        <Route path="/Dashboard" element={
-          <ProtectedRoute allowedRoles={['Admin']}>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/negocio" element={
-          <ProtectedRoute allowedRoles={['Cliente']}>
+        <Route
+          path="/Dashboard/Empresa"
+          element={
+            <ProtectedRoute allowedRoles={["Socio"]}>
+              <DashboardEmpresa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/negocio"
+          element={
+            /*     <ProtectedRoute allowedRoles={["Cliente"]}>
+            </ProtectedRoute> */
             <Business />
-          </ProtectedRoute>
-        } />
-        <Route path="/login" element={
-          <RestrictedRoute>
-            <Login />
-          </RestrictedRoute>
-        } />
-        <Route path="/registro-type" element={
-          <RestrictedRoute>
-            <TipoUsuario />
-          </RestrictedRoute>
-        } />
-        <Route path="/registro/:tipoUsuario" element={
-          <RestrictedRoute>
-            <Registro />
-          </RestrictedRoute>
-        } />
-        <Route path="/" element={
-          <ProtectedRouteHome>
-            <Home />
-          </ProtectedRouteHome>
-        } />
-        <Route path="/reserva/resumen" element={
-          <ProtectedRoute allowedRoles={['Cliente']}>
-            <DetallesReserva />
-          </ProtectedRoute>
-        } />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute>
+              <Login />
+            </RestrictedRoute>
+          }
+        />
+        <Route
+          path="/registro-type"
+          element={
+            <RestrictedRoute>
+              <TipoUsuario />
+            </RestrictedRoute>
+          }
+        />
+        <Route
+          path="/registro/:tipoUsuario"
+          element={
+            <RestrictedRoute>
+              <Registro />
+            </RestrictedRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <ProtectedRouteHome>
+              <Home />
+            </ProtectedRouteHome>
+          }
+        />
+        <Route
+          path="/horario"
+          element={
+            /*      <ProtectedRoute allowedRoles={["Cliente", "socio"]}>
+            </ProtectedRoute> */
+            <Schedule />
+          }
+        />
+        <Route
+          path="/reserva/resumen"
+          element={
+            <ProtectedRoute allowedRoles={["Cliente"]}>
+              <DetallesReserva />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
