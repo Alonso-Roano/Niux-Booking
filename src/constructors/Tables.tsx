@@ -9,6 +9,8 @@ import Delete from '../svgs/Delete';
 import Search from '../svgs/Search';
 import Utils from '../functions/Utils';
 import ExpandList from '../svgs/ExpandList';
+import { useAuthStore } from '../stores/auth/authStore';
+import { niuxApi } from '../api/niuxApi';
 
 interface ApiData {
     [key: string]: any;
@@ -46,10 +48,11 @@ interface Params {
     cantidad:{
         de: number,
         hasta: number
-    }
+    },
+    render:boolean
 }
 
-const Tables = ({ url, name, can, helper, cantidad }: Params) => {
+const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
     const { leer = true, actualizar = true, borrar = true, pagar = false } = can;
     const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<string>('');
@@ -58,32 +61,89 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
     const [rows, setRows] = useState<ApiData[]>([]);
     const [columns, setColumns] = useState<string[]>([]);
     const [filterText, setFilterText] = useState('');
-    const [hasError, setHasError] = useState(false); // Estado para manejar errores
+    const [hasError, setHasError] = useState(false);
+    const { user } = useAuthStore();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Error en la petición");
-                const data = await response.json();
-
-                const displayColumns = data.products.length > 0 ? Object.keys(data.products[0]).slice(cantidad.de, cantidad.hasta) : [];
-                setColumns(displayColumns);
-
-                const formattedRows = data.products.map((item: ApiData, index: number) => ({
-                    id: index + 1,
-                    ...item,
-                }));
-                setRows(formattedRows);
-                setOrderBy(displayColumns[0] || '');
+                if (url.endsWith("{}")) {
+                    url = url.replace(/\/\{\}$/, "");
+                    url = `${url}/${user?.idEmpresa}`;
+                }
+                const response = await niuxApi.get(url);
+                let data = response.data;
+                console.log(data);
+        
+                if (data.data == null) data = { data: data };
+                setColumns([]);
+        
+                if (data.data.data !== null) {
+                    const displayColumns =
+                        data.data.length > 0
+                            ? Object.keys(data.data[0])
+                                  .filter((key) => key !== "id" && key !== "idEmpresa")
+                                  .slice(cantidad.de, cantidad.hasta)
+                            : [];
+                    setColumns(displayColumns);
+        
+                    const formatDate = (dateStr: string) => {
+                        const date = new Date(dateStr);
+                        const day = date.getDate().toString().padStart(2, '0');
+                        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        const year = date.getFullYear();
+                        return `${day}/${month}/${year}`;
+                    };
+        
+                    const formatTime = (timeStr: string) => {
+                        const [hours, minutes] = timeStr.split(":");
+                        const hour = parseInt(hours);
+                        const isPM = hour >= 12;
+                        const formattedHour = hour % 12 || 12;
+                        const formattedMinutes = minutes.padStart(2, '0');
+                        return `${formattedHour}:${formattedMinutes} ${isPM ? 'PM' : 'AM'}`;
+                    };
+        
+                    const replaceValues = (item: any) => {
+                        const replacements: { [key: string]: { [key: number]: string } } = {
+                            sexo: {
+                                0: "Hombre",
+                                1: "Mujer",
+                            },
+                        };
+        
+                        Object.keys(item).forEach((key) => {
+                            if (key === 'fechaReserva' && item[key]) {
+                                item[key] = formatDate(item[key]);
+                            } else if ((key === 'horaInicio' || key === 'horaFin') && item[key]) {
+                                item[key] = formatTime(item[key]);
+                            } else if (replacements[key] && replacements[key][item[key]] !== undefined) {
+                                item[key] = replacements[key][item[key]];
+                            }
+                        });
+        
+                        return item;
+                    };
+        
+                    const formattedRows = data.data.map((item: ApiData, index: number) => ({
+                        id: index + 1,
+                        ...replaceValues(item),
+                    }));
+        
+                    setRows(formattedRows);
+                    setOrderBy(displayColumns[0] || "");
+                }
+        
                 setHasError(false);
             } catch (error) {
                 console.error("Error al cargar datos:", error);
                 setHasError(true);
             }
         };
+        
+               
         fetchData();
-    }, [url]);
+    }, [url, render]);
 
     const handleRequestSort = (property: string) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -246,7 +306,7 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
                                 ) : (
                                     <TableRow>
                                         <TableCell colSpan={3} sx={{ textAlign: 'center', color: '#888', border:"none" }}>
-                                            <div className='loaderContent'><div className='loader'></div></div>
+                                           <p>No se encontraron datos</p>
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -263,7 +323,7 @@ const Tables = ({ url, name, can, helper, cantidad }: Params) => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage="Numero de filas" 
-                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`} // Cambia "of"
+                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`} 
                         />
                         : <></>    
                     }

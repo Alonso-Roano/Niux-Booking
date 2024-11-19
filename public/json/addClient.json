@@ -1,12 +1,12 @@
 {
     "title": "Agregar Cliente",
-    "url":"https://jsonplaceholder.typicode.com/posts",
+    "url":"ClienteEmpresa/CrearClienteParaEmpresa",
     "imageUrl":"https://jsonplaceholder.typicode.com/posts",
     "input": [
         {
             "props": {
                 "id": "nombre",
-                "name": "nombre",
+                "name": "nombres",
                 "placeholder": "Escribe el nombre del cliente",
                 "className": "input-text",
                 "type": "text"
@@ -19,7 +19,7 @@
         {
             "props": {
                 "id": "Apellido1",
-                "name": "Apellido1",
+                "name": "apellido1",
                 "placeholder": "Escribe el primer apellido",
                 "className": "input-text",
                 "type": "text"
@@ -32,7 +32,7 @@
         {
             "props": {
                 "id": "Apellido2",
-                "name": "Apellido2",
+                "name": "apellido2",
                 "placeholder": "Escribe el segundo apellido",
                 "className": "input-text",
                 "type": "text"
@@ -65,45 +65,12 @@
                 "className": "input-select"
             },
             "options":[
-                {"label":"-- Selecciona el sexo --", "value":"0"},
-                {"label":"Hombre", "value":"H"},
-                {"label":"Mujer", "value":"M"},
-                {"label":"No especifico", "value":"N"}
+                {"label":"Hombre", "value":"0"},
+                {"label":"Mujer", "value":"1"}
             ],
             "className": "css",
             "cantWrite": "",
             "labelContent": "Sexo",
-            "labelCss": "css"
-        }
-    ],
-    "textarea": [
-        {
-            "props": {
-                "id": "descripcion",
-                "name": "descripcion",
-                "placeholder": "Escribe la descripción del servicio",
-                "type": "text",
-                "rows": 5
-            },
-            "cantWrite": "",
-            "labelContent": "Descripción",
-            "labelCss": "css",
-            "className": "css"
-        }
-    ],
-    "inputsFile":[
-        {
-            "props": {
-                "id": "foto",
-                "name": "foto",
-                "placeholder": "Selecciona una foto",
-                "className": "input-file",
-                "type": "file",
-                "accept": "image/*"
-            },
-            "className": "css",
-            "cantWrite": "",
-            "labelContent": "Foto",
             "labelCss": "css"
         }
     ],

@@ -180,28 +180,34 @@
 
 .dashSelection button {
     display: flex;
-    justify-content: start;
     align-items: center;
+    border-radius: 0.375rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: .5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    justify-content: space-between;
+    border: 1px solid #e5e7eb;
+    transition: background-color 0.1s ease;
     color: #474747;
-    font-size: 25px;
-    padding: 7px 10px;
-    margin-bottom: 10px;
-    transition: all .1s ease;
+    position: relative;
 }
 
 .dashSelection button:hover {
-    background-color: #47474711;
-    border-radius: 10px;
+    background-color: #F5F5F6;
 }
 
 .dashSelection button svg {
     color: #7B6FCC;
-    margin-right: 10px;
-    font-size: 40px;
+    font-size: 30px;
 }
 
-.dashSelection button:active {
-    transform: scale(.95);
+.dashSelection span{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .dashInfo {
@@ -256,6 +262,31 @@
     background: #7B6FCC;
     animation: l2 1s infinite;
 }
+.buttonContainer{
+    margin-top: 20px;
+}
+
+.viewCard{
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #0005;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 4px;
+}
+.viewCard h5{
+    border-radius: 5px 5px 0 0;
+    padding:0px 5px;
+    background-color: #7B6FCC;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+.viewCard p{
+    border-radius: 5px 5px 0 0;
+    padding:2px 5px;
+    color: #474747;
+    min-height: 40px;
+}
 
 @keyframes l2 {
 
@@ -289,7 +320,7 @@ input[type="file"]:focus+.MuiButton-root,
     /* Color de fondo cuando se selecciona un archivo */
 }
 
-.file-selected span{
+.file-selected span {
     width: 100%;
 }
 

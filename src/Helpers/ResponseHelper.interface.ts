@@ -17,4 +17,7 @@ export interface User {
     avatarURL: string;
     nombre: string;
     correo: string;
+    idEmpresa?:number;
+    horaInicio?:string;
+    horaFin?:string;
 }

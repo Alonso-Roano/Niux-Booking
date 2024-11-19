@@ -81,7 +81,7 @@ class Post {
   }
 
   FileUploadUrl(fileUploadUrl: string): Post {
-    this.fileUploadUrl = fileUploadUrl; 
+    this.fileUploadUrl = fileUploadUrl;
     return this;
   }
 
@@ -107,32 +107,53 @@ class Post {
   }
 
   private parseBodyWithFile() {
-    const formData = new FormData();
+    const body: any = {};
     const fileUploads: { [key: string]: string } = {};
-  
-    Object.keys(this.body).forEach((key) => {
-      const value = this.body[key];
 
-      if (value.name) {
+    Object.keys(this.body).forEach((key) => {
+      let value = this.body[key];
+
+      if (value && value.name) {
         this.uploadFile(value);
       } else {
-        formData.append(key, value);
+        body[key] = value;
       }
     });
-  
-    return { formData, fileUploads };
+
+    return { body, fileUploads };
   }
-  
+
 
   async send() {
-    const { formData, fileUploads } = this.body instanceof FormData ? { formData: this.body, fileUploads: {} } : this.parseBodyWithFile();
-    Object.keys(fileUploads).forEach((key) => {
-      formData.append(key, fileUploads[key]);
-    });
+    const { body } = this.body instanceof FormData ? { body: this.body } : this.parseBodyWithFile();
+    if (body.sexo) {
+      body.sexo = Number(body.sexo);
+    }
+    if (body.duracion) {
+      const [horas, minutos] = body.duracion.split(':').map(Number);
+      const duracionEnMinutos = (horas * 60) + minutos;
+      body.duracion = duracionEnMinutos;
+    }
+    if (body.horaInicio) body.horaInicio += ":00";
+    if (body.horaFin) body.horaFin += ":00";
+    if (body.fechaReserva) {
+      const currentTime = new Date();
+      const [year, month, day] = body.fechaReserva.split("-");
+      const isoDate = new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        currentTime.getHours(),
+        currentTime.getMinutes(),
+        currentTime.getSeconds(),
+        currentTime.getMilliseconds()
+      );
+      body.fechaReserva = isoDate.toISOString();
+    }
 
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
-        const response = await niuxApi.post(this.url, formData );
+        const response = await niuxApi.post(this.url, body);
         if (!response.data) {
           Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
           throw new Error('Error al enviar los datos');
@@ -178,7 +199,7 @@ class Put {
     this.setReponse = setReponse;
     return this;
   }
-  
+
   SetClose(setClose: (close: any) => void): Put {
     this.setClose = setClose;
     return this;
@@ -196,6 +217,30 @@ class Put {
 
   async send() {
     console.log(this.body);
+    if (this.body.sexo) {
+      this.body.sexo = Number(this.body.sexo);
+    }
+    if (this.body.duracion) {
+      const [horas, minutos] = this.body.duracion.split(':').map(Number);
+      const duracionEnMinutos = (horas * 60) + minutos;
+      this.body.duracion = duracionEnMinutos;
+    }
+    if (this.body.horaInicio) this.body.horaInicio += ":00";
+    if (this.body.horaFin) this.body.horaFin += ":00";
+    if (this.body.fechaReserva) {
+      const currentTime = new Date();
+      const [year, month, day] = this.body.fechaReserva.split("-");
+      const isoDate = new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        currentTime.getHours(),
+        currentTime.getMinutes(),
+        currentTime.getSeconds(),
+        currentTime.getMilliseconds()
+      );
+      this.body.fechaReserva = isoDate.toISOString();
+    }
 
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
@@ -221,6 +266,7 @@ class Delete {
   private mensaje: string = "Borrado con éxito";
   private mensajeConfirm: string = "¿Está seguro?";
   private setReponse?: (response: any) => void;
+  private setRender?: (response: any) => void;
 
   constructor(url: string) {
     this.url = url;
@@ -228,6 +274,11 @@ class Delete {
 
   setMensaje(mensaje: string): Delete {
     this.mensaje = mensaje;
+    return this;
+  }
+
+  SetReder(setRender: (response: any) => void): Delete {
+    this.setRender = setRender;
     return this;
   }
 
@@ -246,12 +297,12 @@ class Delete {
     Utils.confirmToast(
       { title: this.mensajeConfirm },
       this.deleteFunction,
-      { url: this.url, mensaje: this.mensaje, setReponse: this.setReponse }
+      { url: this.url, mensaje: this.mensaje, setReponse: this.setReponse, setRender: this.setRender }
     );
   }
 
   private async deleteFunction(deleteParams: any) {
-    const { url, mensaje, setReponse } = deleteParams;
+    const { url, mensaje, setReponse, setRender } = deleteParams;
 
     try {
       const response = await niuxApi.delete(url);
@@ -260,6 +311,7 @@ class Delete {
         throw new Error("Error al borrar los datos");
       }
       if (setReponse) setReponse(response.data);
+      if (setRender) setRender(false);
       Utils.showToast({ title: mensaje, icon: "success" });
     } catch (error) {
       Utils.showToast({ title: "Error al borrar los datos:", icon: "error" });

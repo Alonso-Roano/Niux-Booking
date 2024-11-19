@@ -7,7 +7,12 @@ const inputBody = (params: any) => {
     const { e, body, setBody, cantWrite = "." } = params;
     const { name, value } = e.target;
     const regex = new RegExp(`[${cantWrite}]`);
-    if (!regex.test(value)) setBody({ ...body, [name]: value });
+
+    const convertedValue = value !== "" && !isNaN(value) ? parseFloat(value) : value;
+
+    if (!regex.test(value)) {
+        setBody({ ...body, [name]: convertedValue });
+    }
 };
 
 const formatProps = (type: string, { identifier, ...rest }: any) => {
@@ -153,7 +158,7 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
     setErrors((prevState: any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
 
     const names = getInputs(data);
-    const emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == 0);
+    const emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == -1);
 
     if (emptyFields.length === 0) return true;
     emptyFields.forEach(field => setErrors((prevErrors: any) => ({ ...prevErrors, [field]: true })));
@@ -191,19 +196,27 @@ function mapJsonToHtml(json: Record<string, any>): string {
     let html = '';
 
     for (const key in json) {
-        if (key!=="id") {
+        if (key !== "id") {
             if (json.hasOwnProperty(key)) {
                 const value = json[key];
-                const traduccion = getDefinition(key)
-                
+                const traduccion = getDefinition(key);
+
                 if (typeof value === 'object' && value !== null) {
-                    html += `<p><strong>${traduccion}:</strong></p>`;
-                    html += mapJsonToHtml(value);
+                    html += `<div class="viewCard">
+                                <p><strong>${traduccion}:</strong></p>
+                                ${mapJsonToHtml(value)}
+                             </div>`;
                 } else {
                     if (typeof value === 'string' && value.startsWith('http')) {
-                        html += `<p><span>${traduccion}:</span> <img src="${value}" alt="${traduccion}" /></p>`;
+                        html += `<div class="viewCard">
+                                    <p><span>${traduccion}:</span></p>
+                                    <img src="${value}" alt="${traduccion}" />
+                                 </div>`;
                     } else {
-                        html += `<p><span>${traduccion}:</span> ${value}</p>`;
+                        html += `<div class="viewCard">
+                                    <h5>${traduccion}:</h5>
+                                    <p>${value}</p>
+                                 </div>`;
                     }
                 }
             }
@@ -212,6 +225,7 @@ function mapJsonToHtml(json: Record<string, any>): string {
 
     return html;
 }
+
 
 
 export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml };

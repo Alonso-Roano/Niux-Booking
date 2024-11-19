@@ -3,6 +3,7 @@ import { AuthService } from '../../services/authServices';
 import { User } from '../../Helpers/ResponseHelper.interface';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
+import { niuxApi } from '../../api/niuxApi';
 
 
 interface AuthState {
@@ -46,11 +47,26 @@ export const useAuthStore = create(
 
                     // Solo cambia a "authorized" si la respuesta es exitosa y contiene token y usuario
                     if (loginResponse.token && loginResponse.user) {
-                        set({
-                            status: 'authorized',
-                            token: loginResponse.token,
-                            user: loginResponse.user
-                        });
+                        if(loginResponse.user.rol=="Socio"){
+                            const apiUrl = `Empresa/Usuario/${loginResponse.user.id}`;
+                            const responseCompany = await niuxApi.get(apiUrl);
+                            const dataCompany = responseCompany.data[0]
+                            const apiUrlHoras = `Horario/Empresa/${dataCompany.id}`;
+                            const responseHoras = await niuxApi.get(apiUrlHoras);
+                            const dataHoras = responseHoras.data[0]
+                            loginResponse.user.avatarURL=import.meta.env.VITE_BACKEND_API+loginResponse.user.avatarURL;
+                            set({
+                                status: 'authorized',
+                                token: loginResponse.token,
+                                user: {...loginResponse.user, ["idEmpresa"]:dataCompany.id, ["horaInicio"]:dataHoras.horaInicio, ["horaFin"]:dataHoras.horaFin,}
+                            });
+                        }else{
+                            set({
+                                status: 'authorized',
+                                token: loginResponse.token,
+                                user: loginResponse.user
+                            });
+                        }
                     } else {
                         throw new Error(loginResponse.message || 'Credenciales incorrectas');
                     }
