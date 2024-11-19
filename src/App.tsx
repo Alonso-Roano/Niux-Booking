@@ -35,9 +35,9 @@ function App() {
         <Route
           path="/negocio"
           element={
-            <ProtectedRoute allowedRoles={["Cliente"]}>
-              <Business />
-            </ProtectedRoute>
+            /*     <ProtectedRoute allowedRoles={["Cliente"]}>
+            </ProtectedRoute> */
+            <Business />
           }
         />
         <Route
@@ -72,13 +72,14 @@ function App() {
             </ProtectedRouteHome>
           }
         />
-        <Route path="/" element={<Dashboard data={data} />} />
-        <Route path="/inicio" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro-type" element={<TipoUsuario />} />
-        <Route path="/registro/:tipoUsuario" element={<Registro />} />
-        <Route path="/negocio" element={<Business />} />
-        <Route path="/horario" element={<Schedule />} />
+        <Route
+          path="/horario"
+          element={
+            /*      <ProtectedRoute allowedRoles={["Cliente", "socio"]}>
+            </ProtectedRoute> */
+            <Schedule />
+          }
+        />
       </Routes>
     </Router>
   );
