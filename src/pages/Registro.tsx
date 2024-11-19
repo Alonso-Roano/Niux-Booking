@@ -46,7 +46,7 @@ export default function Registro() {
       // Si el registro fue exitoso, iniciar sesión automáticamente
       await loginUser(email, password);
       setError(null);
-      navigate('/inicio'); // Redirigir al usuario a la página de inicio
+      navigate('/'); // Redirigir al usuario a la página de inicio
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Hubo un error en el registro');
       console.error(err);

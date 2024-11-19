@@ -54,6 +54,7 @@ export const useAuthStore = create(
                             const apiUrlHoras = `Horario/Empresa/${dataCompany.id}`;
                             const responseHoras = await niuxApi.get(apiUrlHoras);
                             const dataHoras = responseHoras.data[0]
+                            loginResponse.user.avatarURL=import.meta.env.VITE_BACKEND_API+loginResponse.user.avatarURL;
                             set({
                                 status: 'authorized',
                                 token: loginResponse.token,
