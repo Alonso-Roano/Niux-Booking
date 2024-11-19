@@ -58,7 +58,7 @@ export default function Home() {
   }
   const skeletons = [1, 2, 3, 4, 5];
   const [empresas, setEmpresas] = useState<IEmpresa[]>();
-  const [resenias, setResenias] = useState<IResenia[]>();
+  const [resenias, setResenias] = useState<any>();
 
   useEffect(() => {
     const fetchingData = async () => {
@@ -425,7 +425,7 @@ export default function Home() {
           <div className=" overflow-hidden">
             <div className=" flex gap-6 pt-2 px-1 pb-3 carrusel-scroll  items-center overflow-x-scroll">
               {resenias
-                ? resenias.map((resenia) => (
+                ? resenias.map((resenia: any) => (
                     <Link
                       to={""}
                       key={resenia.id}

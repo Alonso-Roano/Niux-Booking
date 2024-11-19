@@ -12,18 +12,17 @@ interface IServicio {
   idEmpresa: number;
 }
 
+interface horario {
+  dia: number;
+  horaInicio: string;
+  horaFin: string;
+}
 interface IEmpresa {
   nombre: string;
   direccion: string;
   promedioReseñas: number;
   TotalReseñas: number;
-  horario: [
-    {
-      dia: number;
-      horaInicio: string;
-      horaFin: string;
-    }
-  ];
+  horario: horario[];
 }
 export default function Schedule() {
   //dia actual
@@ -101,6 +100,26 @@ export default function Schedule() {
       horario: [
         {
           dia: 1,
+          horaInicio: "",
+          horaFin: "",
+        },
+        {
+          dia: 2,
+          horaInicio: "",
+          horaFin: "",
+        },
+        {
+          dia: 3,
+          horaInicio: "",
+          horaFin: "",
+        },
+        {
+          dia: 4,
+          horaInicio: "",
+          horaFin: "",
+        },
+        {
+          dia: 5,
           horaInicio: "",
           horaFin: "",
         },
