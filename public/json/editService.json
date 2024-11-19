@@ -27,19 +27,6 @@
             "cantWrite": "",
             "labelContent": "Precio",
             "labelCss": "css"
-        },
-        {
-            "props": {
-                "id": "duracion",
-                "name": "duracion",
-                "placeholder": "Escribe la duración en horas",
-                "className": "input-number",
-                "type": "number"
-            },
-            "className": "css",
-            "cantWrite": "",
-            "labelContent": "Duración",
-            "labelCss": "css"
         }
     ],
     "textarea": [
@@ -57,6 +44,10 @@
             "className": "css"
         }
     ],
+    "duracion":{
+        "name":"duracion",
+        "label":"Seleccione la duracion"
+    },
     "buttons": [
         {
             "props": {

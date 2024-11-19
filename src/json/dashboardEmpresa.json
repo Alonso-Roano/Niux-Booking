@@ -7,28 +7,36 @@
         "url": "https://dummyjson.com/carts",
         "opcion": "sales",
         "numeroBarras":30,
-        "type":"bar"
+        "type":"bar",
+        "tipo":"pagos",
+        "total":"totalPagos"
       },
       {
         "name": "Servicios",
         "url": "https://dummyjson.com/carts",
         "opcion": "service",
         "numeroBarras":10,
-        "type":"line"
+        "type":"line",
+        "tipo":"servicios",
+        "total":"totalServicios"
       },
       {
         "name": "Clientes",
         "url": "https://dummyjson.com/carts",
         "opcion": "clients",
         "numeroBarras":10,
-        "type":"spark"
+        "type":"spark",
+        "tipo":"clientes",
+        "total":"totalClientesEmpresa"
       },
       {
         "name": "Reservas",
         "url": "https://dummyjson.com/carts",
         "opcion": "reservation",
         "numeroBarras":10,
-        "type":"line"
+        "type":"line",
+        "tipo":"reservas",
+        "total":"totalReservas"
       }
     ]
   },
@@ -79,13 +87,13 @@
   },
   "sales": {
     "name": "Ventas",
-    "add": "addService.json",
-    "edit": "editService.json",
+    "add": "addSale.json",
+    "edit": "editSale.json",
     "viewTitle": "Detalle del servicio",
     "getURL": "Pago/ListaPagos/{}",
     "response": "products",
     "delete": {
-      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
+      "deleteURL": "Pago/",
       "mensaje": "¡Servicio borrado con exito!",
       "mensajeConfirm": "¿Desea eliminar el servicio?"
     },
@@ -101,14 +109,14 @@
     }
   },
   "reservation": {
-    "name": "Servicios",
-    "add": "addService.json",
-    "edit": "editService.json",
+    "name": "Reservas",
+    "add": "addReservation.json",
+    "edit": "editReservation.json",
     "viewTitle": "Detalle del servicio",
     "getURL": "Reserva/Empresa/{}",
     "response": "products",
     "delete": {
-      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
+      "deleteURL": "Reserva/",
       "mensaje": "¡Servicio borrado con exito!",
       "mensajeConfirm": "¿Desea eliminar el servicio?"
     },
@@ -119,7 +127,7 @@
       "delete": true
     },
     "cantidad": {
-      "desde": 1,
+      "desde": 0,
       "hasta": 6
     }
   }

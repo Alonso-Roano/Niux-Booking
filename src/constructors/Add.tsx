@@ -8,6 +8,8 @@ import "../styles/constructors/Inputs.css";
 import Selects from "./Selects";
 import InputsFile from "./InputsFile";
 import { useAuthStore } from "../stores/auth/authStore";
+import TimeSelector from "./TimeSelector";
+import APISelect from "./ApiSelect";
 
 function Add({ data, setClose}: any) {
 
@@ -43,14 +45,18 @@ function Add({ data, setClose}: any) {
                         .FileUploadUrl(datos.imageUrl)
                         .send();
         } else {
-            new  Request.Post(datos.url, bodySend)
-                        .SetErrors(setError)
-                        .Data(datos)
-                        .SetClose(setClose)
-                        .SetBody(setBody)
-                        .send();
+                new  Request.Post(datos.url, bodySend)
+                            .SetErrors(setError)
+                            .Data(datos)
+                            .SetClose(setClose)
+                            .SetBody(setBody)
+                            .send();
         }
     }
+    const sHour = datos?.horas?.horaInicio?.inicio || user?.horaInicio || "00:00:00";
+    const eHour = datos?.horas?.horaInicio?.fin || user?.horaFin || "00:00:00";
+    const sHour2 = datos?.horas?.horaFin?.inicio || user?.horaInicio || "00:00:00";
+    const eHour2 = datos?.horas?.horaFin?.fin || user?.horaFin || "00:00:00";
 
     return (
     <>
@@ -61,6 +67,11 @@ function Add({ data, setClose}: any) {
                 <Selects data={datos.select} setBody={setBody} body={body} errors={error}/>
                 <Textarea data={datos.textarea} setBody={setBody} body={body} errors={error}/>
                 <InputsFile data={datos.inputsFile} setBody={setBody} body={body} errors={error}/>
+                <TimeSelector data={datos?.duracion ? datos.duracion : null} startHour={"00:15:00"} endHour={"04:00:00"} body={body} setBody={setBody} errors={error}></TimeSelector>
+                <TimeSelector data={datos?.horas?.horaInicio ? datos.horas.horaInicio : null} startHour={sHour} endHour={eHour} body={body} setBody={setBody} errors={error}></TimeSelector>
+                <TimeSelector data={datos?.horas?.horaFin ? datos.horas.horaFin : null} startHour={sHour2} endHour={eHour2} body={body} setBody={setBody} errors={error}></TimeSelector>
+                <APISelect data={datos.selectCliente} setBody={setBody} body={body} errors={error}></APISelect>
+                <APISelect data={datos.selectServicio} setBody={setBody} body={body} errors={error}></APISelect>
                 {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}
             </>
            ) : (

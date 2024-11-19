@@ -18,22 +18,30 @@ function Inputs({ data, setBody, body, errors, editDatos }: DataProps) {
     useEffect(() => {
         if (editDatos) {
             const updates: { [key: string]: any } = {};
-
+    
             data.forEach((prop) => {
                 const inputProp = utils.formatProps("input", prop.props);
                 const name = inputProp.name;
-
+    
                 if (name && editDatos[name] !== undefined) {
-                    updates[name] = editDatos[name];
+                    let value = editDatos[name];
+    
+                    if (inputProp.type === "date" && typeof value === "string" && value.includes("/")) {
+                        const [day, month, year] = value.split("/");
+                        value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+                    }
+    
+                    updates[name] = value;
                 }
             });
-
+    
             setBody((prevBody: any) => ({
                 ...prevBody,
                 ...updates,
             }));
         }
     }, [editDatos, data, setBody]);
+    
 
     return (
         <div className="inputsContainer">
@@ -45,6 +53,14 @@ function Inputs({ data, setBody, body, errors, editDatos }: DataProps) {
                     props,
                 } = prop;
                 const inputProp = utils.formatProps("input", props);
+
+                if (inputProp.type === "date") {
+                    const today = new Date().toISOString().split("T")[0];
+                    inputProp.inputProps = {
+                        ...inputProp.inputProps,
+                        min: today,
+                    };
+                }
 
                 return (
                     <FormControl key={index} className={className} fullWidth>
@@ -59,6 +75,9 @@ function Inputs({ data, setBody, body, errors, editDatos }: DataProps) {
                             }
                             value={body[inputProp.name] || ''}
                             className={"SiJaja " + inputProp.className}
+                            InputLabelProps={{
+                                shrink: body[inputProp.name] || inputProp.type === "date" ? true : false,
+                            }}
                         />
                     </FormControl>
                 );

@@ -1,0 +1,89 @@
+{
+    "title": "Agregar Reserva",
+    "url":"Reserva",
+    "input": [
+        {
+            "props": {
+                "id": "nombre",
+                "name": "nombre",
+                "placeholder": "Escribe el nombre de la reserva",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "cantidad",
+                "name": "cantidadPersonas",
+                "placeholder": "Escribe la cantidad de personas",
+                "className": "input-number",
+                "type": "number"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Cantidad de personas",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "fechaReserva",
+                "name": "fechaReserva",
+                "placeholder": "Escribe la fecha de la reservacion",
+                "className": "input-number",
+                "type": "date"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Fecha",
+            "labelCss": "css"
+        }
+    ],
+    "textarea": [
+        {
+            "props": {
+                "id": "descripcion",
+                "name": "descripcion",
+                "placeholder": "Escribe la descripción de la reservacion",
+                "type": "text",
+                "rows": 5
+            },
+            "cantWrite": "",
+            "labelContent": "Descripción",
+            "labelCss": "css",
+            "className": "css"
+        }
+    ],
+    "horas":{
+        "horaInicio":{"name":"horaInicio", "label":"Hora inicio"},
+        "horaFin":{"name":"horaFin", "label":"Hora fin"}
+    },
+    "selectCliente":{
+        "apiUrl":"ClienteEmpresa/ListaDeClientesPorEmpresa/{}",
+        "valueField":"id",
+        "labelField":"nombres",
+        "name":"idCliente"
+    },
+    "selectServicio":{
+        "apiUrl":"Servicio/Empresa/{}",
+        "valueField":"id",
+        "labelField":"titulo",
+        "name":"idServicio"
+    },
+    "buttons": [
+        {
+            "props": {
+                "id": "submitBtn",
+                "name": "submit",
+                "type": "button",
+                "label": "Guardar",
+                "className": "button-guardar"
+            },
+            "onClickId": "guardarServicio"
+        }
+    ]
+}
+

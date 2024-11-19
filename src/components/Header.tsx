@@ -165,7 +165,7 @@ export default function Header({ setOption }: Params) {
                 <>
                   <Link
                     to="/perfil"
-                    className="flex justify-between items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-4 px-2 border  text-[#474747]"
+                    className="flex justify-between items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-2 px-2 border  text-[#474747]"
                   >
                     Perfil
                     <ArrowNext />

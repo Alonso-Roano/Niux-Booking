@@ -31,8 +31,8 @@ function GraficaPieChart({ data, setOpcion }: any) {
   const processDataForChart = (carts: any[]) => {
     return carts.slice(-data.numeroBarras).map((cart: any, index: number) => ({
       value: cart.totalProducts,
-      color: colorsPalette[index % colorsPalette.length], // Asigna colores cíclicamente.
-      label: `${cart.id}:${cart.totalProducts}`, // Agrega un label descriptivo.
+      color: colorsPalette[index % colorsPalette.length], 
+      label: `${cart.id}:${cart.totalProducts}`, 
     }));
   };
 

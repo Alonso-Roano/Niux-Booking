@@ -51,10 +51,13 @@ export const useAuthStore = create(
                             const apiUrl = `Empresa/Usuario/${loginResponse.user.id}`;
                             const responseCompany = await niuxApi.get(apiUrl);
                             const dataCompany = responseCompany.data[0]
+                            const apiUrlHoras = `Horario/Empresa/${dataCompany.id}`;
+                            const responseHoras = await niuxApi.get(apiUrlHoras);
+                            const dataHoras = responseHoras.data[0]
                             set({
                                 status: 'authorized',
                                 token: loginResponse.token,
-                                user: {...loginResponse.user, ["idEmpresa"]:dataCompany.id}
+                                user: {...loginResponse.user, ["idEmpresa"]:dataCompany.id, ["horaInicio"]:dataHoras.horaInicio, ["horaFin"]:dataHoras.horaFin,}
                             });
                         }else{
                             set({

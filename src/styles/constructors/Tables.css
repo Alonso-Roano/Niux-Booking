@@ -262,6 +262,31 @@
     background: #7B6FCC;
     animation: l2 1s infinite;
 }
+.buttonContainer{
+    margin-top: 20px;
+}
+
+.viewCard{
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #0005;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 4px;
+}
+.viewCard h5{
+    border-radius: 5px 5px 0 0;
+    padding:0px 5px;
+    background-color: #7B6FCC;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+.viewCard p{
+    border-radius: 5px 5px 0 0;
+    padding:2px 5px;
+    color: #474747;
+    min-height: 40px;
+}
 
 @keyframes l2 {
 

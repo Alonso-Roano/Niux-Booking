@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import utils from "../functions/Utils";
 import "../styles/constructors/Inputs.css";
+import { FormControl, Select, MenuItem, FormHelperText } from "@mui/material";
 
 interface DataProps {
     data: Array<{
@@ -13,33 +14,39 @@ interface DataProps {
     editDatos?: { [key: string]: any };
 }
 
-import { FormControl, Select, MenuItem, FormHelperText } from '@mui/material';
-
 function Selects({ data, setBody, body, errors, editDatos }: DataProps) {
-    if (!data) return null;
+    if(!data)return null;
 
     useEffect(() => {
-        const updates: { [key: string]: any } = {};
+        const initializeValues = () => {
+            const initialValues: { [key: string]: any } = {};
+            console.log(editDatos)
+            data.forEach((prop) => {
+                const selectProp = utils.formatProps("select", prop.props);
+                const name = selectProp.name;
 
-        data.forEach((prop) => {
-            const selectProp = utils.formatProps("select", prop.props);
-            const name = selectProp.name;
-
-            if (name && !(body[name] || (editDatos && editDatos[name]))) {
-                const firstOption = prop.options?.[0]?.value;
-                if (firstOption !== undefined) {
-                    updates[name] = firstOption;
+                if (name) {
+                    if (editDatos && editDatos[name]) {
+                        initialValues[name] = editDatos[name];
+                    } else {
+                        const firstOption = prop.options?.[0]?.value;
+                        if (firstOption !== undefined) {
+                            initialValues[name] = firstOption;
+                        }
+                    }
                 }
-            }
-        });
+            });
 
-        if (Object.keys(updates).length > 0) {
-            setBody((prevBody: any) => ({
-                ...prevBody,
-                ...updates,
-            }));
-        }
-    }, [editDatos, data, setBody, body]);
+            if (Object.keys(initialValues).length > 0) {
+                setBody((prevBody: any) => ({
+                    ...prevBody,
+                    ...initialValues,
+                }));
+            }
+        };
+
+        initializeValues();
+    }, [data, editDatos, setBody]);
 
     return (
         <div className="inputsContainer">
@@ -61,7 +68,7 @@ function Selects({ data, setBody, body, errors, editDatos }: DataProps) {
                     >
                         <Select
                             {...selectProp}
-                            value={body[selectProp.name] || ''}
+                            value={body[selectProp.name] || ""}
                             onChange={(e) =>
                                 utils.inputBody({ e, body, setBody })
                             }

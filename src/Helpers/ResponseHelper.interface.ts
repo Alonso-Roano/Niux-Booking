@@ -18,4 +18,6 @@ export interface User {
     nombre: string;
     correo: string;
     idEmpresa?:number;
+    horaInicio?:string;
+    horaFin?:string;
 }

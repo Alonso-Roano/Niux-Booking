@@ -2,10 +2,13 @@ import { BarChart } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
 import Requests from '../functions/Requests';
 import pureData from '../json/dashboardEmpresa.json'
+import { useAuthStore } from '../stores/auth/authStore';
 
 function Grafica({ data, setOpcion }: any) {
   const [datos, setDatos] = useState<any>(false);
+  const [objeto, setObjeto] = useState<any>(false);
   const [shadow, setShadow] = useState({ x: 0, y: 0 });
+  const {user} = useAuthStore();
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -23,17 +26,30 @@ function Grafica({ data, setOpcion }: any) {
   };
 
   useEffect(() => {
-    Requests.Get(data.url, setDatos);
+    if(datos){
+      console.log(datos.data[data["tipo"]])
+      const tipo = datos.data[data["tipo"]];
+      let suma=0;
+      tipo.forEach((element:any) => {
+        suma = suma+element[data["total"]]
+      });
+      console.log(suma)
+      setObjeto(suma);
+    }
+  }, [datos]);
+
+  useEffect(() => {
+    Requests.Get(`Empresa/DatosGraficas/${user?.idEmpresa}`, setDatos);
   }, []);
 
   const processDataForChart = (carts: any[]) => {
     return {
-      xAxisData: carts.slice(-data.numeroBarras).map((cart: any) => cart.id),
-      seriesData: carts.slice(-data.numeroBarras).map((cart: any) => cart.totalProducts),
+      xAxisData: carts.slice(-data.numeroBarras).map((cart: any) => cart.fecha),
+      seriesData: carts.slice(-data.numeroBarras).map((cart: any) => cart[data["total"]]),
     };
   };
 
-  const chartData = datos ? processDataForChart(datos.carts) : { xAxisData: [], seriesData: [] };
+  const chartData = datos ? processDataForChart(datos.data[data["tipo"]]) : { xAxisData: [], seriesData: [] };
 
   const colors = ['#02b2af', '#2e96ff', '#8FBCFF', '#7B6FCC', '#b800d8'];
 
@@ -59,7 +75,7 @@ function Grafica({ data, setOpcion }: any) {
         }}
     >
       <h2>{data.name}</h2>
-      {datos && <h3>{datos.total}</h3>}
+      {datos && <h3>{objeto}</h3>}
       {datos ? (
         <BarChart
           series={[

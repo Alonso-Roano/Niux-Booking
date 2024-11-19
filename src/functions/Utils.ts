@@ -8,10 +8,8 @@ const inputBody = (params: any) => {
     const { name, value } = e.target;
     const regex = new RegExp(`[${cantWrite}]`);
 
-    // Intentamos convertir el valor a número
     const convertedValue = value !== "" && !isNaN(value) ? parseFloat(value) : value;
 
-    // Solo actualizamos el body si no coincide con el patrón de cantWrite
     if (!regex.test(value)) {
         setBody({ ...body, [name]: convertedValue });
     }
@@ -198,19 +196,27 @@ function mapJsonToHtml(json: Record<string, any>): string {
     let html = '';
 
     for (const key in json) {
-        if (key!=="id") {
+        if (key !== "id") {
             if (json.hasOwnProperty(key)) {
                 const value = json[key];
-                const traduccion = getDefinition(key)
-                
+                const traduccion = getDefinition(key);
+
                 if (typeof value === 'object' && value !== null) {
-                    html += `<p><strong>${traduccion}:</strong></p>`;
-                    html += mapJsonToHtml(value);
+                    html += `<div class="viewCard">
+                                <p><strong>${traduccion}:</strong></p>
+                                ${mapJsonToHtml(value)}
+                             </div>`;
                 } else {
                     if (typeof value === 'string' && value.startsWith('http')) {
-                        html += `<p><span>${traduccion}:</span> <img src="${value}" alt="${traduccion}" /></p>`;
+                        html += `<div class="viewCard">
+                                    <p><span>${traduccion}:</span></p>
+                                    <img src="${value}" alt="${traduccion}" />
+                                 </div>`;
                     } else {
-                        html += `<p><span>${traduccion}:</span> ${value}</p>`;
+                        html += `<div class="viewCard">
+                                    <h5>${traduccion}:</h5>
+                                    <p>${value}</p>
+                                 </div>`;
                     }
                 }
             }
@@ -219,6 +225,7 @@ function mapJsonToHtml(json: Record<string, any>): string {
 
     return html;
 }
+
 
 
 export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml };
