@@ -33,14 +33,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/negocio"
-          element={
-            /*     <ProtectedRoute allowedRoles={["Cliente"]}>
-            </ProtectedRoute> */
-            <Business />
-          }
-        />
+        <Route path="/negocio/:slugEmpresa" element={<Business />} />
         <Route
           path="/login"
           element={
@@ -74,12 +67,8 @@ function App() {
           }
         />
         <Route
-          path="/horario"
-          element={
-            /*      <ProtectedRoute allowedRoles={["Cliente", "socio"]}>
-            </ProtectedRoute> */
-            <Schedule />
-          }
+          path="/horario/:slugEmpresa/:slugServicio"
+          element={<Schedule />}
         />
         <Route
           path="/reserva/resumen"

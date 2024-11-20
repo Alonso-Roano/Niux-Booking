@@ -102,14 +102,14 @@ export default function Home() {
 
     fetchingData();
   }, []);
-  console.log("r");
+  /*   console.log("r");
   console.log(resenias);
   console.log("e");
-  console.log(empresas);
+  console.log(empresas); */
 
   return (
     <>
-      <Header />
+      {/*  <Header /> */}
       <body className="  bg-white overflow-hidden roboto-regular">
         <section className=" ml-5 lg:ml-10 roboto-regular mt-10  relative  bg-white">
           <div className=" grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0">
@@ -327,7 +327,7 @@ export default function Home() {
                 ? empresas.map((empresa) => (
                     <Link
                       key={empresa.id}
-                      to={""}
+                      to={`/negocio/${empresa.slugEmpresa}`}
                       className=" w-[320px] min-h-[300px]  shadow-lg rounded-md"
                     >
                       <div className=" w-[320px] h-[170px] overflow-hidden group">
@@ -345,12 +345,11 @@ export default function Home() {
                           <div className=" flex items-center gap-1">
                             <span>
                               {" "}
-                              {empresa?.promedioCalificacion &&
-                              empresa.promedioCalificacion % 2 !== 0 &&
-                              empresa?.promedioCalificacion &&
-                              empresa.promedioCalificacion % 2 !== 1
-                                ? empresa.promedioCalificacion
-                                : empresa?.promedioCalificacion + ".0"}
+                              {empresa?.promedioCalificacion !== undefined
+                                ? Number.isInteger(empresa.promedioCalificacion)
+                                  ? `${empresa.promedioCalificacion}.0` // Si es entero, agrega .0
+                                  : empresa.promedioCalificacion
+                                : null}
                             </span>
                             <div>
                               <Star />

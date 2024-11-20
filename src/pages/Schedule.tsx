@@ -1,11 +1,14 @@
 import Header from "../components/Header";
 import ImgBusiness from "../images/services/barbershop-4762345_1280.jpg";
 import Star from "../svgs/Star";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/components/Business.css";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { niuxApi } from "../api/niuxApi";
+import GeneralBusiness from "../images/services/general-business.jpg";
 interface IServicio {
-  nombre: string;
+  titulo: string;
   precio: number;
   slug: string;
   duracion: number;
@@ -18,19 +21,26 @@ interface horario {
   horaFin: string;
 }
 interface IEmpresa {
-  nombre: string;
-  direccion: string;
-  promedioReseñas: number;
-  TotalReseñas: number;
+  foto: string;
+  nombreEmpresa: string;
+  paisEmpresa: string;
+  ciudadEmpresa: string;
+  estadoEmpresa: string;
+  promedioCalificacion: number;
+  totalResenas: number;
   horario: horario[];
 }
 export default function Schedule() {
+  const navigate = useNavigate();
+  const { slugEmpresa, slugServicio } = useParams();
+  console.log(slugEmpresa);
+  console.log(slugServicio);
   //dia actual
   const fecha = new Date();
   const diaActual = fecha.getDate();
   const [diaSeleccionado, setDiaSeleccionado] = useState<number>(diaActual);
 
-  console.log(diaSeleccionado);
+  /*   console.log(diaSeleccionado); */
   function getDaysOfCurrentMonth() {
     // Obtenemos la fecha actual
     const currentDate = new Date();
@@ -38,11 +48,11 @@ export default function Schedule() {
     const currentMonth = currentDate.getMonth(); // 0 = enero, 1 = febrero, etc.
     const currentYear = currentDate.getFullYear();
     const currentDay = currentDate.getDate();
-    console.log(currentDay);
+    /* console.log(currentDay); */
 
     // Obtenemos el número de días en el mes actual
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    console.log(daysInMonth);
+    /*     console.log(daysInMonth); */
 
     // Generamos un array con los días del mes (del 1 al último día)
     const daysArray = Array.from(
@@ -81,56 +91,39 @@ export default function Schedule() {
   function formatPromedioReseña(reseña: number) {}
   const [servicio, setServicio] = useState<IServicio>();
   const [empresa, setEmpresa] = useState<IEmpresa>();
+  /*   console.log("s");
   console.log(servicio);
-
+  console.log("e");
+  console.log(empresa); */
   //useeffect para el servicio las citas y la empresa
   useEffect(() => {
-    setServicio({
-      nombre: "Corte Taper Fade",
-      precio: 250,
-      slug: "barber-shop-beard",
-      duracion: 80,
-      idEmpresa: 1,
-    });
-    setEmpresa({
-      nombre: "Barber Shop Beard",
-      direccion: "MX, Calle Almendro, Colonia zetina Gazca",
-      promedioReseñas: 5,
-      TotalReseñas: 100,
-      horario: [
-        {
-          dia: 1,
-          horaInicio: "",
-          horaFin: "",
-        },
-        {
-          dia: 2,
-          horaInicio: "",
-          horaFin: "",
-        },
-        {
-          dia: 3,
-          horaInicio: "",
-          horaFin: "",
-        },
-        {
-          dia: 4,
-          horaInicio: "",
-          horaFin: "",
-        },
-        {
-          dia: 5,
-          horaInicio: "",
-          horaFin: "",
-        },
-      ],
-    });
+    window.scrollTo(0, 0);
+    const fetchData = async () => {
+      try {
+        const responseEmpresa = await niuxApi.get(
+          `/Empresa/DatosEmpresaBySlug/${slugEmpresa}`
+        );
+        console.log("em");
+        console.log(responseEmpresa.data.data);
+        const responseServicio = await niuxApi.get(
+          `/Servicio/GetServicioBySlug/${slugServicio}`
+        );
+        console.log("se");
+        console.log(responseServicio.data.data);
+        setEmpresa(responseEmpresa.data.data);
+        setServicio(responseServicio.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, []);
   //useeffect para los
   useEffect(() => {}, [diaSeleccionado]);
   return (
     <>
-      <Header />
+      {/*   <Header /> */}
 
       <section className=" roboto-regular lg:ml-10 ml-5">
         <div className=" mt-5">
@@ -179,47 +172,50 @@ export default function Schedule() {
             <div className=" flex items-center gap-4">
               <div className=" h-16 w-16">
                 <img
-                  src={ImgBusiness}
+                  src={empresa && empresa.foto ? empresa.foto : GeneralBusiness}
                   className=" rounded-md object-cover h-full w-full"
                   alt=""
                 />
               </div>
               <div>
-                <span className=" font-medium">{empresa?.nombre}</span>
+                <span className=" font-medium">{empresa?.nombreEmpresa}</span>
                 <div className=" flex gap-1 items-center">
                   <span className=" font-medium">
-                    {empresa?.promedioReseñas &&
-                    empresa.promedioReseñas % 2 !== 0 &&
-                    empresa?.promedioReseñas &&
-                    empresa.promedioReseñas % 2 !== 1
-                      ? empresa.promedioReseñas
-                      : empresa?.promedioReseñas + ".0"}
+                    {empresa?.promedioCalificacion !== undefined
+                      ? Number.isInteger(empresa.promedioCalificacion)
+                        ? `${empresa.promedioCalificacion}.0`
+                        : empresa.promedioCalificacion
+                      : 0.0}
                   </span>
                   <Star />
                   <Star />
                   <Star />
                   <Star />
                   <Star />
-                  <span>({empresa?.TotalReseñas})</span>
+                  <span>
+                    ({empresa?.totalResenas ? empresa?.totalResenas : 0})
+                  </span>
                 </div>
                 <span className=" text-sm text-neutral-500">
                   {" "}
-                  {empresa?.direccion}
+                  {empresa &&
+                    empresa.paisEmpresa +
+                      ", " +
+                      empresa.estadoEmpresa +
+                      ", " +
+                      empresa.ciudadEmpresa}
                 </span>
               </div>
             </div>
             <div className=" flex justify-between mt-5 items-center">
               <div className=" flex flex-col">
-                <span className=" ">{servicio?.nombre}</span>
+                <span className=" capitalize ">{servicio?.titulo}</span>
                 <span className=" text-neutral-500 text-sm">
                   {formatDuration(servicio?.duracion)}
                 </span>
               </div>
               <div>
-                <span>
-                  ${servicio?.precio}
-                  MXN
-                </span>
+                <span>${servicio?.precio} MXN</span>
               </div>
             </div>
             <div className=" flex justify-between border-t mt-5 pt-4">
