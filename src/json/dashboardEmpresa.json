@@ -81,7 +81,7 @@
       "delete": true
     },
     "cantidad": {
-      "desde": 1,
+      "desde": 0,
       "hasta": 5
     }
   },

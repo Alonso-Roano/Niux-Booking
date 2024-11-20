@@ -6,7 +6,6 @@ import Close from "../svgs/Close";
 import ArrowNext from "../svgs/ArrowNext";
 import { useAuthStore } from "../stores/auth/authStore"; // Importamos el store de auth
 import iconUser from "../../public/images/icons/icon-user.svg";
-import iconReserva from "../../public/images/icons/icon-reserva.svg";
 import iconLogout from "../../public/images/icons/icon-logout.svg";
 import DashboardIcon from "../svgs/Dashboard";
 import Service from "../svgs/Service";
@@ -237,9 +236,10 @@ export default function Header({ setOption }: Params) {
         </div>
       </header>
 
-      <OffCanvas toggleDrawer={setEditProfileOpen} drawerOpen={editProfileOpen}>
-  <EditProfile closeOffcanvas={() => setEditProfileOpen(false)} />
-</OffCanvas>
+      {user && (<OffCanvas toggleDrawer={setEditProfileOpen} drawerOpen={editProfileOpen}>
+        <EditProfile closeOffcanvas={() => setEditProfileOpen(false)} />
+      </OffCanvas>)}
+      
 
     </>
   );

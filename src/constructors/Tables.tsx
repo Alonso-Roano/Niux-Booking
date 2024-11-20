@@ -225,65 +225,98 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                         <Button sx={{ backgroundColor: "#7B6FCC", color: "#fff", textTransform: 'none' }} onClick={()=>helper("Add")}>Agregar</Button>
                     </span>
 
-                    <TableContainer sx={{  mb: 3 }}>
-                        <Table sx={{ borderCollapse: 'separate', borderSpacing: '4px 4px' }} aria-labelledby="tableTitle" size="medium">
+                    <TableContainer sx={{ mb: 3 }}>
+                        <Table
+                            sx={{ borderCollapse: 'separate', borderSpacing: '4px 4px' }}
+                            aria-labelledby="tableTitle"
+                            size="medium"
+                        >
                             <TableHead>
-                                {visibleRows.length > 0 ? 
-                                <TableRow className='dashConstructorRowTableHeader dashConstructorRowTable'>
-                                    {leer && <TableCell sx={{width:"40px"}} className='infoIcon'><ExpandList/></TableCell>}
-                                    {columns[0] && <TableCell sx={{ border: 'none' }} style={{ textAlign: 'left', verticalAlign: 'middle' }}
-                                    sortDirection={orderBy === columns[0] ? order : false}
-                                    onClick={() => handleRequestSort(columns[0])} className=''
-                                    >
-                                        <TableSortLabel
-                                                active={orderBy === columns[0]}
-                                                direction={orderBy === columns[0] ? order : 'asc'}
+                                {visibleRows.length > 0 ? (
+                                    <TableRow className='dashConstructorRowTableHeader dashConstructorRowTable'>
+                                        {leer && <TableCell sx={{ width: "40px" }} className='infoIcon'><ExpandList /></TableCell>}
+                                        {columns[0] && (
+                                            <TableCell
+                                                sx={{ border: 'none' }}
+                                                style={{ textAlign: 'left', verticalAlign: 'middle' }}
+                                                sortDirection={orderBy === columns[0] ? order : false}
+                                                onClick={() => handleRequestSort(columns[0])}
+                                                className=''
                                             >
-                                                {Utils.getDefinition(columns[0]?.charAt(0).toUpperCase() + columns[0]?.slice(1))}
-                                                {orderBy === columns[0] ? (
-                                                    <Box component="span" sx={visuallyHidden}>
-                                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                                    </Box>
-                                                ) : null}
-                                            </TableSortLabel>
-                                        
-                                    </TableCell>}
-                                    {columns.slice(1).map((column) => (
-                                        <TableCell
-                                            sx={{ border: 'none' }}
-                                            style={{ textAlign: 'left', verticalAlign: 'middle' }}
-                                            key={column}
-                                            className="hide-on-mobile"
-                                            sortDirection={orderBy === column ? order : false}
-                                            onClick={() => handleRequestSort(column)}
-                                        >
-                                            <TableSortLabel
-                                                active={orderBy === column}
-                                                direction={orderBy === column ? order : 'asc'}
+                                                <TableSortLabel
+                                                    active={orderBy === columns[0]}
+                                                    direction={orderBy === columns[0] ? order : 'asc'}
+                                                >
+                                                    {Utils.getDefinition(columns[0]?.charAt(0).toUpperCase() + columns[0]?.slice(1))}
+                                                    {orderBy === columns[0] ? (
+                                                        <Box component="span" sx={visuallyHidden}>
+                                                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                                        </Box>
+                                                    ) : null}
+                                                </TableSortLabel>
+                                            </TableCell>
+                                        )}
+                                        {columns.slice(1).map((column) => (
+                                            <TableCell
+                                                sx={{ border: 'none' }}
+                                                style={{ textAlign: 'left', verticalAlign: 'middle' }}
+                                                key={column}
+                                                className="hide-on-mobile"
+                                                sortDirection={orderBy === column ? order : false}
+                                                onClick={() => handleRequestSort(column)}
                                             >
-                                                {Utils.getDefinition(column.charAt(0).toUpperCase() + column.slice(1))}
-                                                {orderBy === column ? (
-                                                    <Box component="span" sx={visuallyHidden}>
-                                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                                    </Box>
-                                                ) : null}
-                                            </TableSortLabel>
+                                                <TableSortLabel
+                                                    active={orderBy === column}
+                                                    direction={orderBy === column ? order : 'asc'}
+                                                >
+                                                    {Utils.getDefinition(column.charAt(0).toUpperCase() + column.slice(1))}
+                                                    {orderBy === column ? (
+                                                        <Box component="span" sx={visuallyHidden}>
+                                                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                                        </Box>
+                                                    ) : null}
+                                                </TableSortLabel>
+                                            </TableCell>
+                                        ))}
+                                        <TableCell sx={{ border: 'none' }} style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            Acciones
                                         </TableCell>
-                                    ))}
-                                    <TableCell sx={{ border: 'none' }} style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                        Acciones
-                                    </TableCell>
-                                </TableRow>: <></>}
-                                
+                                    </TableRow>
+                                ) : (
+                                    <TableRow className='dashConstructorRowTableHeader dashConstructorRowTable'>
+                                        {[...Array(5)].map((_, index) => (
+                                            <TableCell
+                                                key={index}
+                                                sx={{ border: 'none', textAlign: 'center', verticalAlign: 'middle' }}
+                                                className='animate-pulse'
+                                            >
+                                                    <div className="h-2 bg-gray-300 rounded-full  max-w-[360px] mb-2" />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                )}
                             </TableHead>
                             <TableBody>
                                 {visibleRows.length > 0 ? (
                                     visibleRows.map((row) => (
-                                        <TableRow key={row.id} className='dashConstructorRowTable' sx={{ borderCollapse: 'collapse' }}>
+                                        <TableRow
+                                            key={row.id}
+                                            className='dashConstructorRowTable'
+                                            sx={{ borderCollapse: 'collapse' }}
+                                        >
                                             {leer && <TableCell>
-                                            <button onClick={() => helper("View",row)} className='tableIcon dashList'><List /></button>
+                                                <button
+                                                    onClick={() => helper("View", row)}
+                                                    className='tableIcon dashList'
+                                                >
+                                                    <List />
+                                                </button>
                                             </TableCell>}
-                                            <TableCell sx={{ border: 'none', paddingY: 0 }} style={{ textAlign: 'left', verticalAlign: 'middle' }} className='cell-separator'>
+                                            <TableCell
+                                                sx={{ border: 'none', paddingY: 0 }}
+                                                style={{ textAlign: 'left', verticalAlign: 'middle' }}
+                                                className='cell-separator'
+                                            >
                                                 {row[columns[0]]}
                                             </TableCell>
                                             {columns.slice(1).map((column) => (
@@ -296,23 +329,37 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                                                     {row[column]}
                                                 </TableCell>
                                             ))}
-                                            <TableCell sx={{ border: 'none', paddingY: 1.5 }} style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                {pagar && <button onClick={() => helper("Pay",row)} className='tableIcon dashPay'><Pay /></button>}
-                                                {actualizar && <button onClick={() => helper("Update",row)} className='tableIcon dashUpdate'><Update /></button>}
-                                                {borrar && <button onClick={() => helper("Delete",row)} className='tableIcon dashDelete'><Delete /></button>}
+                                            <TableCell
+                                                sx={{ border: 'none', paddingY: 1.5 }}
+                                                style={{ textAlign: 'center', verticalAlign: 'middle' }}
+                                            >
+                                                {pagar && <button onClick={() => helper("Pay", row)} className='tableIcon dashPay'><Pay /></button>}
+                                                {actualizar && <button onClick={() => helper("Update", row)} className='tableIcon dashUpdate'><Update /></button>}
+                                                {borrar && <button onClick={() => helper("Delete", row)} className='tableIcon dashDelete'><Delete /></button>}
                                             </TableCell>
                                         </TableRow>
                                     ))
                                 ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={3} sx={{ textAlign: 'center', color: '#888', border:"none" }}>
-                                           <p>No se encontraron datos</p>
-                                        </TableCell>
-                                    </TableRow>
+                                    [...Array(3)].map((_, rowIndex) => (
+                                        <TableRow key={rowIndex} className='dashConstructorRowTable'>
+                                            {[...Array(5)].map((_, colIndex) => (
+                                                <TableCell
+                                                    key={colIndex}
+                                                    sx={{ border: 'none', textAlign: 'center', verticalAlign: 'middle' }}
+                                                    className='animate-pulse'
+                                                >
+                                                    <div className="h-2 bg-gray-300 rounded-full  max-w-[360px] mb-2" />
+                                                    <div className="h-2 bg-gray-300 rounded-full  max-w-[360px] mb-2" />
+                                                    <div className="h-2 bg-gray-300 rounded-full  max-w-[360px] mb-2" />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))
                                 )}
                             </TableBody>
                         </Table>
                     </TableContainer>
+
                     {visibleRows.length > 0 ? 
                         <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
