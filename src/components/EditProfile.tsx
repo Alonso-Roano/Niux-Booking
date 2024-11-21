@@ -13,8 +13,11 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
     sexo: 0,
   });
 
-  // Obtener el ID y rol del usuario autenticado desde el store
-  const { id: userId, rol } = useAuthStore((state) => state.user || { id: "", rol: "" });
+  // Obtener el ID, rol y updateUser del usuario autenticado desde el store
+  const userId = useAuthStore((state) => state.user?.id);
+  const rol = useAuthStore((state) => state.user?.rol);
+  const updateUser = useAuthStore((state) => state.updateUser);
+  
 
   // Función para obtener los datos del perfil
   const fetchProfileData = async () => {
@@ -59,26 +62,42 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
     }));
   };
 
-  // Función para manejar la actualización del perfil
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevenir recarga de la página
     if (!userId) return;
-
+  
     try {
-      const response = await niuxApi.put(`/Persona/ActualizarPerfilUsuario/${userId}`, {
+      const updateResponse = await niuxApi.put(`/Persona/ActualizarPerfilUsuario/${userId}`, {
         ...profileData,
       });
-
-      if (response.data.success) {
-        Utils.showToast({
-          icon: "success",
-          title: "Perfil actualizado con éxito.",
-        });
-        closeOffcanvas(); // Cerrar el offcanvas
+  
+      if (updateResponse.data.success) {
+        // Realiza un fetch para obtener los datos completos del usuario
+        const fetchResponse = await niuxApi.get(`/Persona/ObtenerDatosPerfil/${userId}`);
+        if (fetchResponse.data.success) {
+          const updatedUser = fetchResponse.data.data;
+  
+          // Actualiza el estado global con los datos completos
+          updateUser({
+            nombre: `${updatedUser.nombres} ${updatedUser.apellido1} ${updatedUser.apellido2}`.trim(),
+           
+          });
+  
+          Utils.showToast({
+            icon: "success",
+            title: "Perfil actualizado con éxito.",
+          });
+          closeOffcanvas(); // Cerrar el offcanvas
+        } else {
+          Utils.showToast({
+            icon: "error",
+            title: fetchResponse.data.message || "Error al obtener los datos actualizados.",
+          });
+        }
       } else {
         Utils.showToast({
           icon: "error",
-          title: response.data.message || "Error al actualizar el perfil.",
+          title: updateResponse.data.message || "Error al actualizar el perfil.",
         });
       }
     } catch (error) {
@@ -89,6 +108,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
       });
     }
   };
+  
 
   // Render del formulario con valores prellenados
   return (
@@ -119,6 +139,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             id="nombres"
             value={profileData.nombres}
             onChange={handleInputChange}
+            placeholder="Nombre(s)"
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
@@ -133,6 +154,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             id="apellido1"
             value={profileData.apellido1}
             onChange={handleInputChange}
+            placeholder="Apellido Paterno"
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
@@ -147,6 +169,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             id="apellido2"
             value={profileData.apellido2}
             onChange={handleInputChange}
+            placeholder="Apellido Materno"
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
@@ -161,6 +184,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             id="edad"
             value={profileData.edad}
             onChange={handleInputChange}
+            placeholder="Edad (Ej. 18)"
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
@@ -168,7 +192,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
         {/* Campo de Sexo */}
         <div>
           <label htmlFor="sexo" className="block text-sm font-medium text-gray-700">
-            Sexo
+            Genero
           </label>
           <select
             id="sexo"

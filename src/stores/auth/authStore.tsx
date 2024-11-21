@@ -12,6 +12,7 @@ interface AuthState {
     user?: User;
     loginUser: (email: string, password: string) => Promise<void>;
     logoutUser: () => void;
+    updateUser: (updatedUser: Partial<User>) => void;
     registerClient: (
         email: string,
         nombres: string,
@@ -34,7 +35,7 @@ interface AuthState {
 // Store con persistencia y devtools
 export const useAuthStore = create(
     persist(
-        devtools<AuthState>((set) => ({
+        devtools<AuthState>((set, get) => ({
             status: 'unauthorized',
             token: undefined,
             user: undefined,
@@ -45,26 +46,31 @@ export const useAuthStore = create(
                 try {
                     const loginResponse = await AuthService.login(email, password);
 
+                    
+
                     // Solo cambia a "authorized" si la respuesta es exitosa y contiene token y usuario
                     if (loginResponse.token && loginResponse.user) {
+                        let avatarURL = loginResponse.user.avatarURL;
+                    if (!avatarURL || avatarURL.includes('null')) {
+                        avatarURL = '/images/Avatar.webp';
+                    } else {
+                        avatarURL = `${import.meta.env.VITE_BACKEND_API}${avatarURL}`;
+
+                    }
                         if(loginResponse.user.rol=="Socio"){
                             const apiUrl = `Empresa/Usuario/${loginResponse.user.id}`;
                             const responseCompany = await niuxApi.get(apiUrl);
                             const dataCompany = responseCompany.data[0]
-                            const apiUrlHoras = `Horario/Empresa/${dataCompany.id}`;
-                            const responseHoras = await niuxApi.get(apiUrlHoras);
-                            const dataHoras = responseHoras.data[0]
-                            loginResponse.user.avatarURL=import.meta.env.VITE_BACKEND_API+loginResponse.user.avatarURL;
                             set({
                                 status: 'authorized',
                                 token: loginResponse.token,
-                                user: {...loginResponse.user, ["idEmpresa"]:dataCompany.id, ["horaInicio"]:dataHoras.horaInicio, ["horaFin"]:dataHoras.horaFin,}
+                                user: {...loginResponse.user, avatarURL, ["idEmpresa"]:dataCompany.id,}
                             });
                         }else{
                             set({
                                 status: 'authorized',
                                 token: loginResponse.token,
-                                user: loginResponse.user
+                                user: {...loginResponse.user, avatarURL}
                             });
                         }
                     } else {
@@ -88,6 +94,17 @@ export const useAuthStore = create(
             logoutUser: () => {
                 set({ status: 'unauthorized', token: undefined, user: undefined });
             },
+
+            updateUser: (updatedUser: Partial<User>) => {
+                const currentState = get();
+                if (currentState.user) {
+                  const updatedState = { ...currentState.user, ...updatedUser };
+                  set({
+                    user: updatedState,
+                  });
+                }
+              },
+
 
             // Método para registrar un cliente
             registerClient: async (

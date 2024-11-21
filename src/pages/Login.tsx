@@ -53,12 +53,17 @@ export default function Login() {
         {/* Formulario de inicio de sesión */}
         <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
           {/* Logo y título */}
-          <div className="flex gap-2 justify-center items-center">
-            <Logoniux10 />
-            <span className="font-medium text-2xl text-[#484748]">
-              NIUXBOOKING
-            </span>
-          </div>
+          <Link
+            to="/"
+
+          >
+            <div className="flex gap-2 justify-center items-center">
+              <Logoniux10 />
+              <span className="font-medium text-2xl text-[#484748]">
+                NIUXBOOKING
+              </span>
+            </div>
+          </Link>
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-[#7B6FCC] mt-4">
               Iniciar Sesión

@@ -68,10 +68,16 @@ export default function Header({ setOption }: Params) {
       <header className="h-[70px] shadow-md sticky top-0 bg-white roboto-regular z-20">
         <div className="flex justify-between px-9 w-full border relative h-full">
           {/* Logo y Nombre */}
+          <Link
+          className="p-2"
+            to="/"
+
+          >
           <div className="flex gap-2 items-center">
             <Logo />
             <span className="font-medium text-[#484748]">NIUXBOOKING</span>
           </div>
+          </Link>
 
           {/* Botones de Registro e Inicio de Sesión (solo si no está autenticado) */}
           {status !== "authorized" && (
@@ -93,14 +99,20 @@ export default function Header({ setOption }: Params) {
 
           {/* Menú hamburguesa (para dispositivos móviles) */}
           {open ? (
-          <button onClick={() => changeOption()} className="flex items-center h-fit my-auto sm:hidden">
-            <Close />
-          </button>
-        ) : (
-          <button onClick={() => changeOption()} className="flex items-center h-fit my-auto sm:hidden">
-            <MenuHamburger />
-          </button>
-        )}
+            <button
+              onClick={() => changeOption()}
+              className="flex items-center h-fit my-auto sm:hidden"
+            >
+              <Close />
+            </button>
+          ) : (
+            <button
+              onClick={() => changeOption()}
+              className="flex items-center h-fit my-auto sm:hidden"
+            >
+              <MenuHamburger />
+            </button>
+          )}
 
           {/* Opciones del usuario autenticado */}
           {status === "authorized" && (
@@ -112,30 +124,33 @@ export default function Header({ setOption }: Params) {
                 onClick={toggleProfileMenu}
               />
               {profileOpen && (
-  <div
-    ref={profileMenuRef}
-    className="absolute right-0 top-12 border border-gray-300 bg-white shadow-md rounded-lg w-48 p-4 z-30"
-  >
-    <p className="font-medium text-center text-gray-800 mb-4">
-      {user?.nombre}
-    </p>
-    <button
-      onClick={openEditProfile}
-      className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
-    >
-      <img src={iconUser} alt="Perfil" className="w-5 h-5" />
-      <span>Perfil</span>
-    </button>
-    <button
-      onClick={logoutUser}
-      className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
-    >
-      <img src={iconLogout} alt="Cerrar sesión" className="w-5 h-5" />
-      <span>Cerrar Sesión</span>
-    </button>
-  </div>
-)}
-
+                <div
+                  ref={profileMenuRef}
+                  className="absolute right-0 top-12 border border-gray-300 bg-white shadow-md rounded-lg w-48 p-4 z-30"
+                >
+                  <p className="font-medium text-center text-gray-800 mb-4">
+                    {user?.nombre}
+                  </p>
+                  <button
+                    onClick={openEditProfile}
+                    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
+                  >
+                    <img src={iconUser} alt="Perfil" className="w-5 h-5" />
+                    <span>Perfil</span>
+                  </button>
+                  <button
+                    onClick={logoutUser}
+                    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
+                  >
+                    <img
+                      src={iconLogout}
+                      alt="Cerrar sesión"
+                      className="w-5 h-5"
+                    />
+                    <span>Cerrar Sesión</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -180,45 +195,89 @@ export default function Header({ setOption }: Params) {
                   )}
                   {user?.rol === "Socio" && (
                     <div className="dashSelection">
-                    <button onClick={() => changeOption(dataEmpresa.dashboard)}>
-                      <span><DashboardIcon /> Dashboard</span> <ArrowNext />
-                    </button>
-                    <button onClick={() => changeOption(dataEmpresa.service)}>
-                      <span><Service /> Servicios</span> <ArrowNext />
-                    </button>
-                    <button onClick={() => changeOption(dataEmpresa.clients)}>
-                      <span><Client /> Clientes</span> <ArrowNext />
-                    </button>
-                    <button onClick={() => changeOption(dataEmpresa.sales)}>
-                      <span><Sale /> Ventas</span> <ArrowNext />
-                    </button>
-                    <button onClick={() => changeOption(dataEmpresa.reservation)}>
-                      <span><Reservation /> Empresas</span> <ArrowNext />
-                    </button>
-                  </div>
+                      <button
+                        onClick={() => changeOption(dataEmpresa.dashboard)}
+                      >
+                        <span>
+                          <DashboardIcon /> Dashboard
+                        </span>{" "}
+                        <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataEmpresa.service)}>
+                        <span>
+                          <Service /> Servicios
+                        </span>{" "}
+                        <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataEmpresa.clients)}>
+                        <span>
+                          <Client /> Clientes
+                        </span>{" "}
+                        <ArrowNext />
+                      </button>
+                      <button onClick={() => changeOption(dataEmpresa.sales)}>
+                        <span>
+                          <Sale /> Ventas
+                        </span>{" "}
+                        <ArrowNext />
+                      </button>
+                      <button
+                        onClick={() => changeOption(dataEmpresa.reservation)}
+                      >
+                        <span>
+                          <Reservation /> Empresas
+                        </span>{" "}
+                        <ArrowNext />
+                      </button>
+                    </div>
                   )}
                   {user?.rol === "Admin" && (
                     <div className="dashSelection">
                       <button onClick={() => changeOption(dataAdmin.dashboard)}>
-                      <span> <DashboardIcon /> Dashboard</span> <ArrowNext />
+                        <span>
+                          {" "}
+                          <DashboardIcon /> Dashboard
+                        </span>{" "}
+                        <ArrowNext />
                       </button>
                       <button onClick={() => changeOption(dataAdmin.service)}>
-                        <span> <Service /> Servicios</span> <ArrowNext />
+                        <span>
+                          {" "}
+                          <Service /> Servicios
+                        </span>{" "}
+                        <ArrowNext />
                       </button>
                       <button onClick={() => changeOption(dataAdmin.clients)}>
-                      <span><Client /> Clientes</span> <ArrowNext />
+                        <span>
+                          <Client /> Clientes
+                        </span>{" "}
+                        <ArrowNext />
                       </button>
                       <button onClick={() => changeOption(dataAdmin.sales)}>
-                        <span><Sale /> Ventas</span> <ArrowNext />
+                        <span>
+                          <Sale /> Ventas
+                        </span>{" "}
+                        <ArrowNext />
                       </button>
-                      <button onClick={() => changeOption(dataAdmin.reservation)}>
-                      <span><Reservation /> Reservaciones</span> <ArrowNext />
+                      <button
+                        onClick={() => changeOption(dataAdmin.reservation)}
+                      >
+                        <span>
+                          <Reservation /> Reservaciones
+                        </span>{" "}
+                        <ArrowNext />
                       </button>
                       <button onClick={() => changeOption(dataAdmin.company)}>
-                      <span><Company /> Empresas</span> <ArrowNext />
+                        <span>
+                          <Company /> Empresas
+                        </span>{" "}
+                        <ArrowNext />
                       </button>
                       <button onClick={() => changeOption(dataAdmin.tag)}>
-                        <span><Tag /> Etiquetas</span> <ArrowNext />
+                        <span>
+                          <Tag /> Etiquetas
+                        </span>{" "}
+                        <ArrowNext />
                       </button>
                     </div>
                   )}
@@ -236,11 +295,14 @@ export default function Header({ setOption }: Params) {
         </div>
       </header>
 
-      {user && (<OffCanvas toggleDrawer={setEditProfileOpen} drawerOpen={editProfileOpen}>
-        <EditProfile closeOffcanvas={() => setEditProfileOpen(false)} />
-      </OffCanvas>)}
-      
-
+      {user && (
+        <OffCanvas
+          toggleDrawer={setEditProfileOpen}
+          drawerOpen={editProfileOpen}
+        >
+          <EditProfile closeOffcanvas={() => setEditProfileOpen(false)} />
+        </OffCanvas>
+      )}
     </>
   );
 }
