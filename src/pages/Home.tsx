@@ -102,10 +102,10 @@ export default function Home() {
 
     fetchingData();
   }, []);
-  console.log("r");
+  /*   console.log("r");
   console.log(resenias);
   console.log("e");
-  console.log(empresas);
+  console.log(empresas); */
 
   return (
     <>
@@ -327,7 +327,7 @@ export default function Home() {
                 ? empresas.map((empresa) => (
                     <Link
                       key={empresa.id}
-                      to={""}
+                      to={`/negocio/${empresa.slugEmpresa}`}
                       className=" w-[320px] min-h-[300px]  shadow-lg rounded-md"
                     >
                       <div className=" w-[320px] h-[170px] overflow-hidden group">
@@ -345,12 +345,11 @@ export default function Home() {
                           <div className=" flex items-center gap-1">
                             <span>
                               {" "}
-                              {empresa?.promedioCalificacion &&
-                              empresa.promedioCalificacion % 2 !== 0 &&
-                              empresa?.promedioCalificacion &&
-                              empresa.promedioCalificacion % 2 !== 1
-                                ? empresa.promedioCalificacion
-                                : empresa?.promedioCalificacion + ".0"}
+                              {empresa?.promedioCalificacion !== undefined
+                                ? Number.isInteger(empresa.promedioCalificacion)
+                                  ? `${empresa.promedioCalificacion}.0` // Si es entero, agrega .0
+                                  : empresa.promedioCalificacion
+                                : null}
                             </span>
                             <div>
                               <Star />
