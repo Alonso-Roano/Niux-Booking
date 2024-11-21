@@ -109,7 +109,7 @@ export default function Home() {
 
   return (
     <>
-      {/*  <Header /> */}
+      <Header />
       <body className="  bg-white overflow-hidden roboto-regular">
         <section className=" ml-5 lg:ml-10 roboto-regular mt-10  relative  bg-white">
           <div className=" grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0">
