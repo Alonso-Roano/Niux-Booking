@@ -68,10 +68,16 @@ export default function Header({ setOption }: Params) {
       <header className="h-[70px] shadow-md sticky top-0 bg-white roboto-regular z-20">
         <div className="flex justify-between px-9 w-full border relative h-full">
           {/* Logo y Nombre */}
+          <Link
+          className="p-2"
+            to="/"
+
+          >
           <div className="flex gap-2 items-center">
             <Logo />
             <span className="font-medium text-[#484748]">NIUXBOOKING</span>
           </div>
+          </Link>
 
           {/* Botones de Registro e Inicio de Sesión (solo si no está autenticado) */}
           {status !== "authorized" && (

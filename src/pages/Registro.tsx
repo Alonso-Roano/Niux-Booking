@@ -42,7 +42,7 @@ export default function Registro() {
         // Llama al método de registro para clientes
         await registerClient(email, nombres, apellido1, apellido2, password, confirmPassword);
       }
-      
+
       // Si el registro fue exitoso, iniciar sesión automáticamente
       await loginUser(email, password);
       setError(null);
@@ -67,10 +67,15 @@ export default function Registro() {
         <div className="w-full lg:w-1/2 p-8 lg:pt-5 flex flex-col justify-center">
 
           {/* Logo y título */}
-          <div className="flex gap-2 justify-center items-center">
-            <Logoniux10 />
-            <span className="font-medium text-xl text-[#484748]">NIUXBOOKING</span>
-          </div>
+          <Link
+            to="/"
+
+          >
+            <div className="flex gap-2 justify-center items-center">
+              <Logoniux10 />
+              <span className="font-medium text-xl text-[#484748]">NIUXBOOKING</span>
+            </div>
+          </Link>
           <div className="text-center mb-2">
             <h2 className="text-2xl font-bold text-[#7B6FCC] mt-4">
               Registro {isSocio ? 'socio' : 'cliente'}
