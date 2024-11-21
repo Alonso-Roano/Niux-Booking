@@ -7,28 +7,36 @@
         "url": "https://dummyjson.com/carts",
         "opcion": "sales",
         "numeroBarras":30,
-        "type":"bar"
+        "type":"bar",
+        "tipo":"pagos",
+        "total":"totalPagos"
       },
       {
         "name": "Servicios",
         "url": "https://dummyjson.com/carts",
         "opcion": "service",
         "numeroBarras":10,
-        "type":"line"
+        "type":"line",
+        "tipo":"servicios",
+        "total":"totalServicios"
       },
       {
         "name": "Clientes",
         "url": "https://dummyjson.com/carts",
         "opcion": "clients",
         "numeroBarras":10,
-        "type":"spark"
+        "type":"spark",
+        "tipo":"clientes",
+        "total":"totalClientesEmpresa"
       },
       {
         "name": "Reservas",
         "url": "https://dummyjson.com/carts",
         "opcion": "reservation",
         "numeroBarras":10,
-        "type":"line"
+        "type":"line",
+        "tipo":"reservas",
+        "total":"totalReservas"
       }
     ]
   },
@@ -37,7 +45,7 @@
     "add": "addService.json",
     "edit": "editService.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "https://localhost:7044/api/Servicio",
+    "getURL": "Servicio/Empresa/{}",
     "response": "products",
     "delete": {
       "deleteURL": "Servicio/",
@@ -59,10 +67,10 @@
     "name": "Clientes",
     "add": "addClient.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "https://dummyjson.com/product",
+    "getURL": "ClienteEmpresa/ListaDeClientesPorEmpresa/{}",
     "response": "products",
     "delete": {
-      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
+      "deleteURL": "ClienteEmpresa/",
       "mensaje": "¡Servicio borrado con exito!",
       "mensajeConfirm": "¿Desea eliminar el servicio?"
     },
@@ -73,19 +81,19 @@
       "delete": true
     },
     "cantidad": {
-      "desde": 1,
-      "hasta": 6
+      "desde": 0,
+      "hasta": 5
     }
   },
   "sales": {
-    "name": "Servicios",
-    "add": "addService.json",
-    "edit": "editService.json",
+    "name": "Ventas",
+    "add": "addSale.json",
+    "edit": "editSale.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "https://dummyjson.com/product",
+    "getURL": "Pago/ListaPagos/{}",
     "response": "products",
     "delete": {
-      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
+      "deleteURL": "Pago/",
       "mensaje": "¡Servicio borrado con exito!",
       "mensajeConfirm": "¿Desea eliminar el servicio?"
     },
@@ -101,14 +109,14 @@
     }
   },
   "reservation": {
-    "name": "Servicios",
-    "add": "addService.json",
-    "edit": "editService.json",
+    "name": "Reservas",
+    "add": "addReservation.json",
+    "edit": "editReservation.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "https://dummyjson.com/product",
+    "getURL": "Reserva/Empresa/{}",
     "response": "products",
     "delete": {
-      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
+      "deleteURL": "Reserva/",
       "mensaje": "¡Servicio borrado con exito!",
       "mensajeConfirm": "¿Desea eliminar el servicio?"
     },
@@ -119,54 +127,10 @@
       "delete": true
     },
     "cantidad": {
-      "desde": 1,
+      "desde": 0,
       "hasta": 6
     }
   },
-  "company": {
-    "name": "Servicios",
-    "add": "addService.json",
-    "edit": "editService.json",
-    "viewTitle": "Detalle del servicio",
-    "getURL": "https://dummyjson.com/product",
-    "response": "products",
-    "delete": {
-      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
-      "mensaje": "¡Servicio borrado con exito!",
-      "mensajeConfirm": "¿Desea eliminar el servicio?"
-    },
-    "puede": {
-      "leer": true,
-      "pay": false,
-      "update": true,
-      "delete": true
-    },
-    "cantidad": {
-      "desde": 1,
-      "hasta": 6
-    }
-  },
-  "tag": {
-    "name": "Servicios",
-    "add": "addService.json",
-    "edit": "editService.json",
-    "viewTitle": "Detalle del servicio",
-    "getURL": "https://dummyjson.com/product",
-    "response": "products",
-    "delete": {
-      "deleteURL": "https://jsonplaceholder.typicode.com/posts/",
-      "mensaje": "¡Servicio borrado con exito!",
-      "mensajeConfirm": "¿Desea eliminar el servicio?"
-    },
-    "puede": {
-      "leer": true,
-      "pay": false,
-      "update": true,
-      "delete": true
-    },
-    "cantidad": {
-      "desde": 1,
-      "hasta": 6
-    }
-  }
+  "company":{},
+  "tag":{}
 }
