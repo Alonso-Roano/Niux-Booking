@@ -73,7 +73,6 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                 }
                 const response = await niuxApi.get(url);
                 let data = response.data;
-                console.log(data);
         
                 if (data.data == null) data = { data: data };
                 setColumns([]);

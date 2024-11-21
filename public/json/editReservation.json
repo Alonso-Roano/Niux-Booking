@@ -38,6 +38,7 @@
             },
             "className": "css",
             "cantWrite": "",
+            "errorContent":"Esta no es una fecha laboral",
             "labelContent": "Fecha",
             "labelCss": "css"
         }

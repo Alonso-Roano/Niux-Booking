@@ -15,6 +15,11 @@ const inputBody = (params: any) => {
     }
 };
 
+const convertToMinutes = (time:any) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+};
+
 const formatProps = (type: string, { identifier, ...rest }: any) => {
     switch (type) {
         case 'input':
@@ -158,9 +163,18 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
     setErrors((prevState: any) => Object.fromEntries(Object.keys(prevState).map(key => [key, false])));
 
     const names = getInputs(data);
-    const emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == -1);
+
+    let emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == -1 );
+
+    if(body["horaInicio"] == "Selecciona una fecha") emptyFields.push("fechaReserva");
+
+    if (convertToMinutes(body["horaInicio"]) >= convertToMinutes(body["horaFin"])) {
+        emptyFields.push("horaInicio");
+        emptyFields.push("horaFin");
+    }
 
     if (emptyFields.length === 0) return true;
+
     emptyFields.forEach(field => setErrors((prevErrors: any) => ({ ...prevErrors, [field]: true })));
 
     return false;
@@ -227,5 +241,34 @@ function mapJsonToHtml(json: Record<string, any>): string {
 }
 
 
+  
+function transformData(body:any) {
+    if (body.sexo) {
+      body.sexo = Number(body.sexo);
+    }
+    if (body.duracion) {
+      const [horas, minutos] = body.duracion.split(':').map(Number);
+      const duracionEnMinutos = (horas * 60) + minutos;
+      body.duracion = duracionEnMinutos;
+    }
+    if (body.horaInicio) body.horaInicio += ":00";
+    if (body.horaFin) body.horaFin += ":00";
+    if (body.fechaReserva) {
+      const currentTime = new Date();
+      const [year, month, day] = body.fechaReserva.split("-");
+      const isoDate = new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        currentTime.getHours(),
+        currentTime.getMinutes(),
+        currentTime.getSeconds(),
+        currentTime.getMilliseconds()
+      );
+      body.fechaReserva = isoDate.toISOString();
+    }
+    if (body.estatus) body.estatus = Number(body.estatus);
+  } 
 
-export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml };
+
+export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml, transformData };

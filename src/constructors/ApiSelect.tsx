@@ -33,11 +33,9 @@ function APISelect({
                     url = url.replace(/\/\{\}$/, "");
                     url = `${url}/${user?.idEmpresa}`;
                 }
-                console.log(url);
                 const response = await niuxApi.get(url);
                 let datos = response.data;
                 if (datos.data == null) datos = { data: datos };
-                console.log(datos);
                 setOptions(datos.data || []);
                 setLoading(false);
             } catch (error) {

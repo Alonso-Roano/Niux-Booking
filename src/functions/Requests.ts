@@ -126,31 +126,9 @@ class Post {
 
   async send() {
     const { body } = this.body instanceof FormData ? { body: this.body } : this.parseBodyWithFile();
-    if (body.sexo) {
-      body.sexo = Number(body.sexo);
-    }
-    if (body.duracion) {
-      const [horas, minutos] = body.duracion.split(':').map(Number);
-      const duracionEnMinutos = (horas * 60) + minutos;
-      body.duracion = duracionEnMinutos;
-    }
-    if (body.horaInicio) body.horaInicio += ":00";
-    if (body.horaFin) body.horaFin += ":00";
-    if (body.fechaReserva) {
-      const currentTime = new Date();
-      const [year, month, day] = body.fechaReserva.split("-");
-      const isoDate = new Date(
-        Number(year),
-        Number(month) - 1,
-        Number(day),
-        currentTime.getHours(),
-        currentTime.getMinutes(),
-        currentTime.getSeconds(),
-        currentTime.getMilliseconds()
-      );
-      body.fechaReserva = isoDate.toISOString();
-    }
-
+  
+    Utils.transformData(body);
+  
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
         const response = await niuxApi.post(this.url, body);
@@ -167,7 +145,7 @@ class Post {
         Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
       }
     }
-  }
+  } 
 }
 
 class Put {
@@ -216,31 +194,7 @@ class Put {
   }
 
   async send() {
-    console.log(this.body);
-    if (this.body.sexo) {
-      this.body.sexo = Number(this.body.sexo);
-    }
-    if (this.body.duracion) {
-      const [horas, minutos] = this.body.duracion.split(':').map(Number);
-      const duracionEnMinutos = (horas * 60) + minutos;
-      this.body.duracion = duracionEnMinutos;
-    }
-    if (this.body.horaInicio) this.body.horaInicio += ":00";
-    if (this.body.horaFin) this.body.horaFin += ":00";
-    if (this.body.fechaReserva) {
-      const currentTime = new Date();
-      const [year, month, day] = this.body.fechaReserva.split("-");
-      const isoDate = new Date(
-        Number(year),
-        Number(month) - 1,
-        Number(day),
-        currentTime.getHours(),
-        currentTime.getMinutes(),
-        currentTime.getSeconds(),
-        currentTime.getMilliseconds()
-      );
-      this.body.fechaReserva = isoDate.toISOString();
-    }
+    Utils.transformData(this.body)
 
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {

@@ -28,7 +28,6 @@ function Edit({ data, bodyDatos, setClose }: any) {
 
     const enviar = () => {
         const url=datos.url+"/"+bodyDatos.id;
-        console.log(body)
         const bodySend = {
             ...body,
             ...(user?.rol === "Socio" ? { idEmpresa: user?.idEmpresa } : {}),
