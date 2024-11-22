@@ -13,6 +13,8 @@ interface AuthState {
     loginUser: (email: string, password: string) => Promise<void>;
     logoutUser: () => void;
     updateUser: (updatedUser: Partial<User>) => void;
+    updateProfilePhoto: (file: File) => Promise<void>;
+    refreshUserData: () => Promise<void>;
     registerClient: (
         email: string,
         nombres: string,
@@ -40,49 +42,44 @@ export const useAuthStore = create(
             token: undefined,
             user: undefined,
 
-             // Método para iniciar sesión
-             loginUser: async (email: string, password: string) => {
+            // Método para iniciar sesión
+            loginUser: async (email: string, password: string) => {
                 set({ status: 'pending' });
                 try {
                     const loginResponse = await AuthService.login(email, password);
 
-                    
-
-                    // Solo cambia a "authorized" si la respuesta es exitosa y contiene token y usuario
                     if (loginResponse.token && loginResponse.user) {
                         let avatarURL = loginResponse.user.avatarURL;
-                    if (!avatarURL || avatarURL.includes('null')) {
-                        avatarURL = '/images/Avatar.webp';
-                    } else {
-                        avatarURL = `${import.meta.env.VITE_BACKEND_API}${avatarURL}`;
+                        if (!avatarURL || avatarURL.includes('null')) {
+                            avatarURL = '/images/Avatar.webp';
+                        } else {
+                            avatarURL = `${import.meta.env.VITE_BACKEND_API}${avatarURL}`;
+                        }
 
-                    }
-                        if(loginResponse.user.rol=="Socio"){
+                        if (loginResponse.user.rol === "Socio") {
                             const apiUrl = `Empresa/Usuario/${loginResponse.user.id}`;
                             const responseCompany = await niuxApi.get(apiUrl);
-                            const dataCompany = responseCompany.data[0]
+                            const dataCompany = responseCompany.data[0];
                             set({
                                 status: 'authorized',
                                 token: loginResponse.token,
-                                user: {...loginResponse.user, avatarURL, ["idEmpresa"]:dataCompany.id,}
+                                user: { ...loginResponse.user, avatarURL, ["idEmpresa"]: dataCompany.id },
                             });
-                        }else{
+                        } else {
                             set({
                                 status: 'authorized',
                                 token: loginResponse.token,
-                                user: {...loginResponse.user, avatarURL}
+                                user: { ...loginResponse.user, avatarURL },
                             });
                         }
                     } else {
                         throw new Error(loginResponse.message || 'Credenciales incorrectas');
                     }
                 } catch (error) {
-                    // Vuelve a estado 'unauthorized' y muestra el mensaje de error
                     set({ status: 'unauthorized', token: undefined, user: undefined });
-
                     if (error instanceof Error) {
                         console.error(error.message || 'Hubo un error en el inicio de sesión');
-                        throw error; // Lanzamos el error para que el componente pueda capturarlo
+                        throw error;
                     } else {
                         console.error('Hubo un error desconocido en el inicio de sesión');
                         throw new Error('Hubo un error desconocido en el inicio de sesión');
@@ -95,16 +92,73 @@ export const useAuthStore = create(
                 set({ status: 'unauthorized', token: undefined, user: undefined });
             },
 
+            // Método para actualizar partes del usuario
             updateUser: (updatedUser: Partial<User>) => {
                 const currentState = get();
                 if (currentState.user) {
-                  const updatedState = { ...currentState.user, ...updatedUser };
-                  set({
-                    user: updatedState,
-                  });
+                    const updatedState = { ...currentState.user, ...updatedUser };
+                    set({
+                        user: updatedState,
+                    });
                 }
-              },
+            },
 
+            // Método para actualizar la foto de perfil
+            updateProfilePhoto: async (file: File) => {
+                const currentState = get();
+                if (!currentState.user?.id) {
+                    throw new Error("Usuario no autenticado.");
+                }
+
+                const formData = new FormData();
+                formData.append("IdApplicationUser", currentState.user.id);
+                formData.append("Archivo", file);
+
+                try {
+                    const response = await niuxApi.post("/Persona/SubirFotoPerfil", formData);
+
+                    if (response.data.success) {
+                        // Llama al método para refrescar los datos del usuario autenticado
+                        await get().refreshUserData();
+                        console.log("Foto de perfil actualizada con éxito.");
+                    } else {
+                        throw new Error(response.data.message || "Error al subir la foto de perfil.");
+                    }
+                } catch (error) {
+                    console.error("Error al subir la foto de perfil:", error);
+                    throw error;
+                }
+            },
+
+            // Método para actualizar los datos completos del usuario autenticado
+            refreshUserData: async () => {
+                const currentState = get();
+                if (!currentState.token || !currentState.user?.id) {
+                    console.error("No hay usuario autenticado o token válido.");
+                    return;
+                }
+
+                try {
+                    const response = await niuxApi.get(`/Persona/ObtenerDatosPerfil/${currentState.user.id}`);
+                    if (response.data.success) {
+                        const updatedUser = response.data.data;
+                        // Actualizar el avatarURL si es necesario
+                        const avatarURL = updatedUser.avatarURL
+                            ? `${import.meta.env.VITE_BACKEND_API}${updatedUser.avatarURL}`
+                            : '/images/Avatar.webp';
+
+                        set({
+                            user: { ...currentState.user, ...updatedUser, avatarURL },
+                        });
+
+                        console.log("Datos del usuario actualizados correctamente.");
+                    } else {
+                        console.error("Error al obtener los datos del usuario:", response.data.message);
+                    }
+                } catch (error) {
+                    console.error("Error al obtener los datos del usuario:", error);
+                }
+            },
 
             // Método para registrar un cliente
             registerClient: async (
@@ -117,11 +171,18 @@ export const useAuthStore = create(
             ) => {
                 set({ status: 'pending' });
                 try {
-                    const registerResponse = await AuthService.registerClient(email, nombres, apellido1, apellido2, password, confirmPassword);
+                    const registerResponse = await AuthService.registerClient(
+                        email,
+                        nombres,
+                        apellido1,
+                        apellido2,
+                        password,
+                        confirmPassword
+                    );
                     set({
                         status: 'authorized',
                         token: registerResponse.token,
-                        user: registerResponse.user
+                        user: registerResponse.user,
                     });
                 } catch (error) {
                     set({ status: 'unauthorized', token: undefined, user: undefined });
@@ -145,11 +206,19 @@ export const useAuthStore = create(
             ) => {
                 set({ status: 'pending' });
                 try {
-                    const registerResponse = await AuthService.registerPartner(email, nombres, apellido1, apellido2, password, confirmPassword, nombreEmpresa);
+                    const registerResponse = await AuthService.registerPartner(
+                        email,
+                        nombres,
+                        apellido1,
+                        apellido2,
+                        password,
+                        confirmPassword,
+                        nombreEmpresa
+                    );
                     set({
                         status: 'authorized',
                         token: registerResponse.token,
-                        user: registerResponse.user
+                        user: registerResponse.user,
                     });
                 } catch (error) {
                     set({ status: 'unauthorized', token: undefined, user: undefined });
@@ -159,8 +228,9 @@ export const useAuthStore = create(
                         console.error('Hubo un error desconocido en el registro del socio');
                     }
                 }
-            }
+            },
         })),
-        { name: 'auth-storage' } // Nombre de la clave en localStorage
+        { name: 'auth-storage' }
     )
 );
+
