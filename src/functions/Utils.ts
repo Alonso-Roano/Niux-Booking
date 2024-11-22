@@ -164,8 +164,6 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
 
     const names = getInputs(data);
 
-    console.log(data)
-
     let emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == -1 );
 
     if(body["horaInicio"] == "Selecciona una fecha") emptyFields.push("fechaReserva");

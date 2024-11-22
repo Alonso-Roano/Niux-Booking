@@ -110,16 +110,11 @@ class Post {
   }
 
   private async uploadFilesWithId(id: string | number) {
-    console.log(id)
-    console.log(this.body)
     const files = Object.keys(this.body)
       .map((key) => this.body[key])
       .filter((value) => value instanceof File);
-    console.log(files)
     if (!this.fileUploadUrl || files.length === 0) return;
-
     for (const file of files) {
-      console.log(id)
       await this.uploadFile(file, id);
     }
   }
