@@ -168,7 +168,7 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
 
     if(body["horaInicio"] == "Selecciona una fecha") emptyFields.push("fechaReserva");
 
-    if (convertToMinutes(body["horaInicio"]) >= convertToMinutes(body["horaFin"])) {
+    if(body["horaInicio"] && body["horaFin"]) if (convertToMinutes(body["horaInicio"]) >= convertToMinutes(body["horaFin"])) {
         emptyFields.push("horaInicio");
         emptyFields.push("horaFin");
     }

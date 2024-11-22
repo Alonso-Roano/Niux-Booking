@@ -1,5 +1,6 @@
 import { niuxApi } from "../api/niuxApi";
 import Utils from "./Utils";
+import axios from "axios";
 
 async function readJson(filePath: string) {
   try {
@@ -85,20 +86,22 @@ class Post {
     return this;
   }
 
-  private async uploadFile(file: File) {
-    console.log(file)
+  private async uploadFile(file: File, id: string | number) {
     if (!this.fileUploadUrl) {
       throw new Error("No file upload URL specified.");
     }
 
     const formData = new FormData();
-    formData.append('image', file);
-
-    console.log(formData.getAll('image'))
+    formData.append("Archivo", file);
+    formData.append("id", id.toString());
 
     try {
-      const response = await niuxApi.post(this.fileUploadUrl, formData);
-      console.log(response)
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_API + this.fileUploadUrl,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      console.log("Archivo subido correctamente:", response.data);
     } catch (error) {
       console.error("Error al subir el archivo:", error);
       Utils.showToast({ title: "Error al subir el archivo", icon: "error" });
@@ -106,46 +109,66 @@ class Post {
     }
   }
 
-  private parseBodyWithFile() {
+  private async uploadFilesWithId(id: string | number) {
+    const files = Object.keys(this.body)
+      .map((key) => this.body[key])
+      .filter((value) => value instanceof File);
+
+    if (!this.fileUploadUrl || files.length === 0) return;
+
+    for (const file of files) {
+      await this.uploadFile(file, id);
+    }
+  }
+
+  private parseBodyWithoutFiles() {
     const body: any = {};
-    const fileUploads: { [key: string]: string } = {};
 
     Object.keys(this.body).forEach((key) => {
-      let value = this.body[key];
-
-      if (value && value.name) {
-        this.uploadFile(value);
-      } else {
+      const value = this.body[key];
+      if (!(value instanceof File)) {
         body[key] = value;
       }
     });
 
-    return { body, fileUploads };
+    return body;
   }
 
-
   async send() {
-    const { body } = this.body instanceof FormData ? { body: this.body } : this.parseBodyWithFile();
-  
+    const body = this.body instanceof FormData ? this.body : this.parseBodyWithoutFiles();
+
     Utils.transformData(body);
-  
+
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
+        // Paso 1: Enviar el body
         const response = await niuxApi.post(this.url, body);
         if (!response.data) {
           Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
-          throw new Error('Error al enviar los datos');
+          throw new Error("Error al enviar los datos");
         }
+
+        // Manejar la respuesta
+        const id = response.data?.id; // Supongamos que el ID se devuelve en `response.data.id`
+        if (!id) {
+          throw new Error("No se recibió un ID en la respuesta.");
+        }
+
+        // Actualizar el estado según los callbacks configurados
         if (this.setReponse) this.setReponse(response.data);
         if (this.setBody) this.setBody({});
         if (this.setClose) this.setClose(false);
+
         Utils.showToast({ title: this.mensaje, icon: "success" });
+
+        // Paso 2: Subir los archivos
+        console.log(id)
       } catch (error) {
         console.error("Error al enviar los datos:", error);
         Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
       }
     }
-  } 
+  }
 }
 
 class Put {

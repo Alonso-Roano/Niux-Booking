@@ -68,8 +68,6 @@ function Add({ data, setClose}: any) {
         {utils.checkJson(datos) && horas ? ( 
             <>
                 <h2 className="titleDrawer">{datos.title}</h2>
-                <p>{JSON.stringify(hours)}</p>
-                <p>{JSON.stringify(horas)}</p>
                 <Inputs data={datos.input} setBody={setBody} body={body} errors={error} horas={horas}/>
                 <Selects data={datos.select} setBody={setBody} body={body} errors={error}/>
                 <Textarea data={datos.textarea} setBody={setBody} body={body} errors={error}/>

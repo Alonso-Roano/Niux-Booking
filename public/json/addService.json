@@ -1,6 +1,7 @@
 {
     "title": "Agregar Servicio",
     "url":"Servicio/CrearServicio",
+    "imageUrl":"api/ImagenServicio/SubirImagen",
     "input": [
         {
             "props": {
@@ -48,6 +49,21 @@
         "name":"duracion",
         "label":"Seleccione la duracion"
     },
+    "inputsFile": [
+        {
+            "props": {
+                "id": "image",
+                "name": "image",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "labelCss": "css"
+        }
+    ],
     "buttons": [
         {
             "props": {

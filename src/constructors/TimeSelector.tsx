@@ -64,16 +64,15 @@ function TimeSelector({
         if (generatedOptions.length > 0) {
             setBody((prevBody: any) => ({
                 ...prevBody,
-                [data.name]: generatedOptions[0], // Establece la primera opción por defecto
+                [data.name]: generatedOptions[0],
             }));
         }
 
-    }, [startHour, endHour]);
+    }, [startHour, endHour, editDatos]);
 
     useEffect(() => {
         if (editDatos) {
             const transformedData = { ...editDatos };
-
             if (editDatos.duracion) {
                 const horas = Math.floor(editDatos.duracion / 60);
                 const minutos = editDatos.duracion % 60;
@@ -85,13 +84,12 @@ function TimeSelector({
             if (editDatos.horaFin) {
                 transformedData.horaFin = convertTo24HourFormat(editDatos.horaFin);
             }
-
             setBody((prevBody: any) => ({
                 ...prevBody,
                 [data.name]: transformedData[data.name],
             }));
         }
-    }, [editDatos, data.name, setBody]);
+    }, [editDatos, data.name, setBody, startHour, endHour]);
 
     const handleChange = (event: any) => {
         const value = event.target.value as string;
