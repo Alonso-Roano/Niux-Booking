@@ -164,6 +164,8 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
 
     const names = getInputs(data);
 
+    console.log(data)
+
     let emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == -1 );
 
     if(body["horaInicio"] == "Selecciona una fecha") emptyFields.push("fechaReserva");
@@ -171,6 +173,14 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
     if(body["horaInicio"] && body["horaFin"]) if (convertToMinutes(body["horaInicio"]) >= convertToMinutes(body["horaFin"])) {
         emptyFields.push("horaInicio");
         emptyFields.push("horaFin");
+    }
+
+    if(data.imageUrl == "api/ImagenServicio/SubirImagen"){
+        if(!body["image1"] && !body["image2"] && !body["image3"]){
+            emptyFields.push("image1");
+            emptyFields.push("image2");
+            emptyFields.push("image3");
+        }
     }
 
     if (emptyFields.length === 0) return true;
@@ -207,15 +217,26 @@ function flattenObject(obj: any, prefix: string = ''): Record<string, any> {
 }
 
 function mapJsonToHtml(json: Record<string, any>): string {
+    const baseUrl = "https://localhost:7044/";
     let html = '';
+    let imageHtml = '';
 
     for (const key in json) {
-        if (key !== "id") {
+        if ((key !== "id") && (key !== "idEmpresa") && (key !== "isDeleted") && (key !== "idServicio") && (key !== "idReserva") && (key !== "idCliente")) {
             if (json.hasOwnProperty(key)) {
                 const value = json[key];
-                const traduccion = getDefinition(key);
+                const traduccion = key === 'imagenes' ? 'Imagen' : getDefinition(key);
 
-                if (typeof value === 'object' && value !== null) {
+                if (key === 'imagenes' && Array.isArray(value)) {
+                    value.forEach((imagen: { url: string }) => {
+                        if (imagen.url) {
+                            imageHtml += `<div class="viewCard">
+                                            <h5>${traduccion}:</h5>
+                                            <span><img src="${baseUrl}${imagen.url}" /></span>
+                                          </div>`;
+                        }
+                    });
+                } else if (typeof value === 'object' && value !== null) {
                     html += `<div class="viewCard">
                                 <p><strong>${traduccion}:</strong></p>
                                 ${mapJsonToHtml(value)}
@@ -237,10 +258,8 @@ function mapJsonToHtml(json: Record<string, any>): string {
         }
     }
 
-    return html;
+    return html + imageHtml;
 }
-
-
   
 function transformData(body:any) {
     if (body.sexo) {

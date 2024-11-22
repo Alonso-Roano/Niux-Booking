@@ -86,7 +86,7 @@ function APISelect({
                 error={Boolean(errors[data.name])}
                 variant="standard"
             >
-                {options.map((option, index) => (
+                {options.length > 0 && options.map((option, index) => (
                     <MenuItem key={index} value={option[data.valueField]}>
                         {option[data.labelField]}
                     </MenuItem>

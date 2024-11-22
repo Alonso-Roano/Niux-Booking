@@ -67,7 +67,7 @@
     "add": "addService.json",
     "edit": "editService.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "Servicio/Empresa/{}",
+    "getURL": "/Servicio/GetServiciosInfoByIdEmpresa/{}",
     "response": "products",
     "delete": {
       "deleteURL": "Servicio/",

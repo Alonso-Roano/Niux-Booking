@@ -45,6 +45,7 @@ function Add({ data, setClose}: any) {
             isDeleted: false
         };
         const containsFile = Object.values(bodySend).some((value:any) => value instanceof File);
+        console.log(body)
         if (containsFile) {
             new  Request.Post(datos.url, bodySend)
                         .SetErrors(setError)

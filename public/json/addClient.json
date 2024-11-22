@@ -1,7 +1,6 @@
 {
     "title": "Agregar Cliente",
     "url":"ClienteEmpresa/CrearClienteParaEmpresa",
-    "imageUrl":"https://jsonplaceholder.typicode.com/posts",
     "input": [
         {
             "props": {

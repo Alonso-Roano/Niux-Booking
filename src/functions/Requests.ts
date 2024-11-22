@@ -93,7 +93,7 @@ class Post {
 
     const formData = new FormData();
     formData.append("Archivo", file);
-    formData.append("id", id.toString());
+    formData.append("idServicio", id.toString());
 
     try {
       const response = await axios.post(
@@ -110,13 +110,16 @@ class Post {
   }
 
   private async uploadFilesWithId(id: string | number) {
+    console.log(id)
+    console.log(this.body)
     const files = Object.keys(this.body)
       .map((key) => this.body[key])
       .filter((value) => value instanceof File);
-
+    console.log(files)
     if (!this.fileUploadUrl || files.length === 0) return;
 
     for (const file of files) {
+      console.log(id)
       await this.uploadFile(file, id);
     }
   }
@@ -141,28 +144,27 @@ class Post {
 
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
-        // Paso 1: Enviar el body
         const response = await niuxApi.post(this.url, body);
         if (!response.data) {
           Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
           throw new Error("Error al enviar los datos");
         }
-
-        // Manejar la respuesta
-        const id = response.data?.id; // Supongamos que el ID se devuelve en `response.data.id`
-        if (!id) {
-          throw new Error("No se recibió un ID en la respuesta.");
-        }
-
-        // Actualizar el estado según los callbacks configurados
+        
         if (this.setReponse) this.setReponse(response.data);
         if (this.setBody) this.setBody({});
         if (this.setClose) this.setClose(false);
 
-        Utils.showToast({ title: this.mensaje, icon: "success" });
+        if(this.data?.imageUrl){
+          const id = response.data?.data?.id;
+          if (!id) {
+            throw new Error("No se recibió un ID en la respuesta.");
+          }
 
-        // Paso 2: Subir los archivos
-        console.log(id)
+          await this.uploadFilesWithId(id);
+        }
+
+
+        Utils.showToast({ title: this.mensaje, icon: "success" });
       } catch (error) {
         console.error("Error al enviar los datos:", error);
         Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });

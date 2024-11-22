@@ -53,7 +53,7 @@
         {
             "props": {
                 "id": "image",
-                "name": "image",
+                "name": "image1",
                 "placeholder": "Escribe el título del servicio",
                 "className": "input-text",
                 "type": "text"
@@ -61,6 +61,35 @@
             "className": "css",
             "cantWrite": "",
             "labelContent": "Título",
+            "errorContent":"Inserte al menos una imagen",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "image",
+                "name": "image2",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "errorContent":"Inserte al menos una imagen",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "image",
+                "name": "image3",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "errorContent":"Inserte al menos una imagen",
             "labelCss": "css"
         }
     ],
