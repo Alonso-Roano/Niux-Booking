@@ -14,11 +14,21 @@ function Edit({ data, bodyDatos, setClose }: any) {
     const [datos, setDatos] = useState<any>([]);
     const [body, setBody] = useState<{ [key: string]: any }>({});
     const [error, setError] = useState<{ [key: string]: any }>({});
+    const [horas, setHoras] =  useState<string[]>([]);
+    const [hours, setHours] = useState<{ [key: string]: any }>({});
     const {user} = useAuthStore();
 
     useEffect(() => { 
-        Request.Read(setDatos, data); setError({})
-    }, [data]);
+        Request.Read(setDatos, data); setError({});
+        Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
+    }, [data, bodyDatos]);
+
+    useEffect(() => { 
+        const fecha = new Date(body.fechaReserva); 
+        const diaDeLaSemana = fecha.getDay();
+        const horario:any = horas.find((item:any) => item.dia === diaDeLaSemana && item.activo === true);
+        setHours({...hours, ["horaInicio"]:horario?.horaInicio, ["horaFin"]:horario?.horaFin, })
+    }, [body.fechaReserva, bodyDatos]);
 
     const click = (type:string) => {
         switch (type) {
@@ -28,7 +38,6 @@ function Edit({ data, bodyDatos, setClose }: any) {
 
     const enviar = () => {
         const url=datos.url+"/"+bodyDatos.id;
-        console.log(body)
         const bodySend = {
             ...body,
             ...(user?.rol === "Socio" ? { idEmpresa: user?.idEmpresa } : {}),
@@ -42,22 +51,17 @@ function Edit({ data, bodyDatos, setClose }: any) {
             .send();
     }
 
-    const sHour = datos?.horas?.horaInicio?.inicio || user?.horaInicio || "00:00:00";
-    const eHour = datos?.horas?.horaInicio?.fin || user?.horaFin || "00:00:00";
-    const sHour2 = datos?.horas?.horaFin?.inicio || user?.horaInicio || "00:00:00";
-    const eHour2 = datos?.horas?.horaFin?.fin || user?.horaFin || "00:00:00";
-
     return (
     <>
-        {utils.checkJson(datos) ? ( 
+        {utils.checkJson(datos) && horas ? ( 
             <>
                 <h2 className="titleDrawer">{datos.title}</h2>
                 <Inputs data={datos.input} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
                 <Textarea data={datos.textarea} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
                 <Selects data={datos.select} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
                 <TimeSelector data={datos?.duracion ? datos.duracion : null} startHour={"00:15:00"} endHour={"04:00:00"} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
-                <TimeSelector data={datos?.horas?.horaInicio ? datos.horas.horaInicio : null} startHour={sHour} endHour={eHour} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
-                <TimeSelector data={datos?.horas?.horaFin ? datos.horas.horaFin : null} startHour={sHour2} endHour={eHour2} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
+                <TimeSelector data={datos?.horas?.horaInicio ? datos.horas.horaInicio : null} startHour={hours?.horaInicio} endHour={hours.horaFin} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
+                <TimeSelector data={datos?.horas?.horaFin ? datos.horas.horaFin : null} startHour={hours?.horaInicio} endHour={hours.horaFin} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
                 <APISelect data={datos.selectCliente} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}></APISelect>
                 <APISelect data={datos.selectServicio} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}></APISelect>
                 {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}

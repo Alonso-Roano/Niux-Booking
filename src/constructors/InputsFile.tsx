@@ -12,7 +12,6 @@ interface DataProps {
 }
 
 function InputsFile({ data, setBody, body, errors }: DataProps) {
-    const [fileSelected, setFileSelected] = useState<{ [key: string]: boolean }>({});
 
     if (!data) return null;
 
@@ -29,7 +28,7 @@ function InputsFile({ data, setBody, body, errors }: DataProps) {
                 return (
                     <FormControl key={index} className={className} fullWidth>
                         <label
-                            className={`SiJaja ${inputProp.className} ${fileSelected[inputProp.name] ? 'file-selected' : ''}`}
+                            className={`SiJaja ${inputProp.className} ${body[inputProp.name] ? 'file-selected' : ''}`}
                         >
                             <input
                                 {...inputProp}
@@ -38,7 +37,6 @@ function InputsFile({ data, setBody, body, errors }: DataProps) {
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
                                     setBody({ ...body, [inputProp.name]: file });
-                                    setFileSelected({ ...fileSelected, [inputProp.name]: !!file });
                                 }}
                             />
                             <Button

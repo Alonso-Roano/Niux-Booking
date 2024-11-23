@@ -3,13 +3,13 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import "../styles/constructors/Inputs.css";
 
 interface DataProps {
-    startHour: string; 
+    startHour: string;
     endHour: string;
     setBody: any;
     body: { [key: string]: any };
     data: any;
     errors: { [key: string]: boolean };
-    editDatos?: { [key: string]: any }; 
+    editDatos?: { [key: string]: any };
 }
 
 const convertTo24HourFormat = (time: string): string => {
@@ -34,8 +34,14 @@ function TimeSelector({
     const [timeOptions, setTimeOptions] = useState<string[]>([]);
 
     useEffect(() => {
-        const generateTimeOptions = (start: string, end: string): string[] => {
+        const generateTimeOptions = (start: string | undefined, end: string | undefined): string[] => {
             const options: string[] = [];
+            
+            if (!start || !end) {
+                options.push("Selecciona una fecha");
+                return options;
+            }
+
             const [startH, startM] = start.split(":").map(Number);
             const [endH, endM] = end.split(":").map(Number);
 
@@ -52,13 +58,21 @@ function TimeSelector({
             return options;
         };
 
-        setTimeOptions(generateTimeOptions(startHour, endHour));
-    }, [startHour, endHour]);
+        const generatedOptions = generateTimeOptions(startHour, endHour);
+        setTimeOptions(generatedOptions);
+
+        if (generatedOptions.length > 0) {
+            setBody((prevBody: any) => ({
+                ...prevBody,
+                [data.name]: generatedOptions[0],
+            }));
+        }
+
+    }, [startHour, endHour, editDatos]);
 
     useEffect(() => {
         if (editDatos) {
             const transformedData = { ...editDatos };
-
             if (editDatos.duracion) {
                 const horas = Math.floor(editDatos.duracion / 60);
                 const minutos = editDatos.duracion % 60;
@@ -70,13 +84,12 @@ function TimeSelector({
             if (editDatos.horaFin) {
                 transformedData.horaFin = convertTo24HourFormat(editDatos.horaFin);
             }
-
             setBody((prevBody: any) => ({
                 ...prevBody,
                 [data.name]: transformedData[data.name],
             }));
         }
-    }, [editDatos, data.name, setBody]);
+    }, [editDatos, data.name, setBody, startHour, endHour]);
 
     const handleChange = (event: any) => {
         const value = event.target.value as string;
@@ -87,15 +100,17 @@ function TimeSelector({
     };
 
     return (
-        <FormControl fullWidth>
+        <>
+        <FormControl fullWidth error={Boolean(errors[data.name])}>
+            
             <InputLabel id="time-select-label" sx={{ marginTop: 2, marginLeft: -2 }}>
-                {data.label}
+                {Boolean(errors[data.name]) ? data.errorContent : data.label}
             </InputLabel>
+            
             <Select
                 labelId="time-select-label"
                 value={body[data.name] || ""}
                 onChange={handleChange}
-                error={Boolean(errors[data.name])}
                 variant="standard"
             >
                 {timeOptions.map((time, index) => (
@@ -104,7 +119,9 @@ function TimeSelector({
                     </MenuItem>
                 ))}
             </Select>
+            
         </FormControl>
+        </>
     );
 }
 
