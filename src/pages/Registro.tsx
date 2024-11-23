@@ -46,7 +46,7 @@ export default function Registro() {
       uppercase: /[A-Z]/.test(password),
       special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
       number: /\d/.test(password),
-      match: password === confirmPassword, // Verifica si las contraseñas coinciden
+      match: password !== '' && confirmPassword !== '' && password === confirmPassword, // Verifica si las contraseñas coinciden
     });
   };
 
