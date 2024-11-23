@@ -181,7 +181,6 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
         }
     }
 
-    console.log(emptyFields)
     if (emptyFields.length === 0) return true;
 
     emptyFields.forEach(field => setErrors((prevErrors: any) => ({ ...prevErrors, [field]: true })));

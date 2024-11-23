@@ -99,7 +99,6 @@ class Post {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      console.log("Archivo subido correctamente:", response.data);
     } catch (error) {
       console.error("Error al subir el archivo:", error);
       Utils.showToast({ title: "Error al subir el archivo", icon: "error" });
@@ -255,7 +254,6 @@ class Put {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      console.log("Imagen creada correctamente:", response.data);
   
       return {
         url: response.data.url, 

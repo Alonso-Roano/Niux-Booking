@@ -38,8 +38,6 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
         }
     }, [bodyDatos, setBody]);
 
-    useEffect(() => console.log(body), [body]);
-
     const numImagenes = bodyDatos?.imagenes?.length || 0;
     const inputsFaltantes = Math.max(3 - numImagenes, 0);
 

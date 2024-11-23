@@ -22,7 +22,6 @@ function Edit({ data, bodyDatos, setClose }: any) {
     useEffect(() => { 
         Request.Read(setDatos, data); setError({});
         Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
-        console.log(bodyDatos)
     }, [data, bodyDatos]);
 
     useEffect(() => { 
