@@ -149,7 +149,6 @@ export const useAuthStore = create(
                         user: filteredUserData,
                     });
 
-                    console.log("Datos del usuario actualizados correctamente.");
                 } else {
                     console.error("Error al refrescar datos del usuario:", response.data.message);
                 }

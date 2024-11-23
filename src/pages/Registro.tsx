@@ -15,6 +15,7 @@ export default function Registro() {
   const registerClient = useAuthStore((state) => state.registerClient);
   const registerPartner = useAuthStore((state) => state.registerPartner);
   const loginUser = useAuthStore((state) => state.loginUser);
+  const user = useAuthStore((state) => state.user); // Obtener el usuario autenticado
 
   // Estados para los campos del formulario
   const [email, setEmail] = useState('');
@@ -46,7 +47,12 @@ export default function Registro() {
       // Si el registro fue exitoso, iniciar sesión automáticamente
       await loginUser(email, password);
       setError(null);
-      navigate('/'); // Redirigir al usuario a la página de inicio
+      // Redirigir basado en el rol del usuario
+      if (user?.rol === 'Socio') {
+        navigate('/Dashboard/Empresa');
+      } else if (user?.rol === 'Cliente') {
+        navigate('/');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Hubo un error en el registro');
       console.error(err);

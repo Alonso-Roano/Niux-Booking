@@ -85,7 +85,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
         if (uploadResponse.data.success) {
           Utils.showToast({
             icon: "success",
-            title: "Foto de perfil actualizada correctamente.",
+            title: "Foto de perfil actualizado con éxito.",
           });
         } else {
           throw new Error(uploadResponse.data.message || "Error al subir la foto de perfil.");
@@ -111,7 +111,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
         await refreshUserData(); // Refrescar datos para garantizar que el avatarURL y demás campos estén actualizados
         Utils.showToast({
           icon: "success",
-          title: "Perfil actualizado correctamente.",
+          title: "Perfil actualizado con éxito.",
         });
         closeOffcanvas(); // Cerrar el offcanvas
       } else {
