@@ -146,8 +146,7 @@ class Post {
         }
         
         if (this.setReponse) this.setReponse(response.data);
-        if (this.setBody) this.setBody({});
-        if (this.setClose) this.setClose(false);
+        if (this.setBody) this.setBody({});        
 
         if(this.data?.imageUrl){
           const id = response.data?.data?.id;
@@ -157,6 +156,8 @@ class Post {
 
           await this.uploadFilesWithId(id);
         }
+
+        if (this.setClose) this.setClose(false);
 
 
         Utils.showToast({ title: this.mensaje, icon: "success" });
@@ -170,6 +171,7 @@ class Post {
 
 class Put {
   private url: string;
+  private fileUploadUrl?: string;
   private body: any;
   private mensaje: string = "Datos actualizados correctamente";
   private setBody?: (body: any) => void;
@@ -177,6 +179,7 @@ class Put {
   private setErrors?: (errors: any) => void;
   private setClose?: (close: any) => void;
   private data?: any;
+  private urlCrear?: string;
 
   constructor(url: string, body: any) {
     this.url = url;
@@ -213,19 +216,147 @@ class Put {
     return this;
   }
 
+  FileUploadUrl(fileUploadUrl: string): Put {
+    this.fileUploadUrl = fileUploadUrl;
+    return this;
+  }
+
+  UrlCrear(urlCrear: string): Put {
+    this.urlCrear = urlCrear;
+    return this;
+  }
+
+  private async createNewImages() {
+    const files = Object.keys(this.body)
+        .map((key) => this.body[key])
+        .filter((value) => value instanceof File);
+
+    if (!this.body.imagenes) {
+        this.body.imagenes = [];
+    }
+
+    for (const file of files) {
+        try {
+            const newImage = await this.createImage(file, this.body.id);
+            if (newImage) {
+                this.body.imagenes.push(newImage);
+            }
+        } catch (error) {
+            console.error("Error al crear nueva imagen:", error);
+            Utils.showToast({ title: "Error al crear nueva imagen", icon: "error" });
+        }
+    }
+}
+
+  
+  private async createImage(file: File, idServicio: string | number) {
+    if (!this.urlCrear) {
+      throw new Error("No se especificó una URL para crear nuevas imágenes.");
+    }
+  
+    const formData = new FormData();
+    formData.append("Archivo", file);
+    formData.append("idServicio", idServicio.toString());
+  
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_API + this.urlCrear,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      console.log("Imagen creada correctamente:", response.data);
+  
+      return {
+        url: response.data.url, 
+        idServicio,
+        id: response.data.id,
+        isDeleted: false,
+        createdAt: new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error("Error al crear la imagen:", error);
+      throw error;
+    }
+  }
+  
+
+  private parseBodyWithoutFiles() {
+    const body: any = {};
+
+    Object.keys(this.body).forEach((key) => {
+      const value = this.body[key];
+      if (!(value instanceof File)) {
+        body[key] = value;
+      }
+    });
+
+    return body;
+  }
+
+  private async uploadFile(file: File, idImagen: string | number) {
+    if (!this.fileUploadUrl) {
+      throw new Error("No file upload URL specified.");
+    }
+
+    const formData = new FormData();
+    formData.append("Archivo", file);
+    formData.append("IdImagenServicio", idImagen.toString());
+
+    try {
+      const response = await axios.put(
+        import.meta.env.VITE_BACKEND_API + this.fileUploadUrl,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      console.log("Archivo subido correctamente:", response.data);
+    } catch (error) {
+      console.error("Error al subir el archivo:", error);
+      Utils.showToast({ title: "Error al subir el archivo", icon: "error" });
+      throw error;
+    }
+  }
+
+  private async uploadFilesWithIds() {
+    const files = Object.keys(this.body)
+      .map((key) => this.body[key])
+      .filter((value) => value instanceof File);
+
+    if (!this.fileUploadUrl || files.length === 0 || !this.body?.imagenes) return;
+
+    for (let i = 0; i < this.body.imagenes.length; i++) {
+      const idImagen = this.body.imagenes[i]?.id;
+      if (!idImagen) {
+        console.warn(`La imagen en el índice ${i} no tiene un ID válido.`);
+        continue;
+      }
+      const file = files[i];
+      if (!file) {
+        console.warn(`No se encontró un archivo correspondiente para la imagen con ID ${idImagen}.`);
+        continue;
+      }
+      await this.uploadFile(file, idImagen);
+    }
+  }
+
   async send() {
-    Utils.transformData(this.body)
+    this.createNewImages();
+
+    const body = this.body instanceof FormData ? this.body : this.parseBodyWithoutFiles();
+    Utils.transformData(body);
 
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
-        const response = await niuxApi.put(this.url, this.body);
+        const response = await niuxApi.put(this.url, body);
         if (!response.data) {
           Utils.showToast({ title: "Error al actualizar los datos:", icon: "error" });
           throw new Error("Error al actualizar los datos");
         }
+
         if (this.setReponse) this.setReponse(response.data);
         if (this.setBody) this.setBody({});
+
         if (this.setClose) this.setClose(false);
+
         Utils.showToast({ title: this.mensaje, icon: "success" });
       } catch (error) {
         console.error("Error al actualizar los datos:", error);

@@ -166,14 +166,14 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
 
     let emptyFields = names.filter(name => body[name] === undefined || body[name] === null || body[name] === '' || body["sexo"] == -1 );
 
-    if(body["horaInicio"] == "Selecciona una fecha") emptyFields.push("fechaReserva");
+    if(body["horaInicio"]) if(body["horaInicio"] == "Selecciona una fecha") emptyFields.push("fechaReserva");
 
     if(body["horaInicio"] && body["horaFin"]) if (convertToMinutes(body["horaInicio"]) >= convertToMinutes(body["horaFin"])) {
         emptyFields.push("horaInicio");
         emptyFields.push("horaFin");
     }
 
-    if(data.imageUrl == "api/ImagenServicio/SubirImagen"){
+    if(data.imageUrl) if(data.imageUrl == "api/ImagenServicio/SubirImagen"){
         if(!body["image1"] && !body["image2"] && !body["image3"]){
             emptyFields.push("image1");
             emptyFields.push("image2");
@@ -181,6 +181,7 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
         }
     }
 
+    console.log(emptyFields)
     if (emptyFields.length === 0) return true;
 
     emptyFields.forEach(field => setErrors((prevErrors: any) => ({ ...prevErrors, [field]: true })));

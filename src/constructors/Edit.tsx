@@ -8,6 +8,7 @@ import { useAuthStore } from "../stores/auth/authStore";
 import TimeSelector from "./TimeSelector";
 import APISelect from "./ApiSelect";
 import Selects from "./Selects";
+import InputsFile from "./InputsFile";
 
 function Edit({ data, bodyDatos, setClose }: any) {
 
@@ -21,6 +22,7 @@ function Edit({ data, bodyDatos, setClose }: any) {
     useEffect(() => { 
         Request.Read(setDatos, data); setError({});
         Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
+        console.log(bodyDatos)
     }, [data, bodyDatos]);
 
     useEffect(() => { 
@@ -37,19 +39,28 @@ function Edit({ data, bodyDatos, setClose }: any) {
     }
 
     const enviar = () => {
-        const url=datos.url+"/"+bodyDatos.id;
+        const url = datos.url + "/" + bodyDatos.id;
         const bodySend = {
-            ...body,
-            ...(user?.rol === "Socio" ? { idEmpresa: user?.idEmpresa } : {}),
-            isDeleted: false,
-            id:bodyDatos.id
+          ...body,
+          ...(user?.rol === "Socio" ? { idEmpresa: user?.idEmpresa } : {}),
+          isDeleted: false,
+          id: bodyDatos.id
         };
-        new Request.Put(url, bodySend)
-            .SetErrors(setError)
-            .Data(datos)
-            .SetClose(setClose)
-            .send();
-    }
+      
+        const containsFile = Object.values(bodySend).some((value: any) => value instanceof File);
+        const request = new Request.Put(url, bodySend)
+          .SetErrors(setError)
+          .Data(datos)
+          .SetClose(setClose)
+          .SetBody(setBody);
+      
+        if (containsFile) {
+          request.FileUploadUrl(datos.imageUrl);
+          request.UrlCrear(datos.urlCrear)
+        }
+      
+        request.send();
+      };
 
     return (
     <>
@@ -64,6 +75,7 @@ function Edit({ data, bodyDatos, setClose }: any) {
                 <TimeSelector data={datos?.horas?.horaFin ? datos.horas.horaFin : null} startHour={hours?.horaInicio} endHour={hours.horaFin} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
                 <APISelect data={datos.selectCliente} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}></APISelect>
                 <APISelect data={datos.selectServicio} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}></APISelect>
+                <InputsFile data={datos.inputsFile} setBody={setBody} body={body} errors={error} bodyDatos={bodyDatos}/>
                 {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}
             </>
            ) : (

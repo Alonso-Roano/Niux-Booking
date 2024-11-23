@@ -23,6 +23,7 @@ function Add({ data, setClose}: any) {
     useEffect(() => { 
         Request.Read(setDatos, data); setError({})
         Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
+        setBody({});
     }, [data]);
 
     useEffect(() => { 
