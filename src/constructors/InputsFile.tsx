@@ -45,6 +45,23 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
 
     const enviar = () =>{
         if(img.Archivo){
+            // Crear el FormData y agregar los campos necesarios
+        const formData = new FormData();
+        formData.append("Archivo", img.Archivo);
+
+        // Agregar otros campos si es necesario
+        Object.keys(img).forEach((key) => {
+            if (key !== "Archivo" && key !== "url") {
+                formData.append(key, img[key]);
+            }
+        });
+
+        // Enviar la solicitud utilizando el FormData
+        new Requests.Put("ImagenServicio/ActualizarImagenServicio", formData)
+            .SetClose(setEditImg)
+            .Mensaje("Se ha editado la imagen")
+            .SetBody(setImg)
+            .send();
         }
         setEditImg(!editImg)
     }
@@ -62,7 +79,7 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
                                     src={import.meta.env.VITE_BACKEND_API+imagen.url}
                                     alt={`Imagen ${imagen.id}`}
                                 />
-                                <span className="icon" tabIndex={1} onClick={()=>{setEditImg(!editImg); setImg({url:import.meta.env.VITE_BACKEND_API+imagen.url, id:imagen.id})}}>
+                                <span className="icon" tabIndex={1} onClick={()=>{setEditImg(!editImg); setImg({url:import.meta.env.VITE_BACKEND_API+imagen.url, IdImagenServicio:imagen.id})}}>
                                     <Update/>
                                 </span>
                             </div>

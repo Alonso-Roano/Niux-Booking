@@ -1,7 +1,7 @@
 {
     "title": "Agregar Servicio",
     "url":"Servicio/CrearServicio",
-    "imageUrl":"api/ImagenServicio/SubirImagen",
+    "imageUrl":"ImagenServicio/SubirImagen",
     "input": [
         {
             "props": {

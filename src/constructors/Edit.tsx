@@ -55,7 +55,6 @@ function Edit({ data, bodyDatos, setClose }: any) {
           .SetBody(setBody);
       
         if (containsFile) {
-          request.FileUploadUrl(datos.imageUrl);
           request.UrlCrear(datos.urlCrear)
         }
       

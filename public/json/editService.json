@@ -1,8 +1,8 @@
 {
     "title":"Editar Servicio",
     "url":"Servicio/ActualizarServicio",
-    "urlCrear":"api/ImagenServicio/SubirImagen",
-    "imageUrl":"api/ImagenServicio/ActualizarImagenServicio",
+    "urlCrear":"ImagenServicio/SubirImagen",
+    "imageUrl":"ImagenServicio/ActualizarImagenServicio",
     "input": [
         {
             "props": {

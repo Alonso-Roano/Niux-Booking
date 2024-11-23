@@ -1,6 +1,5 @@
 import { niuxApi } from "../api/niuxApi";
 import Utils from "./Utils";
-import axios from "axios";
 
 async function readJson(filePath: string) {
   try {
@@ -96,8 +95,7 @@ class Post {
     formData.append("idServicio", id.toString());
 
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_BACKEND_API + this.fileUploadUrl,
+      const response = await niuxApi.post(this.fileUploadUrl,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -171,7 +169,6 @@ class Post {
 
 class Put {
   private url: string;
-  private fileUploadUrl?: string;
   private body: any;
   private mensaje: string = "Datos actualizados correctamente";
   private setBody?: (body: any) => void;
@@ -216,11 +213,6 @@ class Put {
     return this;
   }
 
-  FileUploadUrl(fileUploadUrl: string): Put {
-    this.fileUploadUrl = fileUploadUrl;
-    return this;
-  }
-
   UrlCrear(urlCrear: string): Put {
     this.urlCrear = urlCrear;
     return this;
@@ -259,8 +251,7 @@ class Put {
     formData.append("idServicio", idServicio.toString());
   
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_BACKEND_API + this.urlCrear,
+      const response = await niuxApi.post( this.urlCrear,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -293,53 +284,10 @@ class Put {
     return body;
   }
 
-  private async uploadFile(file: File, idImagen: string | number) {
-    if (!this.fileUploadUrl) {
-      throw new Error("No file upload URL specified.");
-    }
-
-    const formData = new FormData();
-    formData.append("Archivo", file);
-    formData.append("IdImagenServicio", idImagen.toString());
-
-    try {
-      const response = await axios.put(
-        import.meta.env.VITE_BACKEND_API + this.fileUploadUrl,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      console.log("Archivo subido correctamente:", response.data);
-    } catch (error) {
-      console.error("Error al subir el archivo:", error);
-      Utils.showToast({ title: "Error al subir el archivo", icon: "error" });
-      throw error;
-    }
-  }
-
-  private async uploadFilesWithIds() {
-    const files = Object.keys(this.body)
-      .map((key) => this.body[key])
-      .filter((value) => value instanceof File);
-
-    if (!this.fileUploadUrl || files.length === 0 || !this.body?.imagenes) return;
-
-    for (let i = 0; i < this.body.imagenes.length; i++) {
-      const idImagen = this.body.imagenes[i]?.id;
-      if (!idImagen) {
-        console.warn(`La imagen en el índice ${i} no tiene un ID válido.`);
-        continue;
-      }
-      const file = files[i];
-      if (!file) {
-        console.warn(`No se encontró un archivo correspondiente para la imagen con ID ${idImagen}.`);
-        continue;
-      }
-      await this.uploadFile(file, idImagen);
-    }
-  }
-
   async send() {
-    this.createNewImages();
+    if(this.url !== "ImagenServicio/ActualizarImagenServicio"){
+      this.createNewImages();
+    }    
 
     const body = this.body instanceof FormData ? this.body : this.parseBodyWithoutFiles();
     Utils.transformData(body);
