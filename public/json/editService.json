@@ -1,6 +1,8 @@
 {
     "title":"Editar Servicio",
     "url":"Servicio/ActualizarServicio",
+    "urlCrear":"ImagenServicio/SubirImagen",
+    "imageUrl":"ImagenServicio/ActualizarImagenServicio",
     "input": [
         {
             "props": {
@@ -48,6 +50,50 @@
         "name":"duracion",
         "label":"Seleccione la duracion"
     },
+    "inputsFile": [
+        {
+            "props": {
+                "id": "image",
+                "name": "image1",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "errorContent":"Inserte al menos una imagen",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "image",
+                "name": "image2",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "errorContent":"Inserte al menos una imagen",
+            "labelCss": "css"
+        },
+        {
+            "props": {
+                "id": "image",
+                "name": "image3",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "errorContent":"Inserte al menos una imagen",
+            "labelCss": "css"
+        }
+    ],
     "buttons": [
         {
             "props": {

@@ -38,6 +38,7 @@
             },
             "className": "css",
             "cantWrite": "",
+            "errorContent":"Esta no es una fecha laboral",
             "labelContent": "Fecha",
             "labelCss": "css"
         }
@@ -58,8 +59,9 @@
         }
     ],
     "horas":{
-        "horaInicio":{"name":"horaInicio", "label":"Hora inicio"},
-        "horaFin":{"name":"horaFin", "label":"Hora fin"}
+        "horaInicio":{"name":"horaInicio", "label":"Hora inicio",  "errorContent":"Hora inicial no puede ser mayor que la final"},
+        "horaFin":{"name":"horaFin", "label":"Hora fin", "errorContent":"Hora inicial no puede ser mayor que la final"},
+        "errorContent":"Esta no es una fecha laboral"
     },
     "selectCliente":{
         "apiUrl":"ClienteEmpresa/ListaDeClientesPorEmpresa/{}",

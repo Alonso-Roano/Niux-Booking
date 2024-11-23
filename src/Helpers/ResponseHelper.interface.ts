@@ -16,7 +16,7 @@ export interface User {
     rol: string;
     avatarURL: string;
     nombre: string;
-    correo: string;
+    email: string;
     idEmpresa?:number;
     horaInicio?:string;
     horaFin?:string;

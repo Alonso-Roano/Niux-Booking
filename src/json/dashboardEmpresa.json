@@ -38,14 +38,36 @@
         "tipo":"reservas",
         "total":"totalReservas"
       }
-    ]
+    ],
+    "data": {
+      "pagos": [
+        { "fecha": "2024-01-01", "total": 100 },
+        { "fecha": "2024-01-02", "total": 200 },
+        { "fecha": "2024-01-03", "total": 150 }
+      ],
+      "servicios": [
+        { "fecha": "2024-01-01", "total": 80 },
+        { "fecha": "2024-01-02", "total": 120 },
+        { "fecha": "2024-01-03", "total": 90 }
+      ],
+      "clientes": [
+        { "fecha": "2024-01-01", "total": 100 },
+        { "fecha": "2024-01-02", "total": 200 },
+        { "fecha": "2024-01-03", "total": 150 }
+      ],
+      "reservas": [
+        { "fecha": "2024-01-01", "total": 80 },
+        { "fecha": "2024-01-02", "total": 120 },
+        { "fecha": "2024-01-03", "total": 90 }
+      ]
+    }
   },
   "service": {
     "name": "Servicios",
     "add": "addService.json",
     "edit": "editService.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "Servicio/Empresa/{}",
+    "getURL": "/Servicio/GetServiciosInfoByIdEmpresa/{}",
     "response": "products",
     "delete": {
       "deleteURL": "Servicio/",

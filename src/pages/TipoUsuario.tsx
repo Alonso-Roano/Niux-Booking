@@ -19,10 +19,17 @@ export default function TipoUsuario() {
   <div className="w-full max-w-sm flex flex-col items-center">
     
     {/* Logo y título */}
-    <div className="flex gap-2 justify-center items-center">
-      <Logoniux10 />
-      <span className="font-medium text-2xl text-[#484748]">NIUXBOOKING</span>
-    </div>
+    <Link
+              to="/"
+           
+            >
+          <div className="flex gap-2 justify-center items-center">
+            <Logoniux10 />
+            <span className="font-medium text-2xl text-[#484748]">
+              NIUXBOOKING
+            </span>
+          </div>
+          </Link>
     <div className="text-center mb-6">
       <h2 className="text-3xl font-bold text-[#7B6FCC] mt-4">Registro</h2>
     </div>

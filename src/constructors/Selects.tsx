@@ -20,7 +20,6 @@ function Selects({ data, setBody, body, errors, editDatos }: DataProps) {
     useEffect(() => {
         const initializeValues = () => {
             const initialValues: { [key: string]: any } = {};
-            console.log(editDatos)
             data.forEach((prop) => {
                 const selectProp = utils.formatProps("select", prop.props);
                 const name = selectProp.name;

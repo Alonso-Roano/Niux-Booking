@@ -73,7 +73,6 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                 }
                 const response = await niuxApi.get(url);
                 let data = response.data;
-                console.log(data);
         
                 if (data.data == null) data = { data: data };
                 setColumns([]);
@@ -82,7 +81,7 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                     const displayColumns =
                         data.data.length > 0
                             ? Object.keys(data.data[0])
-                                  .filter((key) => key !== "id" && key !== "idEmpresa")
+                                  .filter((key) => key !== "id" && key !== "idEmpresa" && key !== "imagenes" && key !== "isDeleted" && key !== "idServicio" && (key !== "idReserva") && (key !== "idCliente"))
                                   .slice(cantidad.de, cantidad.hasta)
                             : [];
                     setColumns(displayColumns);

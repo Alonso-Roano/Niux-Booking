@@ -27,13 +27,11 @@ function GraficaSparklineChart({ data, setOpcion }: any) {
 
   useEffect(() => {
     if(datos){
-      console.log(datos.data[data["tipo"]])
       const tipo = datos.data[data["tipo"]];
       let suma=0;
       tipo.forEach((element:any) => {
         suma = suma+element[data["total"]]
       });
-      console.log(suma)
       setObjeto(suma);
     }
   }, [datos]);

@@ -85,20 +85,20 @@ class Post {
     return this;
   }
 
-  private async uploadFile(file: File) {
-    console.log(file)
+  private async uploadFile(file: File, id: string | number) {
     if (!this.fileUploadUrl) {
       throw new Error("No file upload URL specified.");
     }
 
     const formData = new FormData();
-    formData.append('image', file);
-
-    console.log(formData.getAll('image'))
+    formData.append("Archivo", file);
+    formData.append("idServicio", id.toString());
 
     try {
-      const response = await niuxApi.post(this.fileUploadUrl, formData);
-      console.log(response)
+      const response = await niuxApi.post(this.fileUploadUrl,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
     } catch (error) {
       console.error("Error al subir el archivo:", error);
       Utils.showToast({ title: "Error al subir el archivo", icon: "error" });
@@ -106,61 +106,57 @@ class Post {
     }
   }
 
-  private parseBodyWithFile() {
+  private async uploadFilesWithId(id: string | number) {
+    const files = Object.keys(this.body)
+      .map((key) => this.body[key])
+      .filter((value) => value instanceof File);
+    if (!this.fileUploadUrl || files.length === 0) return;
+    for (const file of files) {
+      await this.uploadFile(file, id);
+    }
+  }
+
+  private parseBodyWithoutFiles() {
     const body: any = {};
-    const fileUploads: { [key: string]: string } = {};
 
     Object.keys(this.body).forEach((key) => {
-      let value = this.body[key];
-
-      if (value && value.name) {
-        this.uploadFile(value);
-      } else {
+      const value = this.body[key];
+      if (!(value instanceof File)) {
         body[key] = value;
       }
     });
 
-    return { body, fileUploads };
+    return body;
   }
 
-
   async send() {
-    const { body } = this.body instanceof FormData ? { body: this.body } : this.parseBodyWithFile();
-    if (body.sexo) {
-      body.sexo = Number(body.sexo);
-    }
-    if (body.duracion) {
-      const [horas, minutos] = body.duracion.split(':').map(Number);
-      const duracionEnMinutos = (horas * 60) + minutos;
-      body.duracion = duracionEnMinutos;
-    }
-    if (body.horaInicio) body.horaInicio += ":00";
-    if (body.horaFin) body.horaFin += ":00";
-    if (body.fechaReserva) {
-      const currentTime = new Date();
-      const [year, month, day] = body.fechaReserva.split("-");
-      const isoDate = new Date(
-        Number(year),
-        Number(month) - 1,
-        Number(day),
-        currentTime.getHours(),
-        currentTime.getMinutes(),
-        currentTime.getSeconds(),
-        currentTime.getMilliseconds()
-      );
-      body.fechaReserva = isoDate.toISOString();
-    }
+    const body = this.body instanceof FormData ? this.body : this.parseBodyWithoutFiles();
+
+    Utils.transformData(body);
 
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
         const response = await niuxApi.post(this.url, body);
         if (!response.data) {
           Utils.showToast({ title: "Error al enviar los datos:", icon: "error" });
-          throw new Error('Error al enviar los datos');
+          throw new Error("Error al enviar los datos");
         }
+        
         if (this.setReponse) this.setReponse(response.data);
-        if (this.setBody) this.setBody({});
+        if (this.setBody) this.setBody({});        
+
+        if(this.data?.imageUrl){
+          const id = response.data?.data?.id;
+          if (!id) {
+            throw new Error("No se recibió un ID en la respuesta.");
+          }
+
+          await this.uploadFilesWithId(id);
+        }
+
         if (this.setClose) this.setClose(false);
+
+
         Utils.showToast({ title: this.mensaje, icon: "success" });
       } catch (error) {
         console.error("Error al enviar los datos:", error);
@@ -179,6 +175,7 @@ class Put {
   private setErrors?: (errors: any) => void;
   private setClose?: (close: any) => void;
   private data?: any;
+  private urlCrear?: string;
 
   constructor(url: string, body: any) {
     this.url = url;
@@ -215,43 +212,97 @@ class Put {
     return this;
   }
 
-  async send() {
-    console.log(this.body);
-    if (this.body.sexo) {
-      this.body.sexo = Number(this.body.sexo);
+  UrlCrear(urlCrear: string): Put {
+    this.urlCrear = urlCrear;
+    return this;
+  }
+
+  private async createNewImages() {
+    const files = Object.keys(this.body)
+        .map((key) => this.body[key])
+        .filter((value) => value instanceof File);
+
+    if (!this.body.imagenes) {
+        this.body.imagenes = [];
     }
-    if (this.body.duracion) {
-      const [horas, minutos] = this.body.duracion.split(':').map(Number);
-      const duracionEnMinutos = (horas * 60) + minutos;
-      this.body.duracion = duracionEnMinutos;
+
+    for (const file of files) {
+        try {
+            const newImage = await this.createImage(file, this.body.id);
+            if (newImage) {
+                this.body.imagenes.push(newImage);
+            }
+        } catch (error) {
+            console.error("Error al crear nueva imagen:", error);
+            Utils.showToast({ title: "Error al crear nueva imagen", icon: "error" });
+        }
     }
-    if (this.body.horaInicio) this.body.horaInicio += ":00";
-    if (this.body.horaFin) this.body.horaFin += ":00";
-    if (this.body.fechaReserva) {
-      const currentTime = new Date();
-      const [year, month, day] = this.body.fechaReserva.split("-");
-      const isoDate = new Date(
-        Number(year),
-        Number(month) - 1,
-        Number(day),
-        currentTime.getHours(),
-        currentTime.getMinutes(),
-        currentTime.getSeconds(),
-        currentTime.getMilliseconds()
+}
+
+  
+  private async createImage(file: File, idServicio: string | number) {
+    if (!this.urlCrear) {
+      throw new Error("No se especificó una URL para crear nuevas imágenes.");
+    }
+  
+    const formData = new FormData();
+    formData.append("Archivo", file);
+    formData.append("idServicio", idServicio.toString());
+  
+    try {
+      const response = await niuxApi.post( this.urlCrear,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-      this.body.fechaReserva = isoDate.toISOString();
+  
+      return {
+        url: response.data.url, 
+        idServicio,
+        id: response.data.id,
+        isDeleted: false,
+        createdAt: new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error("Error al crear la imagen:", error);
+      throw error;
     }
+  }
+  
+
+  private parseBodyWithoutFiles() {
+    const body: any = {};
+
+    Object.keys(this.body).forEach((key) => {
+      const value = this.body[key];
+      if (!(value instanceof File)) {
+        body[key] = value;
+      }
+    });
+
+    return body;
+  }
+
+  async send() {
+    if(this.url !== "ImagenServicio/ActualizarImagenServicio"){
+      this.createNewImages();
+    }    
+
+    const body = this.body instanceof FormData ? this.body : this.parseBodyWithoutFiles();
+    Utils.transformData(body);
 
     if (Utils.validateInputs(this.body, this.data, this.setErrors)) {
       try {
-        const response = await niuxApi.put(this.url, this.body);
+        const response = await niuxApi.put(this.url, body);
         if (!response.data) {
           Utils.showToast({ title: "Error al actualizar los datos:", icon: "error" });
           throw new Error("Error al actualizar los datos");
         }
+
         if (this.setReponse) this.setReponse(response.data);
         if (this.setBody) this.setBody({});
+
         if (this.setClose) this.setClose(false);
+
         Utils.showToast({ title: this.mensaje, icon: "success" });
       } catch (error) {
         console.error("Error al actualizar los datos:", error);
