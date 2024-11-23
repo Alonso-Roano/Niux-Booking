@@ -13,7 +13,6 @@ interface AuthState {
     loginUser: (email: string, password: string) => Promise<void>;
     logoutUser: () => void;
     updateUser: (updatedUser: Partial<User>) => void;
-    updateProfilePhoto: (file: File) => Promise<void>;
     refreshUserData: () => Promise<void>;
     registerClient: (
         email: string,
@@ -92,73 +91,72 @@ export const useAuthStore = create(
                 set({ status: 'unauthorized', token: undefined, user: undefined });
             },
 
-            // Método para actualizar partes del usuario
-            updateUser: (updatedUser: Partial<User>) => {
-                const currentState = get();
-                if (currentState.user) {
-                    const updatedState = { ...currentState.user, ...updatedUser };
+          // Método para actualizar partes del usuario
+          updateUser: (updatedUser: Partial<User>) => {
+            const currentState = get();
+            if (currentState.user) {
+                const avatarURL = updatedUser.avatarURL
+                    ? `${import.meta.env.VITE_BACKEND_API}${updatedUser.avatarURL}`
+                    : currentState.user.avatarURL;
+
+                const filteredUserData = {
+                    ...currentState.user,
+                    ...updatedUser,
+                    avatarURL,
+                };
+
+                // Solo mantener campos permitidos
+                set({
+                    user: {
+                        id: filteredUserData.id,
+                        nombre: filteredUserData.nombre,
+                        email: filteredUserData.email,
+                        rol: filteredUserData.rol,
+                        avatarURL: filteredUserData.avatarURL,
+                        idEmpresa: filteredUserData.idEmpresa,
+                    },
+                });
+            }
+        },
+
+        // Método para refrescar los datos del perfil
+        refreshUserData: async () => {
+            const currentState = get();
+            if (!currentState.user?.id) {
+                console.error("No hay usuario autenticado.");
+                return;
+            }
+
+            try {
+                const response = await niuxApi.get(`/Persona/ObtenerDatosPerfil/${currentState.user.id}`);
+                if (response.data.success) {
+                    const updatedUser = response.data.data;
+
+                    const avatarURL = updatedUser.avatarURL
+                        ? `${import.meta.env.VITE_BACKEND_API}${updatedUser.avatarURL}`
+                        : currentState.user.avatarURL;
+
+                    const filteredUserData = {
+                        id: currentState.user.id,
+                        nombre: `${updatedUser.nombres} ${updatedUser.apellido1} ${updatedUser.apellido2}`.trim(),
+                        email: currentState.user.email,
+                        rol: currentState.user.rol,
+                        avatarURL,
+                        idEmpresa: currentState.user.idEmpresa,
+                    };
+
                     set({
-                        user: updatedState,
+                        user: filteredUserData,
                     });
+
+                    console.log("Datos del usuario actualizados correctamente.");
+                } else {
+                    console.error("Error al refrescar datos del usuario:", response.data.message);
                 }
-            },
-
-            // Método para actualizar la foto de perfil
-            updateProfilePhoto: async (file: File) => {
-                const currentState = get();
-                if (!currentState.user?.id) {
-                    throw new Error("Usuario no autenticado.");
-                }
-
-                const formData = new FormData();
-                formData.append("IdApplicationUser", currentState.user.id);
-                formData.append("Archivo", file);
-
-                try {
-                    const response = await niuxApi.post("/Persona/SubirFotoPerfil", formData);
-
-                    if (response.data.success) {
-                        // Llama al método para refrescar los datos del usuario autenticado
-                        await get().refreshUserData();
-                        console.log("Foto de perfil actualizada con éxito.");
-                    } else {
-                        throw new Error(response.data.message || "Error al subir la foto de perfil.");
-                    }
-                } catch (error) {
-                    console.error("Error al subir la foto de perfil:", error);
-                    throw error;
-                }
-            },
-
-            // Método para actualizar los datos completos del usuario autenticado
-            refreshUserData: async () => {
-                const currentState = get();
-                if (!currentState.token || !currentState.user?.id) {
-                    console.error("No hay usuario autenticado o token válido.");
-                    return;
-                }
-
-                try {
-                    const response = await niuxApi.get(`/Persona/ObtenerDatosPerfil/${currentState.user.id}`);
-                    if (response.data.success) {
-                        const updatedUser = response.data.data;
-                        // Actualizar el avatarURL si es necesario
-                        const avatarURL = updatedUser.avatarURL
-                            ? `${import.meta.env.VITE_BACKEND_API}${updatedUser.avatarURL}`
-                            : '/images/Avatar.webp';
-
-                        set({
-                            user: { ...currentState.user, ...updatedUser, avatarURL },
-                        });
-
-                        console.log("Datos del usuario actualizados correctamente.");
-                    } else {
-                        console.error("Error al obtener los datos del usuario:", response.data.message);
-                    }
-                } catch (error) {
-                    console.error("Error al obtener los datos del usuario:", error);
-                }
-            },
+            } catch (error) {
+                console.error("Error en la solicitud de refresco de usuario:", error);
+            }
+        },
 
             // Método para registrar un cliente
             registerClient: async (
