@@ -2,6 +2,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuthStore } from '../stores/auth/authStore';
 import Logoniux10 from '../svgs/Logoniux10';
+import openEye from "../../public/images/icons/open-eye.svg";
+import closedEye from "../../public/images/icons/closed-eye.svg";
 
 type RegistroParams = {
   tipoUsuario: 'cliente' | 'socio';
@@ -25,13 +27,41 @@ export default function Registro() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nombreEmpresa, setNombreEmpresa] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false); // Visibilidad de contraseña
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // Visibilidad de confirmar contraseña
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    length: false,
+    uppercase: false,
+    special: false,
+    number: false,
+    match: false
+  });
 
   // Manejo de errores
   const [error, setError] = useState<string | null>(null);
 
+  const validatePassword = (password: string, confirmPassword: string) => {
+    setPasswordCriteria({
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      number: /\d/.test(password),
+      match: password === confirmPassword, // Verifica si las contraseñas coinciden
+    });
+  };
+
   const handleRegister = async () => {
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden');
+      return;
+    }
+
+    if (!email) {
+      setError('El campo email es obligatorio');
+      return;
+    }
+    if (isSocio && !nombreEmpresa) {
+      setError('El campo Nombre de tu Negocio es obligatorio');
       return;
     }
 
@@ -53,9 +83,20 @@ export default function Registro() {
       } else if (user?.rol === 'Cliente') {
         navigate('/');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Hubo un error en el registro');
-      console.error(err);
+    } catch (err: any) {
+      // Manejo del error específico del backend
+      if (err?.response?.status === 400 && err?.response?.data?.errors?.Email) {
+        const emailErrors = err.response.data.errors.Email;
+        if (emailErrors.includes('The Email field is required.')) {
+          setError('El campo email es obligatorio');
+        } else if (emailErrors.includes('The Email field is not a valid e-mail address.')) {
+          setError('El email ingresado no es válido');
+        }
+      } else if (err?.response?.data?.message === 'Ha ocurrido un error') {
+        setError('La contraseña no cumple con los requisitos');
+      } else {
+        setError(err instanceof Error ? err.message : 'Hubo un error en el registro');
+      }
     }
   };
 
@@ -110,7 +151,7 @@ export default function Registro() {
             <div className="flex gap-4">
               <div className="w-1/2">
                 <label htmlFor="apellido1" className="block text-sm font-medium text-gray-700">
-                  Apellido Paterno <span className="text-red-500">*</span>
+                  Apellido Paterno <span className="text-gray-400">(Opcional)</span>
                 </label>
                 <input
                   id="apellido1"
@@ -124,7 +165,7 @@ export default function Registro() {
               </div>
               <div className="w-1/2">
                 <label htmlFor="apellido2" className="block text-sm font-medium text-gray-700">
-                  Apellido Materno <span className="text-red-500">*</span>
+                  Apellido Materno <span className="text-gray-400">(Opcional)</span>
                 </label>
                 <input
                   id="apellido2"
@@ -151,35 +192,74 @@ export default function Registro() {
                 required
               />
             </div>
+
+            <div className="space-y-2">
             <div className="flex gap-4">
-              <div className='w-1/2'>
+              <div className="w-1/2 relative">
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Contraseña <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="password"
-                  type="password"
+                  type={passwordVisible ? 'text' : 'password'}
                   className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
                   placeholder="Contraseña"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    validatePassword(e.target.value, confirmPassword);
+                  }}
                   required
                 />
+                <img
+                  src={passwordVisible ? openEye : closedEye}
+                  alt={passwordVisible ? 'Mostrar contraseña' : 'Ocultar contraseña'}
+                  className="absolute right-4 top-9 cursor-pointer w-5 h-5"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                />
               </div>
-              <div className='w-1/2'>
+              <div className="w-1/2 relative">
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                  Contraseña (Confirmación) <span className="text-red-500">*</span>
+                  Confirmar Contraseña <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="confirmPassword"
-                  type="password"
+                  type={confirmPasswordVisible ? 'text' : 'password'}
                   className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
-                  placeholder="Contraseña (Confirmación)"
+                  placeholder="Confirmar Contraseña"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    validatePassword(password, e.target.value);
+                  }}
                   required
                 />
+                <img
+                  src={confirmPasswordVisible ? openEye : closedEye}
+                  alt={confirmPasswordVisible ? 'Mostrar contraseña' : 'Ocultar contraseña'}
+                  className="absolute right-4 top-9 cursor-pointer w-5 h-5"
+                  onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+                />
               </div>
+            </div>
+            <div className="text-sm mt-2 grid grid-cols-2 gap-2">
+              <p className={`flex items-center gap-2 ${passwordCriteria.length ? 'text-green-500' : 'text-red-500'}`}>
+                {passwordCriteria.length ? '✔' : '✘'} Mínimo 8 caracteres
+              </p>
+              <p className={`flex items-center gap-2 ${passwordCriteria.uppercase ? 'text-green-500' : 'text-red-500'}`}>
+                {passwordCriteria.uppercase ? '✔' : '✘'} Al menos una letra mayúscula
+              </p>
+              <p className={`flex items-center gap-2 ${passwordCriteria.special ? 'text-green-500' : 'text-red-500'}`}>
+                {passwordCriteria.special ? '✔' : '✘'} Al menos un carácter especial (&%$#!@)
+              </p>
+              <p className={`flex items-center gap-2 ${passwordCriteria.number ? 'text-green-500' : 'text-red-500'}`}>
+                {passwordCriteria.number ? '✔' : '✘'} Al menos un número
+              </p>
+              <p className={`flex items-center gap-2 ${passwordCriteria.match ? 'text-green-500' : 'text-red-500'}`}>
+              {passwordCriteria.match ? '✔' : '✘'} Las contraseñas coinciden
+            </p>
+            </div>
+          
             </div>
             {isSocio && (
               <div>
