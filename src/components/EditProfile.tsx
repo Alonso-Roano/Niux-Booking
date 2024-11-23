@@ -12,16 +12,18 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
     edad: 0,
     sexo: 0,
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Imagen seleccionada para previsualización
 
-  // Obtener el ID, rol y updateUser del usuario autenticado desde el store
+  // Obtener el ID, funciones del usuario y estado global desde el store
   const userId = useAuthStore((state) => state.user?.id);
   const rol = useAuthStore((state) => state.user?.rol);
+  const avatarURL = useAuthStore((state) => state.user?.avatarURL);
   const updateUser = useAuthStore((state) => state.updateUser);
-  
+  const refreshUserData = useAuthStore((state) => state.refreshUserData);
 
   // Función para obtener los datos del perfil
   const fetchProfileData = async () => {
-    if (!userId) return; // Asegúrate de que el ID esté disponible
+    if (!userId) return;
 
     try {
       const response = await niuxApi.get(`/Persona/ObtenerDatosPerfil/${userId}`);
@@ -48,7 +50,6 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
     }
   };
 
-  // Llamar a la API cuando el componente se monte
   useEffect(() => {
     fetchProfileData();
   }, [userId]);
@@ -62,38 +63,57 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
     }));
   };
 
+  // Función para manejar la selección de un archivo
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+  };
+
+  // Función para manejar el envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevenir recarga de la página
     if (!userId) return;
-  
+
     try {
-      const updateResponse = await niuxApi.put(`/Persona/ActualizarPerfilUsuario/${userId}`, {
-        ...profileData,
-      });
-  
-      if (updateResponse.data.success) {
-        // Realiza un fetch para obtener los datos completos del usuario
-        const fetchResponse = await niuxApi.get(`/Persona/ObtenerDatosPerfil/${userId}`);
-        if (fetchResponse.data.success) {
-          const updatedUser = fetchResponse.data.data;
-  
-          // Actualiza el estado global con los datos completos
-          updateUser({
-            nombre: `${updatedUser.nombres} ${updatedUser.apellido1} ${updatedUser.apellido2}`.trim(),
-           
-          });
-  
+      // Si hay una foto seleccionada, súbela primero
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("IdApplicationUser", userId);
+        formData.append("Archivo", selectedFile);
+
+        const uploadResponse = await niuxApi.post("/Persona/SubirFotoPerfil", formData);
+        if (uploadResponse.data.success) {
           Utils.showToast({
             icon: "success",
-            title: "Perfil actualizado con éxito.",
+            title: "Foto de perfil actualizado con éxito.",
           });
-          closeOffcanvas(); // Cerrar el offcanvas
         } else {
-          Utils.showToast({
-            icon: "error",
-            title: fetchResponse.data.message || "Error al obtener los datos actualizados.",
-          });
+          throw new Error(uploadResponse.data.message || "Error al subir la foto de perfil.");
         }
+      }
+
+      // Concatenar nombres, apellido1 y apellido2 para el nombre completo
+      const nombreCompleto = `${profileData.nombres} ${profileData.apellido1} ${profileData.apellido2}`.trim();
+
+      // Actualizar los datos del perfil
+      const updateResponse = await niuxApi.put(`/Persona/ActualizarPerfilUsuario/${userId}`, {
+        ...profileData,
+        nombre: nombreCompleto,
+      });
+
+      if (updateResponse.data.success) {
+        // Actualizar el estado global con los datos concatenados
+        updateUser({
+          ...profileData,
+          nombre: nombreCompleto,
+        });
+
+        await refreshUserData(); // Refrescar datos para garantizar que el avatarURL y demás campos estén actualizados
+        Utils.showToast({
+          icon: "success",
+          title: "Perfil actualizado con éxito.",
+        });
+        closeOffcanvas(); // Cerrar el offcanvas
       } else {
         Utils.showToast({
           icon: "error",
@@ -108,28 +128,32 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
       });
     }
   };
-  
 
-  // Render del formulario con valores prellenados
   return (
     <div className="p-2 max-w-md mx-auto">
       <h2 className="text-center text-2xl font-semibold mb-2">Perfil</h2>
       <div className="flex flex-col items-center mb-4">
         <div className="relative">
           <img
-            src="/images/Avatar.webp" // Imagen predeterminada
+            src={selectedFile ? URL.createObjectURL(selectedFile) : avatarURL || "/images/Avatar.webp"}
             alt="Avatar"
             className="w-20 h-20 rounded-full border border-gray-300"
           />
-          <button className="absolute bottom-1 right-1 bg-[#7B6FCC] text-white p-1 rounded-full">
+          <label htmlFor="file-upload" className="absolute bottom-1 right-1 bg-[#7B6FCC] text-white p-1 rounded-full cursor-pointer">
             ✎
-          </button>
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            className="hidden"
+            accept="image/*"
+            onChange={handleFileSelect}
+          />
         </div>
-        <p className="text-gray-500 mt-2">{rol || "Usuario"}</p> {/* Mostrar rol del usuario */}
+        <p className="text-gray-500 mt-2">{rol || "Usuario"}</p>
       </div>
 
       <form className="space-y-3" onSubmit={handleSubmit}>
-        {/* Campo de Nombres */}
         <div>
           <label htmlFor="nombres" className="block text-sm font-medium text-gray-700">
             Nombre(s)
@@ -143,8 +167,6 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
-
-        {/* Campo de Apellido Paterno */}
         <div>
           <label htmlFor="apellido1" className="block text-sm font-medium text-gray-700">
             Apellido Paterno
@@ -158,8 +180,6 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
-
-        {/* Campo de Apellido Materno */}
         <div>
           <label htmlFor="apellido2" className="block text-sm font-medium text-gray-700">
             Apellido Materno
@@ -173,8 +193,6 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
-
-        {/* Campo de Edad */}
         <div>
           <label htmlFor="edad" className="block text-sm font-medium text-gray-700">
             Edad
@@ -188,11 +206,9 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
           />
         </div>
-
-        {/* Campo de Sexo */}
         <div>
           <label htmlFor="sexo" className="block text-sm font-medium text-gray-700">
-            Genero
+            Género
           </label>
           <select
             id="sexo"
@@ -206,8 +222,6 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             <option value={3}>Otro</option>
           </select>
         </div>
-
-        {/* Botón Guardar */}
         <button
           type="submit"
           className="mt-4 w-full bg-[#7B6FCC] text-white py-2 px-4 rounded-md shadow-sm hover:bg-[#5a54a4] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7B6FCC]"
