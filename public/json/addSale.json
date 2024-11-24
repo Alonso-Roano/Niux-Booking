@@ -40,7 +40,8 @@
         "apiUrl":"Reserva/Empresa/{}",
         "valueField":"id",
         "labelField":"nombre",
-        "name":"idReserva"
+        "name":"idReserva",
+        "label":"Selecciona el servicio"
     },
     "buttons": [
         {

@@ -259,33 +259,59 @@ function mapJsonToHtml(json: Record<string, any>): string {
     return html + imageHtml;
 }
   
-function transformData(body:any) {
+function transformData(body: any) {
     if (body.sexo) {
-      body.sexo = Number(body.sexo);
+        body.sexo = Number(body.sexo);
     }
     if (body.duracion) {
-      const [horas, minutos] = body.duracion.split(':').map(Number);
-      const duracionEnMinutos = (horas * 60) + minutos;
-      body.duracion = duracionEnMinutos;
+        const [horas, minutos] = body.duracion.split(":").map(Number);
+        const duracionEnMinutos = horas * 60 + minutos;
+        body.duracion = duracionEnMinutos;
     }
-    if (body.horaInicio) body.horaInicio += ":00";
-    if (body.horaFin) body.horaFin += ":00";
+    if (body.horaInicio) {
+        console.log(body.horaInicio)
+        const [hours, minutes] = body.horaInicio.split(":").map(Number);
+        const horaInicioDate = new Date(Date.UTC(
+            new Date().getUTCFullYear(),
+            new Date().getUTCMonth(),
+            new Date().getUTCDate(),
+            hours,
+            minutes
+        ));
+        body.horaInicio = horaInicioDate.toISOString();
+        console.log(body.horaInicio)
+    }
+    if (body.horaFin) {
+        console.log(body.horaFin)
+        const [hours, minutes] = body.horaFin.split(":").map(Number);
+        const horaFinDate = new Date(Date.UTC(
+            new Date().getUTCFullYear(),
+            new Date().getUTCMonth(),
+            new Date().getUTCDate(),
+            hours,
+            minutes
+        ));
+        body.horaFin = horaFinDate.toISOString();
+        console.log(body.horaFin)
+        
+    }
     if (body.fechaReserva) {
-      const currentTime = new Date();
-      const [year, month, day] = body.fechaReserva.split("-");
-      const isoDate = new Date(
-        Number(year),
-        Number(month) - 1,
-        Number(day),
-        currentTime.getHours(),
-        currentTime.getMinutes(),
-        currentTime.getSeconds(),
-        currentTime.getMilliseconds()
-      );
-      body.fechaReserva = isoDate.toISOString();
+        const currentTime = new Date();
+        const [year, month, day] = body.fechaReserva.split("-");
+        const isoDate = new Date(
+            Number(year),
+            Number(month) - 1,
+            Number(day),
+            currentTime.getHours(),
+            currentTime.getMinutes(),
+            currentTime.getSeconds(),
+            currentTime.getMilliseconds()
+        );
+        body.fechaReserva = isoDate.toISOString();
     }
-    if (body.estatus) body.estatus = Number(body.estatus);
-  } 
-
+    if (body.estatus) {
+        body.estatus = Number(body.estatus);
+    }
+}
 
 export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml, transformData };

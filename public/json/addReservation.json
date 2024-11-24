@@ -67,13 +67,15 @@
         "apiUrl":"ClienteEmpresa/ListaDeClientesPorEmpresa/{}",
         "valueField":"id",
         "labelField":"nombres",
-        "name":"idCliente"
+        "name":"idCliente",
+        "label":"Selecciona el cliente"
     },
     "selectServicio":{
         "apiUrl":"Servicio/Empresa/{}",
         "valueField":"id",
         "labelField":"titulo",
-        "name":"idServicio"
+        "name":"idServicio",
+        "label":"Selecciona el servicio"
     },
     "buttons": [
         {

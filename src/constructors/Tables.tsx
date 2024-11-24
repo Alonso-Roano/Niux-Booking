@@ -94,12 +94,17 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                         return `${day}/${month}/${year}`;
                     };
         
-                    const formatTime = (timeStr: string) => {
-                        const [hours, minutes] = timeStr.split(":");
-                        const hour = parseInt(hours);
+                    const formatTime = (timeStr: string): string => {
+                        // Extraer la hora completa (hh:mm:ss) desde el formato ISO
+                        const timePart = timeStr.split("T")[1].split(":"); // Obtiene ["09", "00", "00"]
+                        const hour = parseInt(timePart[0]); // Convierte la hora a número
+                        const minutes = timePart[1]; // Minutos como cadena
+                    
+                        // Determinar si es AM o PM
                         const isPM = hour >= 12;
-                        const formattedHour = hour % 12 || 12;
-                        const formattedMinutes = minutes.padStart(2, '0');
+                        const formattedHour = hour % 12 || 12; // Convertir a formato de 12 horas
+                        const formattedMinutes = minutes.padStart(2, '0'); // Asegurar que los minutos sean siempre de 2 dígitos
+                    
                         return `${formattedHour}:${formattedMinutes} ${isPM ? 'PM' : 'AM'}`;
                     };
         

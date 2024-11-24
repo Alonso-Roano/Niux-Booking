@@ -63,6 +63,7 @@
             "cantWrite": "",
             "labelContent": "Título",
             "errorContent":"Inserte al menos una imagen",
+            "otherLabelContent": "Imagen agregada",
             "labelCss": "css"
         },
         {
@@ -77,6 +78,7 @@
             "cantWrite": "",
             "labelContent": "Título",
             "errorContent":"Inserte al menos una imagen",
+            "otherLabelContent": "Imagen agregada",
             "labelCss": "css"
         },
         {
@@ -91,6 +93,7 @@
             "cantWrite": "",
             "labelContent": "Título",
             "errorContent":"Inserte al menos una imagen",
+            "otherLabelContent": "Imagen agregada",
             "labelCss": "css"
         }
     ],
