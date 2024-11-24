@@ -11,6 +11,10 @@ import GeneralBusiness from "../images/services/general-business.jpg";
 import Footer from "../components/Footer";
 import Calendar from "../svgs/Calendar";
 import Watch from "../svgs/Watch";
+import ArrowMonth from "../svgs/NextMonth";
+import NextMonth from "../svgs/NextMonth";
+import PreviousMonth from "../svgs/PreviousMonth";
+import { dividerClasses } from "@mui/material";
 interface IServicio {
   titulo: string;
   precio: number;
@@ -39,6 +43,7 @@ export default function Schedule() {
   const { slugEmpresa, slugServicio } = useParams();
   //estados iniciales
   const [fechaActual, setFechaActual] = useState<any>(); //"2024-11-23"
+  const [contadorMes, setContadorMes] = useState<any>();
   const [mesSeleccionado, setMesSeleccionado] = useState<number>(); //11
   const [añoSeleccionado, setAñoSeleccionado] = useState<any>(); //2024
   const [fechaSeleccionada, setFechaSeleccionada] = useState<any>(); //"2024-11-23"
@@ -51,6 +56,10 @@ export default function Schedule() {
   const [duracionServicio, setDuracionServicio] = useState<any>(); //120
   const [idServicio, setIdServicio] = useState<any>(); //1
   const [intervalosDisponibles, setIntervalosDisponibles] = useState<any>(); //[{}]
+  const [servicio, setServicio] = useState<IServicio>(); //{}
+  const [empresa, setEmpresa] = useState<IEmpresa>(); //{}
+  const [horarios, setHorarios] = useState<any>(); //[{}]
+  const [horarioPivote, setHorarioPivote] = useState<any>(); //{}
 
   console.log("anitp");
 
@@ -103,9 +112,6 @@ export default function Schedule() {
     return "";
   }
   function formatPromedioReseña(reseña: number) {}
-  const [servicio, setServicio] = useState<IServicio>();
-  const [empresa, setEmpresa] = useState<IEmpresa>();
-  const [horarios, setHorarios] = useState<any>();
   //useeffect para el servicio, horario, empresa,las citas y el mes actual y el dia actual
 
   console.log("h");
@@ -121,6 +127,8 @@ export default function Schedule() {
       );
       setDuracionServicio(responseServicio.data.data.duracion);
       setIdServicio(responseServicio.data.data.id);
+      setServicio(responseServicio.data.data);
+      setEmpresa(responseEmpresa.data.data);
 
       const businessId = responseEmpresa.data.data.id;
 
@@ -128,6 +136,9 @@ export default function Schedule() {
         const responseHorarios = await niuxApi.get(
           `/Horario/Empresa/${businessId}`
         );
+        console.log("prueba");
+        console.log(responseHorarios.data);
+
         let horariosTransformados = diasSemana.map((day: any) => {
           const busquedaDia = responseHorarios.data.find(
             (horario: any) => horario.dia === day
@@ -145,7 +156,8 @@ export default function Schedule() {
         setHorarios(horariosTransformados);
         //empieza las fechas
         const currentMonth = fechaInicial.getMonth(); // 0 = enero, 1 = febrero, etc.
-        const mesCorrecto = currentMonth + 1 > 11 ? 0 : currentMonth + 1;
+        const mesCorrecto = currentMonth + 1;
+        setContadorMes(0);
         setMesSeleccionado(mesCorrecto);
         const currentYear = fechaInicial.getFullYear();
         setAñoSeleccionado(currentYear);
@@ -355,8 +367,7 @@ export default function Schedule() {
           }
         }
       }
-      setServicio(responseServicio.data.data);
-      setEmpresa(responseEmpresa.data.data);
+
       /* console.log("se");
       console.log(responseServicio.data.data);
       console.log("em");
@@ -508,17 +519,113 @@ export default function Schedule() {
       setIntervalosDisponibles(intervalosDisponibles);
       console.log(intervalosDisponibles);
     }
-    console.log(datos);
-
-    let letFechaSeleccionada = new Date(`${fecha} 00:00:00.0000000`);
-    let letFechaSeleccionadaFormato = format(
-      letFechaSeleccionada,
-      "YYYY-MM-DD",
-      "es"
-    );
-    console.log(fecha);
   };
   console.log(horarios);
+
+  const cambioDeMes = (accion: any, mesProp: any, añoProp: any) => {
+    if (contadorMes <= 5) {
+      if (accion == "aumentar") {
+        // Sumar un mes
+        let fecha = new Date(`${añoProp}-${mesProp}-01 00:00:00.0000000`);
+        let fechaAumentada = new Date(fecha.setMonth(fecha.getMonth() + 1));
+        let mes = fechaAumentada.getMonth() + 1;
+        let año = fechaAumentada.getFullYear();
+
+        // Obtenemos el número de días en el mes elegido
+        const daysInMonth = new Date(año, mes, 0).getDate();
+
+        // Generamos un array con los días del mes (del 1 al último día)
+        let arrayMeses = Array.from(
+          { length: daysInMonth },
+          (_, index) => index + 1
+        );
+        const arrayFinal = arrayMeses.map((dia: any) => {
+          let diaDeLaSemana = new Date(
+            `${año}-${mes}-${dia} 00:00:00.0000000`
+          ).getDay();
+
+          let diaDeLaSemanaNombre = diasSemanaParaDate[diaDeLaSemana]; //viernes
+          let objeHorario = horarios.find(
+            (horario: any) => horario.dia === diaDeLaSemanaNombre
+            //{horaInicio,HoraFin}
+          );
+          return {
+            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+            diaSemana: diaDeLaSemanaNombre,
+            dia: dia > 9 ? dia : parseInt("0" + dia),
+            horaInicio: objeHorario?.horaInicio,
+            horaFin: objeHorario?.horaFin,
+          };
+        });
+        console.log("meses");
+        console.log(arrayFinal);
+        setDiasDelMesSeleccionado(arrayFinal);
+        setMesSeleccionado(mes);
+        setAñoSeleccionado(año);
+        setFechaSeleccionada("");
+        setFechaPresentacion("");
+        setHoraInicio("");
+        setHoraFin("");
+        setHoraInicioBd("");
+        setHoraFinBd("");
+        setIntervalosDisponibles([]);
+        setContadorMes((prev: any) => prev + 1);
+        /*  console.log(fechaAumentada);
+        console.log(mes);
+        console.log(año); */
+      } else if (accion == "disminuir") {
+        // Sumar un mes
+        let fecha = new Date(`${añoProp}-${mesProp}-01 00:00:00.0000000`);
+        let fechaAumentada = new Date(fecha.setMonth(fecha.getMonth() - 1));
+        let mes = fechaAumentada.getMonth() + 1;
+        let año = fechaAumentada.getFullYear();
+
+        // Obtenemos el número de días en el mes elegido
+        const daysInMonth = new Date(año, mes, 0).getDate();
+
+        // Generamos un array con los días del mes (del 1 al último día)
+        let arrayMeses = Array.from(
+          { length: daysInMonth },
+          (_, index) => index + 1
+        );
+        const arrayFinal = arrayMeses.map((dia: any) => {
+          let diaDeLaSemana = new Date(
+            `${año}-${mes}-${dia} 00:00:00.0000000`
+          ).getDay();
+
+          let diaDeLaSemanaNombre = diasSemanaParaDate[diaDeLaSemana]; //viernes
+          let objeHorario = horarios.find(
+            (horario: any) => horario.dia === diaDeLaSemanaNombre
+            //{horaInicio,HoraFin}
+          );
+          return {
+            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+            diaSemana: diaDeLaSemanaNombre,
+            dia: dia > 9 ? dia : parseInt("0" + dia),
+            horaInicio: objeHorario?.horaInicio,
+            horaFin: objeHorario?.horaFin,
+          };
+        });
+        console.log("meses");
+        console.log(arrayFinal);
+        setDiasDelMesSeleccionado(arrayFinal);
+        setMesSeleccionado(mes);
+        setAñoSeleccionado(año);
+        setFechaSeleccionada("");
+        setFechaPresentacion("");
+        setHoraInicio("");
+        setHoraFin("");
+        setHoraInicioBd("");
+        setHoraFinBd("");
+        setIntervalosDisponibles([]);
+        setContadorMes((prev: any) => prev - 1);
+        /*  console.log(fechaAumentada);
+          console.log(mes);
+          console.log(año); */
+      }
+    }
+  };
+  console.log(contadorMes);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -534,11 +641,34 @@ export default function Schedule() {
         </div>
         <div className=" grid lg:grid-cols-5 gap-5 grid-cols-1">
           <div className=" col-span-3 mt-4">
-            <h4 className=" font-medium text-md capitalize">
-              {mesSeleccionado && añoSeleccionado
-                ? meses[mesSeleccionado] + " " + añoSeleccionado
-                : ""}
-            </h4>
+            <div className="  flex items-center justify-between">
+              <h4 className=" font-medium text-md capitalize">
+                {mesSeleccionado && añoSeleccionado
+                  ? meses[mesSeleccionado] + " " + añoSeleccionado
+                  : ""}
+              </h4>
+              <div className=" flex items-center gap-2">
+                {contadorMes && contadorMes > 0 ? (
+                  <span
+                    onClick={() =>
+                      cambioDeMes("disminuir", mesSeleccionado, añoSeleccionado)
+                    }
+                    className=" cursor-pointer  hover:bg-neutral-200 p-1 rounded-lg"
+                  >
+                    <PreviousMonth />
+                  </span>
+                ) : null}
+
+                <span
+                  onClick={() =>
+                    cambioDeMes("aumentar", mesSeleccionado, añoSeleccionado)
+                  }
+                  className=" cursor-pointer hover:bg-neutral-200 p-1 rounded-lg"
+                >
+                  <NextMonth />
+                </span>
+              </div>
+            </div>
 
             <div className=" flex gap-4 overflow-x-scroll flex-shrink-0 mt-4 services-scroll">
               {diasDelMesSeleccionado &&
@@ -675,14 +805,26 @@ export default function Schedule() {
               <span className=" font-semibold">Total</span>
               <span className=" font-semibold">${servicio?.precio} MXN</span>
             </div>
-            <div className=" rounded-md mt-6 hover:bg-black/80   bg-black text-white flex justify-center items-center ">
-              <Link
-                className=" font-medium w-full h-full text-center py-2"
-                to={""}
-              >
-                Continuar
-              </Link>
-            </div>
+            {horaInicioBd && horaFinBd && fechaSeleccionada && idServicio ? (
+              <div className=" rounded-md mt-6 hover:bg-black/80   bg-black text-white flex justify-center items-center ">
+                <Link
+                  className=" font-medium w-full h-full text-center py-2"
+                  to={""}
+                >
+                  Continuar
+                </Link>
+              </div>
+            ) : (
+              <div className="rounded-md mt-6    bg-black/60 text-white flex justify-center items-center">
+                {" "}
+                <button
+                  className=" font-medium w-full h-full text-center py-2"
+                  type="button"
+                >
+                  Continuar
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
