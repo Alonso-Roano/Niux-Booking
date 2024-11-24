@@ -15,7 +15,7 @@ export default function Business() {
   const half = queryParams.get("half"); */
   const [promedioCalificacion, setPromedioCalificacion] = useState<number>();
   console.log(promedioCalificacion);
-  const diasSemana = [1, 2, 3, 4, 5, 6, 7];
+  const diasSemana = [0, 1, 2, 3, 4, 5, 6];
   const dias = [
     "Lunes",
     "Martes",
@@ -74,12 +74,12 @@ export default function Business() {
             );
             if (busquedaDia) {
               return {
-                dia: dias[day - 1],
+                dia: dias[day],
                 horaInicio: busquedaDia.horaInicio,
                 horaFin: busquedaDia.horaFin,
               };
             } else {
-              return { dia: dias[day - 1], horaInicio: "", horaFin: "" };
+              return { dia: dias[day], horaInicio: "", horaFin: "" };
             }
           })
         );
@@ -254,7 +254,7 @@ export default function Business() {
                     <div className="  flex items-center">
                       <Link
                         className=" border py-1 px-2 rounded-2xl bg-white  hover:bg-[#F5F5F6]"
-                        to={`/horario/${empresa.id}/${servicio?.id}`}
+                        to={`/horario/${slugEmpresa}/${servicio?.slug}`}
                       >
                         Reservar
                       </Link>
