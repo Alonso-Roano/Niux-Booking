@@ -573,56 +573,57 @@ export default function Schedule() {
         /*  console.log(fechaAumentada);
         console.log(mes);
         console.log(año); */
-      } else if (accion == "disminuir") {
-        // Sumar un mes
-        let fecha = new Date(`${añoProp}-${mesProp}-01 00:00:00.0000000`);
-        let fechaAumentada = new Date(fecha.setMonth(fecha.getMonth() - 1));
-        let mes = fechaAumentada.getMonth() + 1;
-        let año = fechaAumentada.getFullYear();
-
-        // Obtenemos el número de días en el mes elegido
-        const daysInMonth = new Date(año, mes, 0).getDate();
-
-        // Generamos un array con los días del mes (del 1 al último día)
-        let arrayMeses = Array.from(
-          { length: daysInMonth },
-          (_, index) => index + 1
-        );
-        const arrayFinal = arrayMeses.map((dia: any) => {
-          let diaDeLaSemana = new Date(
-            `${año}-${mes}-${dia} 00:00:00.0000000`
-          ).getDay();
-
-          let diaDeLaSemanaNombre = diasSemanaParaDate[diaDeLaSemana]; //viernes
-          let objeHorario = horarios.find(
-            (horario: any) => horario.dia === diaDeLaSemanaNombre
-            //{horaInicio,HoraFin}
-          );
-          return {
-            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
-            diaSemana: diaDeLaSemanaNombre,
-            dia: dia > 9 ? dia : parseInt("0" + dia),
-            horaInicio: objeHorario?.horaInicio,
-            horaFin: objeHorario?.horaFin,
-          };
-        });
-        console.log("meses");
-        console.log(arrayFinal);
-        setDiasDelMesSeleccionado(arrayFinal);
-        setMesSeleccionado(mes);
-        setAñoSeleccionado(año);
-        setFechaSeleccionada("");
-        setFechaPresentacion("");
-        setHoraInicio("");
-        setHoraFin("");
-        setHoraInicioBd("");
-        setHoraFinBd("");
-        setIntervalosDisponibles([]);
-        setContadorMes((prev: any) => prev - 1);
-        /*  console.log(fechaAumentada);
-          console.log(mes);
-          console.log(año); */
       }
+    }
+    if (accion == "disminuir") {
+      // Sumar un mes
+      let fecha = new Date(`${añoProp}-${mesProp}-01 00:00:00.0000000`);
+      let fechaAumentada = new Date(fecha.setMonth(fecha.getMonth() - 1));
+      let mes = fechaAumentada.getMonth() + 1;
+      let año = fechaAumentada.getFullYear();
+
+      // Obtenemos el número de días en el mes elegido
+      const daysInMonth = new Date(año, mes, 0).getDate();
+
+      // Generamos un array con los días del mes (del 1 al último día)
+      let arrayMeses = Array.from(
+        { length: daysInMonth },
+        (_, index) => index + 1
+      );
+      const arrayFinal = arrayMeses.map((dia: any) => {
+        let diaDeLaSemana = new Date(
+          `${año}-${mes}-${dia} 00:00:00.0000000`
+        ).getDay();
+
+        let diaDeLaSemanaNombre = diasSemanaParaDate[diaDeLaSemana]; //viernes
+        let objeHorario = horarios.find(
+          (horario: any) => horario.dia === diaDeLaSemanaNombre
+          //{horaInicio,HoraFin}
+        );
+        return {
+          fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+          diaSemana: diaDeLaSemanaNombre,
+          dia: dia > 9 ? dia : parseInt("0" + dia),
+          horaInicio: objeHorario?.horaInicio,
+          horaFin: objeHorario?.horaFin,
+        };
+      });
+      console.log("meses");
+      console.log(arrayFinal);
+      setDiasDelMesSeleccionado(arrayFinal);
+      setMesSeleccionado(mes);
+      setAñoSeleccionado(año);
+      setFechaSeleccionada("");
+      setFechaPresentacion("");
+      setHoraInicio("");
+      setHoraFin("");
+      setHoraInicioBd("");
+      setHoraFinBd("");
+      setIntervalosDisponibles([]);
+      setContadorMes((prev: any) => prev - 1);
+      /*  console.log(fechaAumentada);
+        console.log(mes);
+        console.log(año); */
     }
   };
   console.log(contadorMes);
