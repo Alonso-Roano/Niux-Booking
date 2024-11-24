@@ -267,6 +267,7 @@ export default function Schedule() {
                 /*    fecha: `${currentYear}-${mesCorrecto}-${
                 currentDayMonth > 9 ? currentDayMonth : "0" + currentDayMonth
               }`, */
+
                 fechaPresentacion: format(horaInicioFormato, "dddd DD MMMM"),
                 tiempoInicio: inicio,
                 tiempoFin: fin,
@@ -374,9 +375,150 @@ export default function Schedule() {
     setHoraInicioBd(horaInicioBD);
     setHoraFinBd(horaFinBD);
   };
-  const handleDiaSeleccionado = () => {
-    let fechaSeleccionada = new Date(`00:00:00.0000000`);
+  const handleDiaSeleccionado = async (datos: any) => {
+    let { fecha, horaInicio, horaFin, dia } = datos;
+    /*  let letFeSeleccionada = new Date(`${fecha} 00:00:00.0000000`); */
+    setFechaSeleccionada(fecha);
+    setFechaPresentacion("");
+    setHoraInicio("");
+    setHoraFin("");
+    setHoraInicioBd("");
+    setHoraFinBd("");
+    if (horaFin == "" && horaInicio == "") {
+      setIntervalosDisponibles([]);
+      console.log("supasdod");
+    } else {
+      let letHoraInicio = horaInicio;
+      let dateHoraInicio = new Date(letHoraInicio);
+      let horaInicioMinutos =
+        dateHoraInicio.getHours() * 60 + dateHoraInicio.getMinutes();
+
+      let letHoraFin = horaFin;
+      let dateHoraFin = new Date(letHoraFin);
+      let horaFinMinutos =
+        dateHoraFin.getHours() * 60 + dateHoraFin.getMinutes();
+
+      // Duración del servicio en minutos
+      let servicioMinutos = duracionServicio;
+      // Arreglo para guardar los intervalos válidos
+      let intervalosDisponibles = [];
+      // Iniciar desde horaInicioMinutos y avanzar de 15 en 15
+      let tiempoEvaluado = horaInicioMinutos;
+      while (tiempoEvaluado + servicioMinutos <= horaFinMinutos) {
+        // Calcular la hora de inicio y fin del intervalo actual
+        let inicio = tiempoEvaluado;
+        let fin = tiempoEvaluado + servicioMinutos;
+
+        // Convertir los minutos a formato de hora
+        let horaInicioFormato = new Date(
+          `${añoSeleccionado}-${mesSeleccionado}-${
+            dia > 9 ? dia : "0" + dia
+          } ${Math.floor(inicio / 60)}:${inicio % 60}:00.0000000`
+        );
+
+        let horaFinFormato = new Date(
+          `${añoSeleccionado}-${mesSeleccionado}-${
+            dia > 9 ? dia : "0" + dia
+          } ${Math.floor(fin / 60)}:${fin % 60}:00.0000000`
+        );
+
+        // Agregar el intervalo al arreglo
+        intervalosDisponibles.push({
+          /*    fecha: `${currentYear}-${mesCorrecto}-${
+          currentDayMonth > 9 ? currentDayMonth : "0" + currentDayMonth
+        }`, */
+
+          fechaPresentacion: format(horaInicioFormato, "dddd DD MMMM"),
+          tiempoInicio: inicio,
+          tiempoFin: fin,
+          horaInicio: format(horaInicioFormato, "h:mm a", "es"),
+          horaFin: format(horaFinFormato, "h:mm a", "es"),
+          horaInicioBD: `0001-01-01 ${Math.floor(inicio / 60)}:${
+            inicio % 60
+          }:00.0000000`,
+          horaFinBD: `0001-01-01 ${Math.floor(fin / 60)}:${
+            fin % 60
+          }:00.0000000`,
+        });
+
+        // Incrementar el tiempo evaluado en 15 minutos
+        tiempoEvaluado += 15;
+      }
+      //filtrar si la fecha seleccionada es igual a la fecha actual
+      if (fecha == fechaActual) {
+        let fechaAct = new Date();
+        let horaAct = fechaAct.getHours() * 60 + fechaAct.getMinutes();
+        const intervalosFiltrados = intervalosDisponibles.filter(
+          (intervalo) => intervalo.tiempoInicio > horaAct
+        );
+        intervalosDisponibles = intervalosFiltrados;
+      }
+      let idServi = idServicio;
+      let reActuales = [];
+      try {
+        const reservasActuales = await niuxApi.get(
+          `/Reserva/GetReservasByIdServicioAndFecha`,
+          {
+            params: {
+              idServicio: idServi,
+              fecha: fecha.toString(),
+            },
+          }
+        );
+        console.log("reservaciones actuales");
+        let rePreFormateados = reservasActuales.data.data;
+        let reActualesFormateados = rePreFormateados.map((reservacion: any) => {
+          let horaInicioDate = new Date(reservacion.horaInicio);
+          let horaInicioMinutos =
+            horaInicioDate.getHours() * 60 + horaInicioDate.getMinutes();
+          let horaFinDate = new Date(reservacion.horaFin);
+          let horaFinMinutos =
+            horaFinDate.getHours() * 60 + horaFinDate.getMinutes();
+          return {
+            ...reservacion,
+            horaInicioMinutos: horaInicioMinutos,
+            horaFinMinutos: horaFinMinutos,
+          };
+        });
+        reActuales = reActualesFormateados;
+        /*    console.log("reservacion formateados");
+      console.log(reActuales); */
+      } catch (error) {
+        console.log(error);
+      }
+      if (reActuales.length > 0) {
+        // Filtrar intervalos disponibles excluyendo los solapados
+        intervalosDisponibles = intervalosDisponibles.filter((intervalo) => {
+          return !reActuales.some((reservacion: any) => {
+            const inicioDisponible = intervalo.tiempoInicio;
+            const finDisponible = intervalo.tiempoFin;
+            const inicioReservado = reservacion.horaInicioMinutos;
+            const finReservado = reservacion.horaFinMinutos;
+
+            // Verificar si hay solapamiento
+            return !(
+              finDisponible <= inicioReservado ||
+              inicioDisponible >= finReservado
+            );
+          });
+        });
+      }
+
+      console.log("Intervalos disponibles:");
+      setIntervalosDisponibles(intervalosDisponibles);
+      console.log(intervalosDisponibles);
+    }
+    console.log(datos);
+
+    let letFechaSeleccionada = new Date(`${fecha} 00:00:00.0000000`);
+    let letFechaSeleccionadaFormato = format(
+      letFechaSeleccionada,
+      "YYYY-MM-DD",
+      "es"
+    );
+    console.log(fecha);
   };
+  console.log(horarios);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -405,6 +547,7 @@ export default function Schedule() {
                     return (
                       <span
                         key={dia.fecha}
+                        onClick={() => handleDiaSeleccionado({ ...dia })}
                         className={`hover:cursor-pointer font-medium text-xl flex-shrink-0 h-16 w-16 rounded-full flex justify-center items-center p-4  ${
                           dia.fecha === fechaSeleccionada
                             ? "bg-[#7B6FCC] text-white hover:bg-[#5448A1]"
@@ -419,23 +562,45 @@ export default function Schedule() {
                 })}
             </div>
             <div className=" flex flex-col gap-4 mt-8 lg:mr-10 mr-5">
-              {intervalosDisponibles
-                ? intervalosDisponibles.map((intervalo: any, index: any) => (
-                    <span
-                      onClick={() =>
-                        handleIntervaloSeleccionado({ ...intervalo })
+              {intervalosDisponibles && intervalosDisponibles.length > 0 ? (
+                intervalosDisponibles.map((intervalo: any, index: any) => (
+                  <span
+                    onClick={() =>
+                      handleIntervaloSeleccionado({ ...intervalo })
+                    }
+                    key={index}
+                    className={` text-start  cursor-pointer focus:ring-2 focus:ring-[#7B6FCC] rounded-md border p-4  hover:bg-[#F5F5F6]   text-lg mb-2 ${
+                      horaInicio == intervalo.horaInicio
+                        ? "border-[#7B6FCC] border-2 "
+                        : ""
+                    }`}
+                  >
+                    {intervalo.horaInicio}
+                  </span>
+                ))
+              ) : (
+                <div className=" min-h-[400px] border rounded-lg flex flex-col gap-3 justify-center items-center">
+                  <div className=" h-12 w-12 mb-1">
+                    <img
+                      src={
+                        empresa && empresa.foto ? empresa.foto : GeneralBusiness
                       }
-                      key={index}
-                      className={` text-start  cursor-pointer focus:ring-2 focus:ring-[#7B6FCC] rounded-md border p-4  hover:bg-[#F5F5F6]   text-lg mb-2 ${
-                        horaInicio == intervalo.horaInicio
-                          ? "border-[#7B6FCC] border-2 "
-                          : ""
-                      }`}
-                    >
-                      {intervalo.horaInicio}
+                      alt=""
+                      className=" rounded-full object-cover h-full w-full"
+                    />
+                  </div>
+                  <div>
+                    <span className=" font-medium text-xl">
+                      Sin citas disponibles para esta fecha
                     </span>
-                  ))
-                : null}
+                  </div>
+                  <div>
+                    <span className=" text-neutral-500 font-medium ">
+                      {fechaSeleccionada && fechaSeleccionada}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
