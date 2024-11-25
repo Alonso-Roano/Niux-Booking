@@ -150,13 +150,21 @@ export default function Schedule() {
           const busquedaDia = responseHorarios.data.find(
             (horario: any) => horario.dia === day
           );
-
-          return {
-            activo: busquedaDia.activo,
-            dia: dias[day],
-            horaInicio: busquedaDia.horaInicio,
-            horaFin: busquedaDia.horaFin,
-          };
+          if (busquedaDia) {
+            return {
+              activo: busquedaDia.activo,
+              dia: dias[day],
+              horaInicio: busquedaDia.horaInicio,
+              horaFin: busquedaDia.horaFin,
+            };
+          } else {
+            return {
+              activo: false,
+              dia: dias[day],
+              horaInicio: "",
+              horaFin: "",
+            };
+          }
         });
         console.log("hor trans");
 
@@ -210,25 +218,13 @@ export default function Schedule() {
             (horario) => horario.dia === diaDeLaSemanaNombre
             //{horaInicio,HoraFin}
           );
-          if (objeHorario) {
-            return {
-              activo: objeHorario?.activo,
-              fecha: `${currentYear}-${mesCorrecto}-${
-                dia > 9 ? dia : "0" + dia
-              }`,
-              diaSemana: diaDeLaSemanaNombre,
-              dia: dia > 9 ? dia : parseInt("0" + dia),
-              horaInicio: objeHorario?.horaInicio,
-              horaFin: objeHorario?.horaFin,
-            };
-          }
           return {
-            activo: false,
+            activo: objeHorario?.activo,
             fecha: `${currentYear}-${mesCorrecto}-${dia > 9 ? dia : "0" + dia}`,
             diaSemana: diaDeLaSemanaNombre,
             dia: dia > 9 ? dia : parseInt("0" + dia),
-            horaInicio: "",
-            horaFin: "",
+            horaInicio: objeHorario?.horaInicio,
+            horaFin: objeHorario?.horaFin,
           };
         });
         console.log("meses");
@@ -242,7 +238,7 @@ export default function Schedule() {
         );
         if (objetoFechaSeleccionado) {
           if (
-            objetoFechaSeleccionado.activo === false
+            objetoFechaSeleccionado.activo == false
             /*   objetoFechaSeleccionado.horaFin == "" &&
             objetoFechaSeleccionado.horaInicio == "" */
           ) {
@@ -420,7 +416,7 @@ export default function Schedule() {
     setHoraFin("");
     setHoraInicioBd("");
     setHoraFinBd("");
-    if (activo === false) {
+    if (activo == false) {
       setIntervalosDisponibles([]);
       console.log("supasdod");
     } else {
@@ -623,15 +619,25 @@ export default function Schedule() {
           (horario: any) => horario.dia === diaDeLaSemanaNombre
           //{horaInicio,HoraFin}
         );
-
-        return {
-          activo: objeHorario.activo,
-          fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
-          diaSemana: diaDeLaSemanaNombre,
-          dia: dia > 9 ? dia : parseInt("0" + dia),
-          horaInicio: objeHorario?.horaInicio,
-          horaFin: objeHorario?.horaFin,
-        };
+        if (objeHorario) {
+          return {
+            activo: objeHorario.activo,
+            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+            diaSemana: diaDeLaSemanaNombre,
+            dia: dia > 9 ? dia : parseInt("0" + dia),
+            horaInicio: objeHorario?.horaInicio,
+            horaFin: objeHorario?.horaFin,
+          };
+        } else {
+          return {
+            activo: false,
+            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+            diaSemana: diaDeLaSemanaNombre,
+            dia: dia > 9 ? dia : parseInt("0" + dia),
+            horaInicio: "",
+            horaFin: "",
+          };
+        }
       });
       console.log("meses");
       console.log(arrayFinal);
