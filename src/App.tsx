@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import ProtectedRouteHome from "./services/ProtectedHome";
 import DetallesReserva from "./pages/DetallesReserva";
 import Schedule from "./pages/Schedule";
+import { EditEmpresa } from "./components/EditEmpresa";
 
 function App() {
   return (
@@ -75,6 +76,15 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["Cliente"]}>
               <DetallesReserva />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/Editar/Empresa"
+          element={
+            <ProtectedRoute allowedRoles={["Socio"]}>
+              <EditEmpresa />
             </ProtectedRoute>
           }
         />
