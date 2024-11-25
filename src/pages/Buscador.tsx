@@ -12,13 +12,13 @@ import Search from "../svgs/Search";
 import { debounce } from "lodash";
 
 export default function Buscador() {
-    const skeletons = [1, 2, 3, 4, 5];
+    const skeletons = [1, 2, 3];
     const [empresas, setEmpresas] = useState<any[]>([]);
     const [visibleEmpresas, setVisibleEmpresas] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [filterText, setFilterText] = useState<string>("");
-    const ITEMS_PER_LOAD = 6; // Cantidad inicial de elementos.
-    const ITEMS_INCREMENT = 3; // Incremento al cargar más.
+    const ITEMS_PER_LOAD = 3;
+    const ITEMS_INCREMENT = 3;
 
     useEffect(() => {
         const fetchingData = async () => {
@@ -45,15 +45,15 @@ export default function Buscador() {
         const bottom =
             window.innerHeight + window.scrollY >= document.documentElement.offsetHeight - 50;
     
-        if (bottom && !isLoading) {
+        if (bottom && isLoading) {
             setIsLoading(true);
             const nextItems = empresas.slice(
                 visibleEmpresas.length,
                 visibleEmpresas.length + ITEMS_INCREMENT
             );
             setVisibleEmpresas((prev) => [...prev, ...nextItems]);
-            setIsLoading(false);
-        }
+            
+        }else{setIsLoading(false);}
     }, 200);
 
     useEffect(() => {
@@ -169,9 +169,6 @@ export default function Buscador() {
                         )}
                     </div>
                 </section>
-                <div className="flex justify-center py-4">
-                            <div className="loader"></div>
-                        </div>
                 {isLoading && (
                         <div className="flex justify-center py-4">
                             <div className="loader"></div>
