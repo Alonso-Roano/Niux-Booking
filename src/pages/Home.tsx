@@ -73,11 +73,13 @@ export default function Home() {
 
       try {
         const responseResenia = await niuxApi.get("/Resena");
+
         const fetchingClient = responseResenia.data.data.map(
           async (resenia: IResenia) => {
             const clienteResponse = await niuxApi.get(
               `/Cliente/${resenia.idCliente}`
             );
+
             return { ...resenia, cliente: clienteResponse.data.data };
           }
         );
