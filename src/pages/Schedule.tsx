@@ -1,6 +1,6 @@
 import Star from "../svgs/Star";
 import { format } from "@formkit/tempo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/components/Business.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -11,6 +11,7 @@ import Calendar from "../svgs/Calendar";
 import Watch from "../svgs/Watch";
 import NextMonth from "../svgs/NextMonth";
 import PreviousMonth from "../svgs/PreviousMonth";
+import Header from "../components/Header";
 interface IServicio {
   titulo: string;
   precio: number;
