@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { niuxApi } from "../api/niuxApi";
 import { useAuthStore } from "../stores/auth/authStore";
 import Utils from "../functions/Utils";
+import Footer from "../components/Footer";
 
 interface Reserva {
   idReserva: number;
@@ -125,7 +126,7 @@ const ClienteReservacion: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="flex justify-center items-center bg-gray-100 py-8 ">
+      <div className="flex justify-center  bg-gray-100 py-8 min-h-screen">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Card Historial */}
           <div className="bg-white shadow-md rounded-lg p-4">
@@ -212,6 +213,7 @@ const ClienteReservacion: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
