@@ -1,6 +1,6 @@
 {
   "dashboard": {
-    "name": "Dashboard",
+    "name": "Dashboard Admin",
     "graficas": [
       {
         "name": "Ventas",
@@ -27,7 +27,7 @@
         "numeroBarras":10,
         "type":"spark",
         "tipo":"clientes",
-        "total":"totalClientesEmpresa"
+        "total":"totalClientes"
       },
       {
         "name": "Reservas",
@@ -37,15 +37,33 @@
         "type":"line",
         "tipo":"reservas",
         "total":"totalReservas"
+      },
+      {
+        "name": "Empresas",
+        "url": "https://dummyjson.com/carts",
+        "opcion": "company",
+        "numeroBarras":10,
+        "type":"spark",
+        "tipo":"empresas",
+        "total":"totalEmpresas"
+      },
+      {
+        "name": "Categorias",
+        "url": "https://dummyjson.com/carts",
+        "opcion": "tag",
+        "numeroBarras":10,
+        "type":"line",
+        "tipo":"categorias",
+        "total":"totalCategorias"
       }
     ]
   },
   "service": {
     "name": "Servicios",
-    "add": "addService.json",
-    "edit": "editService.json",
+    "add": "addServiceAdmin.json",
+    "edit": "editServiceAdmin.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "Servicio/Empresa/{}",
+    "getURL": "Servicio/GetServiciosTodasEmpresas",
     "response": "products",
     "delete": {
       "deleteURL": "Servicio/",
@@ -66,8 +84,8 @@
   "clients": {
     "name": "Clientes",
     "add": "addClient.json",
-    "viewTitle": "Detalle del servicio",
-    "getURL": "ClienteEmpresa/ListaDeClientesPorEmpresa/{}",
+    "viewTitle": "Detalle de los usuarios",
+    "getURL": "ClienteEmpresa/ListaDeClientes",
     "response": "products",
     "delete": {
       "deleteURL": "ClienteEmpresa/",
@@ -87,10 +105,10 @@
   },
   "sales": {
     "name": "Ventas",
-    "add": "addSale.json",
-    "edit": "editSale.json",
+    "add": "addSaleAdmin.json",
+    "edit": "editSaleAdmin.json",
     "viewTitle": "Detalle del servicio",
-    "getURL": "Pago/ListaPagos/{}",
+    "getURL": "Pago/ListaPagos",
     "response": "products",
     "delete": {
       "deleteURL": "Pago/",
@@ -131,6 +149,49 @@
       "hasta": 6
     }
   },
-  "company":{},
-  "tag":{}
+  "company":{
+    "name": "Empresas",
+    "viewTitle": "Detalle del servicio",
+    "getURL": "Empresa/AllEmpresasDashboard",
+    "edit": "editCompany.json",
+    "response": "products",
+    "delete": {
+      "deleteURL": "Reserva/",
+      "mensaje": "¡Servicio borrado con exito!",
+      "mensajeConfirm": "¿Desea eliminar el servicio?"
+    },
+    "puede": {
+      "leer": true,
+      "pay": false,
+      "update": true,
+      "delete": true
+    },
+    "cantidad": {
+      "desde": 0,
+      "hasta": 6
+    }
+  },
+  "tag":{
+    "name": "Categorias",
+    "add": "addTag.json",
+    "edit": "editTag.json",
+    "viewTitle": "Detalle de categoria",
+    "getURL": "Categoria",
+    "response": "products",
+    "delete": {
+      "deleteURL": "Categoria/",
+      "mensaje": "¡Categoria borrada con exito!",
+      "mensajeConfirm": "¿Desea eliminar la categoria?"
+    },
+    "puede": {
+      "leer": true,
+      "pay": false,
+      "update": true,
+      "delete": true
+    },
+    "cantidad": {
+      "desde": 0,
+      "hasta": 6
+    }
+  }
 }

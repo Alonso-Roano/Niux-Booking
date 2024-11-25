@@ -5,21 +5,32 @@ import OffCanvas from "./OffCanvas";
 import Requests from "../functions/Requests";
 import View from "./View";
 import Edit from "./Edit";
+import RegistroDash from "../components/RegistroDash";
 
 function DashCrud({ data }: any) {
     const [addOpen, setAddOpen] = useState(false);
+    const [registerOpen, setRegisterOpen] = useState(false);
     const [viewOpen, setViewOpen] = useState(false);
     const [editOpen, setEditOpen] = useState(false);
     const [paramsView, setParamsView] = useState({});
+    const [tipo, setTipo] = useState({});
     const [body, setBody] = useState({});
     const [render, setRender] = useState(false)
 
-    useEffect(()=>{if(!addOpen || !editOpen ) setRender(!render)},[addOpen, editOpen])
+    useEffect(() => { if (!addOpen || !editOpen || !registerOpen) setRender(!render) }, [addOpen, editOpen, registerOpen])
 
     const helper = (type: string, params?: any) => {
         switch (type) {
             case "Add":
                 showAdd();
+                break;
+            case "RegistrarSocio":
+                setTipo("socio")
+                showRegister();
+                break;
+            case "RegistrarCliente":
+                setTipo("cliente")
+                showRegister();
                 break;
             case "Delete":
                 new Requests.Delete(`${data.delete.deleteURL + params.id}`)
@@ -46,6 +57,10 @@ function DashCrud({ data }: any) {
         setAddOpen(true);
     };
 
+    const showRegister = () => {
+        setRegisterOpen(true);
+    };
+
     const actions = {
         pagar: data.puede.pay,
         actualizar: data.puede.update,
@@ -59,6 +74,9 @@ function DashCrud({ data }: any) {
                 <Tables url={data.getURL} name={data.name} can={actions} helper={helper} cantidad={{ de: data.cantidad.desde, hasta: data.cantidad.hasta }} render={render} />
             </div>
 
+            <OffCanvas toggleDrawer={setRegisterOpen} drawerOpen={registerOpen}>
+                {registerOpen && <RegistroDash tipoUsuario={tipo} setClose={setRegisterOpen}/>}
+            </OffCanvas>
             <OffCanvas toggleDrawer={setAddOpen} drawerOpen={addOpen}>
                 <Add data={data.add} setClose={setAddOpen}></Add>
             </OffCanvas>

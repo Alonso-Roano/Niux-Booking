@@ -12,6 +12,13 @@ interface DataProps {
     editDatos?: { [key: string]: any };
 }
 
+const extractTimeFromISO = (isoString: string): string => {
+    if(isoString){
+    const timePart = isoString.split("T")[1];
+    return timePart ? timePart.slice(0, 5) : "00:00";}
+    return "14:00";
+};
+
 const convertTo24HourFormat = (time: string): string => {
     const [hourMinute, meridian] = time.split(" ");
     let [hours, minutes] = hourMinute.split(":").map(Number);
@@ -58,7 +65,10 @@ function TimeSelector({
             return options;
         };
 
-        const generatedOptions = generateTimeOptions(startHour, endHour);
+        const formattedStartHour = extractTimeFromISO(startHour);
+        const formattedEndHour = extractTimeFromISO(endHour);
+
+        const generatedOptions = generateTimeOptions(formattedStartHour, formattedEndHour);
         setTimeOptions(generatedOptions);
 
         if (generatedOptions.length > 0) {
@@ -102,7 +112,6 @@ function TimeSelector({
     return (
         <>
         <FormControl fullWidth error={Boolean(errors[data.name])}>
-            
             <InputLabel id="time-select-label" sx={{ marginTop: 2, marginLeft: -2 }}>
                 {Boolean(errors[data.name]) ? data.errorContent : data.label}
             </InputLabel>
@@ -119,7 +128,6 @@ function TimeSelector({
                     </MenuItem>
                 ))}
             </Select>
-            
         </FormControl>
         </>
     );

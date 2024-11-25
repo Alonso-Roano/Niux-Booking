@@ -39,7 +39,7 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
     }, [bodyDatos, setBody]);
 
     const numImagenes = bodyDatos?.imagenes?.length || 0;
-    const inputsFaltantes = Math.max(3 - numImagenes, 0);
+    const inputsFaltantes = bodyDatos?.foto ? 0: Math.max(data.length - numImagenes, 0);
 
     const enviar = () =>{
         if(img.Archivo){
@@ -54,8 +54,9 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
             }
         });
 
+        console.log(data)
         // Enviar la solicitud utilizando el FormData
-        new Requests.Put("ImagenServicio/ActualizarImagenServicio", formData)
+        new Requests.Put(data[0].url, formData)
             .SetClose(setEditImg)
             .Mensaje("Se ha editado la imagen")
             .SetBody(setImg)
@@ -65,7 +66,7 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
     }
 
     return (
-        <div className="inputsContainer">
+        <div className="inputsContainer inputFile">
             {/* Renderizar imágenes si existen en bodyDatos */}
             {bodyDatos?.imagenes?.length > 0 && (
                 <div className="imagenesContainer">
@@ -85,6 +86,22 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
                     </div>
                 </div>
             )}
+            {bodyDatos?.foto && (
+                <div className="imagenesContainer">
+                    <Typography variant="h6">Imágenes cargadas:</Typography>
+                    <div className="imagenesGrid">
+                            <div className="imagenCard">
+                                <img
+                                    src={import.meta.env.VITE_BACKEND_API+bodyDatos.foto}
+                                    alt={`Imagen`}
+                                />
+                                <span className="icon" tabIndex={1} onClick={()=>{setEditImg(!editImg); setImg({url:import.meta.env.VITE_BACKEND_API+bodyDatos.foto, IdEmpresa:bodyDatos.id})}}>
+                                    <Update/>
+                                </span>
+                            </div>
+                    </div>
+                </div>
+            )}
             <OffCanvas drawerOpen={editImg} toggleDrawer={setEditImg}>
                 <div>
                     <h5 className="titleDrawer">Editar Imagen</h5>
@@ -95,6 +112,7 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
                         >
                             <input
                                 type="file"
+                                accept=".jpg,.jpeg,.png,.gif"
                                 style={{ display: "none" }}
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
@@ -142,7 +160,7 @@ function InputsFile({ data, setBody, body, errors, bodyDatos }: DataProps) {
                         >
                             <input
                                 {...inputProp}
-                                type="file"
+                                type="file"                                
                                 style={{ display: "none" }}
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
