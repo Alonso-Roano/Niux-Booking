@@ -14,6 +14,7 @@ import DetallesReserva from "./pages/DetallesReserva";
 import Schedule from "./pages/Schedule";
 import { EditEmpresa } from "./components/EditEmpresa";
 import Buscador from "./pages/Buscador";
+import PageNotFound from "./pages/404";
 
 function App() {
   return (
@@ -97,6 +98,7 @@ function App() {
               <Buscador />
           }
         />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
   );
