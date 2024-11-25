@@ -238,7 +238,7 @@ export default function Schedule() {
         );
         if (objetoFechaSeleccionado) {
           if (
-            objetoFechaSeleccionado.activo == false
+            objetoFechaSeleccionado.activo === false
             /*   objetoFechaSeleccionado.horaFin == "" &&
             objetoFechaSeleccionado.horaInicio == "" */
           ) {
@@ -416,7 +416,7 @@ export default function Schedule() {
     setHoraFin("");
     setHoraInicioBd("");
     setHoraFinBd("");
-    if (activo == false) {
+    if (activo === false) {
       setIntervalosDisponibles([]);
       console.log("supasdod");
     } else {
