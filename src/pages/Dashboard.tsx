@@ -5,7 +5,6 @@ import DashboardIcon from "../svgs/Dashboard";
 import Service from "../svgs/Service";
 import Client from "../svgs/Client";
 import Sale from "../svgs/Sale";
-import Reservation from "../svgs/Reservation";
 import Tooltip, { TooltipProps } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import data from "../json/dashboardAdmin.json";
@@ -61,13 +60,6 @@ function Dashboard() {
         <CustomTooltip title="Ventas" arrow placement="right">
         <Button onClick={() => setOpcion(data.sales)}>
             <Sale />
-          </Button>
-        </CustomTooltip>
-      </ListItem>
-      <ListItem>
-        <CustomTooltip title="Reservaciones" arrow placement="right">
-          <Button>
-            <Reservation />
           </Button>
         </CustomTooltip>
       </ListItem>
