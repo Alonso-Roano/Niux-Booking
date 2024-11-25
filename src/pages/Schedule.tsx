@@ -408,7 +408,7 @@ export default function Schedule() {
     /*  let letFeSeleccionada = new Date(`${fecha} 00:00:00.0000000`); */
     setFechaSeleccionada(fecha);
     console.log("dis");
-
+    console.log("MOSTRANDO DATOS");
     console.log(datos);
 
     setFechaPresentacion("");
@@ -568,13 +568,27 @@ export default function Schedule() {
             (horario: any) => horario.dia === diaDeLaSemanaNombre
             //{horaInicio,HoraFin}
           );
-          return {
-            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
-            diaSemana: diaDeLaSemanaNombre,
-            dia: dia > 9 ? dia : parseInt("0" + dia),
-            horaInicio: objeHorario?.horaInicio,
-            horaFin: objeHorario?.horaFin,
-          };
+          if(objeHorario){
+            return {
+              activo:objeHorario.activo,
+              fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+              diaSemana: diaDeLaSemanaNombre,
+              dia: dia > 9 ? dia : parseInt("0" + dia),
+              horaInicio: objeHorario?.horaInicio,
+              horaFin: objeHorario?.horaFin,
+            };
+          }
+          else{
+            return {
+              activo:false,
+              fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+              diaSemana: diaDeLaSemanaNombre,
+              dia: dia > 9 ? dia : parseInt("0" + dia),
+              horaInicio: "",
+              horaFin: "",
+            };
+          }
+          
         });
         console.log("meses");
         console.log(arrayFinal);
@@ -619,13 +633,25 @@ export default function Schedule() {
           (horario: any) => horario.dia === diaDeLaSemanaNombre
           //{horaInicio,HoraFin}
         );
-        return {
-          fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
-          diaSemana: diaDeLaSemanaNombre,
-          dia: dia > 9 ? dia : parseInt("0" + dia),
-          horaInicio: objeHorario?.horaInicio,
-          horaFin: objeHorario?.horaFin,
-        };
+        if (objeHorario) {
+          return {
+            activo: objeHorario.activo,
+            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+            diaSemana: diaDeLaSemanaNombre,
+            dia: dia > 9 ? dia : parseInt("0" + dia),
+            horaInicio: objeHorario?.horaInicio,
+            horaFin: objeHorario?.horaFin,
+          };
+        } else {
+          return {
+            activo: false,
+            fecha: `${año}-${mes}-${dia > 9 ? dia : "0" + dia}`,
+            diaSemana: diaDeLaSemanaNombre,
+            dia: dia > 9 ? dia : parseInt("0" + dia),
+            horaInicio: "",
+            horaFin: "",
+          };
+        }
       });
       console.log("meses");
       console.log(arrayFinal);

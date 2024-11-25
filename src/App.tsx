@@ -13,6 +13,7 @@ import ProtectedRouteHome from "./services/ProtectedHome";
 import DetallesReserva from "./pages/DetallesReserva";
 import Schedule from "./pages/Schedule";
 import { EditEmpresa } from "./components/EditEmpresa";
+import ClienteReservacion from "./pages/ClienteReservacion";
 import Buscador from "./pages/Buscador";
 import PageNotFound from "./pages/404";
 
@@ -91,7 +92,14 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+<Route
+          path="/reservaciones"
+          element={
+            <ProtectedRoute allowedRoles={["Cliente"]}>
+              <ClienteReservacion />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/Buscador"
           element={

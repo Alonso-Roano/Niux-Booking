@@ -65,13 +65,14 @@ export default function Buscador() {
 
     const filteredEmpresas = visibleEmpresas.filter((empresa: any) => {
         const filterTextLower = filterText.toLowerCase();
-        const matchNombreEmpresa = empresa.nombreEmpresa.toLowerCase().includes(filterTextLower);
-        const matchCategoria = empresa.nombreCategoria.toLowerCase().includes(filterTextLower);
+    
+        const matchNombreEmpresa = empresa.nombreEmpresa?.toLowerCase().includes(filterTextLower) || false;
+        const matchCategoria = empresa.nombreCategoria?.toLowerCase().includes(filterTextLower) || false;
         const matchServicios = empresa.servicios.some((servicio: any) =>
-            servicio.titulo.toLowerCase().includes(filterTextLower) ||
-            servicio.descripcion.toLowerCase().includes(filterTextLower)
+            (servicio.titulo?.toLowerCase().includes(filterTextLower) ||
+            servicio.descripcion?.toLowerCase().includes(filterTextLower)) || false
         );
-
+    
         return matchNombreEmpresa || matchCategoria || matchServicios;
     });
     return (
