@@ -1,7 +1,8 @@
 {
-    "title": "Agregar Servicio",
-    "url":"Servicio/CrearServicio",
-    "imageUrl":"ImagenServicio/SubirImagen",
+    "title":"Editar Servicio",
+    "url":"Servicio/ActualizarServicio",
+    "urlCrear":"ImagenServicio/SubirImagen",
+    "imageUrl":"ImagenServicio/ActualizarImagenServicio",
     "input": [
         {
             "props": {
@@ -92,11 +93,19 @@
             "className": "css",
             "cantWrite": "",
             "labelContent": "Agregar imagen",
-            "otherLabelContent": "Imagen agregada",
             "errorContent":"Inserte al menos una imagen",
+            "otherLabelContent": "Imagen agregada",
             "labelCss": "css"
         }
     ],
+    "selectEmpresa":{
+        "apiUrl":"Empresa",
+        "valueField":"id",
+        "labelField":"nombre",
+        "name":"idEmpresa",
+        "label":"Selecciona una empresa",
+        "errorContent":"Debe seleccionar una empresa"
+    },
     "buttons": [
         {
             "props": {
@@ -106,8 +115,7 @@
                 "label": "Guardar",
                 "className": "button-guardar"
             },
-            "onClickId": "guardarServicio"
+            "onClickId": "editarServicio"
         }
     ]
 }
-

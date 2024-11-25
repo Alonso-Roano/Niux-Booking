@@ -1,15 +1,13 @@
-import { BarChart } from '@mui/x-charts';
+import { LineChart } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
 import Requests from '../functions/Requests';
-import pureData from '../json/dashboardEmpresa.json'
-import { useAuthStore } from '../stores/auth/authStore';
+import pureData from '../json/dashboardAdmin.json';
 import Utils from '../functions/Utils';
 
-function Grafica({ data, setOpcion }: any) {
+function GraficaLineChartAdmin({ data, setOpcion }: any) {
   const [datos, setDatos] = useState<any>(false);
   const [objeto, setObjeto] = useState<any>(false);
   const [shadow, setShadow] = useState({ x: 0, y: 0 });
-  const {user} = useAuthStore();
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -38,7 +36,7 @@ function Grafica({ data, setOpcion }: any) {
   }, [datos]);
 
   useEffect(() => {
-    Requests.Get(`Empresa/DatosGraficas/${user?.idEmpresa}`, setDatos);
+    Requests.Get(`Estadisticas/GetDatosDashboard`, setDatos);
   }, []);
 
   const processDataForChart = (carts: any[]) => {
@@ -50,11 +48,9 @@ function Grafica({ data, setOpcion }: any) {
 
   const chartData = datos ? processDataForChart(datos.data[data["tipo"]]) : { xAxisData: [], seriesData: [] };
 
-  const colors = ['#02b2af', '#2e96ff', '#8FBCFF', '#7B6FCC', '#b800d8'];
-
   const handleClick = () => {
     const opcion = data.opcion;
-    
+
     if (opcion in pureData) {
       setOpcion(pureData[opcion as keyof typeof pureData]);
     } else {
@@ -63,51 +59,48 @@ function Grafica({ data, setOpcion }: any) {
   };
 
   return (
-    <article 
-        className="cardGrafica" 
-        onClick={handleClick}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-            boxShadow: `${shadow.x}px ${shadow.y}px 7px rgba(0, 0, 0, 0.2)`,
-            transition: "box-shadow 0.2s ease",
-        }}
+    <article
+      className="cardGrafica"
+      onClick={handleClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        boxShadow: `${shadow.x}px ${shadow.y}px 7px rgba(0, 0, 0, 0.2)`,
+        transition: "box-shadow 0.2s ease",
+      }}
     >
       <h2>{data.name}</h2>
       {datos && <h3>{objeto}</h3>}
       {datos ? (
         chartData.seriesData.length > 0 ? (
-          <BarChart
-            series={[
-              {
-                data: chartData.seriesData,
-                type: 'bar',
-              },
-            ]}
-            height={200}
-            xAxis={[
-              {
-                data: chartData.xAxisData,
-                scaleType: 'band',
-                colorMap: {
-                  type: 'ordinal',
-                  colors: colors,
-                },
-              },
-            ]}
-            margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-          />
-        ) : (
-          <div className='noData'><p>Datos aún no agregados</p></div>
-          
-        )
+        <LineChart
+          series={[
+            {
+              data: chartData.seriesData,
+              type: 'line',
+            },
+          ]}
+          height={200}
+          xAxis={[
+            {
+              data: chartData.xAxisData,
+              scaleType: 'band',
+            },
+          ]}
+          margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+          grid={{ vertical: true, horizontal: true }}
+        />
       ) : (
-        <div className='loaderContent'>
-          <div className='loader'></div>
+        <div className='noData'><p>Datos aún no agregados</p></div>
+        
+      )
+      ) : (
+        <div className="loaderContent">
+          <div className="loader"></div>
         </div>
       )}
     </article>
   );
 }
 
-export default Grafica;
+export default GraficaLineChartAdmin;

@@ -62,6 +62,7 @@ function GraficaPieChart({ data, setOpcion }: any) {
       <h2>{data.name}</h2>
       {datos && <h3>{datos.total}</h3>}
       {datos ? (
+        chartData.length > 0 ? (
         <PieChart
           colors={colorsPalette}
           series={[
@@ -71,6 +72,10 @@ function GraficaPieChart({ data, setOpcion }: any) {
           ]}
           height={200}
         />
+      ) : (
+        <div className='noData'><p>Datos aún no agregados</p></div>
+        
+      )
       ) : (
         <div className="loaderContent">
           <div className="loader"></div>

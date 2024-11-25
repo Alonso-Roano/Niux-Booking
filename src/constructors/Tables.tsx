@@ -18,13 +18,27 @@ interface ApiData {
 
 type Order = 'asc' | 'desc';
 
-function descendingComparator(a: any, b: any, orderBy: string) {
-    if (typeof a[orderBy] === 'number' && typeof b[orderBy] === 'number') {
-        return b[orderBy] - a[orderBy];
+function descendingComparator(a: any, b: any, orderBy: string | null) {
+    const key = orderBy || "";
+
+    if (!key) {
+        return 0;
+    }
+
+    const aValue = a[key];
+    const bValue = b[key];
+
+    if (aValue == null && bValue == null) return 0;
+    if (aValue == null) return -1; 
+    if (bValue == null) return 1;
+
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return bValue - aValue;
     } else {
-        return b[orderBy].toString().localeCompare(a[orderBy].toString());
+        return bValue.toString().localeCompare(aValue.toString());
     }
 }
+
 
 function getComparator(
     order: Order,
@@ -63,8 +77,10 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
     const [filterText, setFilterText] = useState('');
     const [hasError, setHasError] = useState(false);
     const { user } = useAuthStore();
+    const EstatusPago = ["Rechazado", "Aprobado", "No pagado", "Pago cancelado"]
 
     useEffect(() => {
+        setFilterText('');
         const fetchData = async () => {
             try {
                 if (url.endsWith("{}")) {
@@ -73,19 +89,28 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                 }
                 const response = await niuxApi.get(url);
                 let data = response.data;
-        
+    
                 if (data.data == null) data = { data: data };
                 setColumns([]);
-        
+    
                 if (data.data.data !== null) {
                     const displayColumns =
                         data.data.length > 0
                             ? Object.keys(data.data[0])
-                                  .filter((key) => key !== "id" && key !== "idEmpresa" && key !== "imagenes" && key !== "isDeleted" && key !== "idServicio" && (key !== "idReserva") && (key !== "idCliente"))
+                                  .filter((key) => 
+                                      key !== "id" && key !== "idEmpresa" && key !== "imagenes" && key !== "isDeleted" && 
+                                      key !== "idServicio" && key !== "idReserva" && key !== "idCliente" && 
+                                      key !== "slug" && key !== "slugEmpresa" && key !== "foto" && 
+                                      key !== "idCategoria" && key !== "idDireccion" && key !== "idSocio")
                                   .slice(cantidad.de, cantidad.hasta)
                             : [];
-                    setColumns(displayColumns);
-        
+    
+                    const reorderedColumns = displayColumns.includes("nombre")
+                        ? ["nombre", ...displayColumns.filter((key) => key !== "nombre")]
+                        : displayColumns;
+    
+                    setColumns(reorderedColumns);
+    
                     const formatDate = (dateStr: string) => {
                         const date = new Date(dateStr);
                         const day = date.getDate().toString().padStart(2, '0');
@@ -93,61 +118,61 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                         const year = date.getFullYear();
                         return `${day}/${month}/${year}`;
                     };
-        
+    
                     const formatTime = (timeStr: string): string => {
-                        // Extraer la hora completa (hh:mm:ss) desde el formato ISO
-                        const timePart = timeStr.split("T")[1].split(":"); // Obtiene ["09", "00", "00"]
-                        const hour = parseInt(timePart[0]); // Convierte la hora a número
-                        const minutes = timePart[1]; // Minutos como cadena
-                    
-                        // Determinar si es AM o PM
+                        const timePart = timeStr.split("T")[1].split(":");
+                        const hour = parseInt(timePart[0]);
+                        const minutes = timePart[1];
+    
                         const isPM = hour >= 12;
-                        const formattedHour = hour % 12 || 12; // Convertir a formato de 12 horas
-                        const formattedMinutes = minutes.padStart(2, '0'); // Asegurar que los minutos sean siempre de 2 dígitos
-                    
+                        const formattedHour = hour % 12 || 12;
+                        const formattedMinutes = minutes.padStart(2, '0');
+    
                         return `${formattedHour}:${formattedMinutes} ${isPM ? 'PM' : 'AM'}`;
                     };
-        
+    
                     const replaceValues = (item: any) => {
                         const replacements: { [key: string]: { [key: number]: string } } = {
                             sexo: {
                                 0: "Hombre",
                                 1: "Mujer",
+                                2: "No especifico",
                             },
                         };
-        
+    
                         Object.keys(item).forEach((key) => {
                             if (key === 'fechaReserva' && item[key]) {
                                 item[key] = formatDate(item[key]);
                             } else if ((key === 'horaInicio' || key === 'horaFin') && item[key]) {
                                 item[key] = formatTime(item[key]);
                             } else if (replacements[key] && replacements[key][item[key]] !== undefined) {
+                                console.log(key);
                                 item[key] = replacements[key][item[key]];
                             }
                         });
-        
+    
                         return item;
                     };
-        
+    
                     const formattedRows = data.data.map((item: ApiData, index: number) => ({
                         id: index + 1,
                         ...replaceValues(item),
                     }));
-        
+    
                     setRows(formattedRows);
-                    setOrderBy(displayColumns[0] || "");
+                    setOrderBy(reorderedColumns[0] || "");
                 }
-        
+    
                 setHasError(false);
             } catch (error) {
                 console.error("Error al cargar datos:", error);
                 setHasError(true);
             }
         };
-        
-               
+    
         fetchData();
     }, [url, render]);
+    
 
     const handleRequestSort = (property: string) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -164,6 +189,20 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+    function convertMinutesToHours(minutes:any) {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        const hourText = hours === 1 ? 'hr' : 'hrs'; 
+        const minuteText = remainingMinutes === 1 ? 'min' : 'min'; 
+        if (hours > 0 && remainingMinutes > 0) {
+            return `${hours}${hourText} ${remainingMinutes}${minuteText}`;
+        } else if (hours > 0) {
+            return `${hours}${hourText}`;
+        } else {
+            return `${remainingMinutes}${minuteText}`;
+        }
+    }
 
     const filteredRows = rows.filter((row) =>
         columns.some((column) =>
@@ -226,7 +265,12 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                                 height:"40px"
                             }}
                         />
-                        <Button sx={{ backgroundColor: "#7B6FCC", color: "#fff", textTransform: 'none' }} onClick={()=>helper("Add")}>Agregar</Button>
+                        {name == "Empresas" ?
+                        <Button sx={{ backgroundColor: "#7B6FCC", color: "#fff", textTransform: 'none' }} onClick={()=>helper("RegistrarSocio")}>Registrar</Button>
+                        :name == "Usuarios" ?
+                        <Button sx={{ backgroundColor: "#7B6FCC", color: "#fff", textTransform: 'none' }} onClick={()=>helper("RegistrarCliente")}>Registrar</Button>
+                        :
+                        <Button sx={{ backgroundColor: "#7B6FCC", color: "#fff", textTransform: 'none' }} onClick={()=>helper("Add")}>Agregar</Button>}
                     </span>
 
                     <TableContainer sx={{ mb: 3 }}>
@@ -302,47 +346,78 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                             </TableHead>
                             <TableBody>
                                 {visibleRows.length > 0 ? (
-                                    visibleRows.map((row) => (
-                                        <TableRow
-                                            key={row.id}
-                                            className='dashConstructorRowTable'
-                                            sx={{ borderCollapse: 'collapse' }}
-                                        >
-                                            {leer && <TableCell>
-                                                <button
-                                                    onClick={() => helper("View", row)}
-                                                    className='tableIcon dashList'
-                                                >
-                                                    <List />
-                                                </button>
-                                            </TableCell>}
-                                            <TableCell
-                                                sx={{ border: 'none', paddingY: 0 }}
-                                                style={{ textAlign: 'left', verticalAlign: 'middle' }}
-                                                className='cell-separator'
+                                    visibleRows
+                                        .filter((row) => !row.idApplicationUser || row.idApplicationUser !== user?.id)
+                                        .map((row, index: any) => (
+                                            <TableRow
+                                                key={index}
+                                                className='dashConstructorRowTable'
+                                                sx={{ borderCollapse: 'collapse' }}
                                             >
-                                                {row[columns[0]]}
-                                            </TableCell>
-                                            {columns.slice(1).map((column) => (
+                                                {leer && (
+                                                    <TableCell>
+                                                        <button
+                                                            onClick={() => helper("View", row)}
+                                                            className='tableIcon dashList'
+                                                        >
+                                                            <List />
+                                                        </button>
+                                                    </TableCell>
+                                                )}
                                                 <TableCell
                                                     sx={{ border: 'none', paddingY: 0 }}
                                                     style={{ textAlign: 'left', verticalAlign: 'middle' }}
-                                                    key={column}
-                                                    className="hide-on-mobile cell-separator"
+                                                    className='cell-separator'
                                                 >
-                                                    {row[column]}
+                                                    {row[columns[0]]}
                                                 </TableCell>
-                                            ))}
-                                            <TableCell
-                                                sx={{ border: 'none', paddingY: 1.5 }}
-                                                style={{ textAlign: 'center', verticalAlign: 'middle' }}
-                                            >
-                                                {pagar && <button onClick={() => helper("Pay", row)} className='tableIcon dashPay'><Pay /></button>}
-                                                {actualizar && <button onClick={() => helper("Update", row)} className='tableIcon dashUpdate'><Update /></button>}
-                                                {borrar && <button onClick={() => helper("Delete", row)} className='tableIcon dashDelete'><Delete /></button>}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
+                                                {columns.slice(1).map((column: any, index: any) => (
+                                                    <TableCell
+                                                        sx={{ border: 'none', paddingY: 0 }}
+                                                        style={{ textAlign: 'left', verticalAlign: 'middle' }}
+                                                        key={column + index}
+                                                        className="hide-on-mobile cell-separator"
+                                                    >
+                                                        {column == "duracion"
+                                                            ? convertMinutesToHours(row[column])
+                                                            : column == "estatus"
+                                                            ? EstatusPago[row[column]]
+                                                            : column == "createdAt"
+                                                            ? Utils.formatDate(row[column])
+                                                            : row[column]}
+                                                    </TableCell>
+                                                ))}
+                                                <TableCell
+                                                    sx={{ border: 'none', paddingY: 1.5 }}
+                                                    style={{ textAlign: 'center', verticalAlign: 'middle' }}
+                                                >
+                                                    {pagar && (
+                                                        <button
+                                                            onClick={() => helper("Pay", row)}
+                                                            className='tableIcon dashPay'
+                                                        >
+                                                            <Pay />
+                                                        </button>
+                                                    )}
+                                                    {actualizar && (
+                                                        <button
+                                                            onClick={() => helper("Update", row)}
+                                                            className='tableIcon dashUpdate'
+                                                        >
+                                                            <Update />
+                                                        </button>
+                                                    )}
+                                                    {borrar && (
+                                                        <button
+                                                            onClick={() => helper("Delete", row)}
+                                                            className='tableIcon dashDelete'
+                                                        >
+                                                            <Delete />
+                                                        </button>
+                                                    )}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
                                 ) : (
                                     [...Array(3)].map((_, rowIndex) => (
                                         <TableRow key={rowIndex} className='dashConstructorRowTable'>
@@ -361,6 +436,7 @@ const Tables = ({ url, name, can, helper, cantidad, render }: Params) => {
                                     ))
                                 )}
                             </TableBody>
+
                         </Table>
                     </TableContainer>
 

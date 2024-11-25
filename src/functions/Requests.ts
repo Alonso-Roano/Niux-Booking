@@ -247,8 +247,14 @@ class Put {
     }
   
     const formData = new FormData();
+    let idEnviar = "";
+    if(this.data.title == "Editar Compañia"){
+      idEnviar = "idEmpresa";
+    }else{
+      idEnviar = "idServicio";
+    }
     formData.append("Archivo", file);
-    formData.append("idServicio", idServicio.toString());
+    formData.append(idEnviar, idServicio.toString());
   
     try {
       const response = await niuxApi.post( this.urlCrear,

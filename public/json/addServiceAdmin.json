@@ -47,7 +47,8 @@
     ],
     "duracion":{
         "name":"duracion",
-        "label":"Seleccione la duracion"
+        "label":"Seleccione la duracion",
+        "errorContent":"Debe seleccionar la duracion"
     },
     "inputsFile": [
         {
@@ -97,6 +98,14 @@
             "labelCss": "css"
         }
     ],
+    "selectEmpresa":{
+        "apiUrl":"Empresa",
+        "valueField":"id",
+        "labelField":"nombre",
+        "name":"idEmpresa",
+        "label":"Selecciona una empresa",
+        "errorContent":"Debe seleccionar una empresa"
+    },
     "buttons": [
         {
             "props": {

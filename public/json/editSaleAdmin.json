@@ -1,0 +1,58 @@
+{
+    "title": "Agregar Pago",
+    "url":"Pago",
+    "input": [
+        {
+            "props": {
+                "id": "monto",
+                "name": "monto",
+                "placeholder": "Escribe el monto del pago",
+                "className": "input-number",
+                "type": "number"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Monto de pago",
+            "labelCss": "css"
+        }
+    ],
+    "select": [
+        {
+            "props": {
+                "id": "estatusPago",
+                "name": "estatus",
+                "placeholder": "Selecciona el estatus de pago",
+                "className": "input-select"
+            },
+            "options": [
+                { "label": "Rechazado", "value": "0" },
+                { "label": "Aprobado", "value": "1" },
+                { "label": "No Pagado", "value": "2" },
+                { "label": "Pago Cancelado", "value": "3" }
+            ],
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Estatus de Pago",
+            "labelCss": "css"
+        }
+    ],
+    "selectServicio":{
+        "apiUrl":"Reserva",
+        "valueField":"id",
+        "labelField":"nombre",
+        "name":"idReserva"
+    },
+    "buttons": [
+        {
+            "props": {
+                "id": "submitBtn",
+                "name": "submit",
+                "type": "button",
+                "label": "Guardar",
+                "className": "button-guardar"
+            },
+            "onClickId": "editarServicio"
+        }
+    ]
+}
+

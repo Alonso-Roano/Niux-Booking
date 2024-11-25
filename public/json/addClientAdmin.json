@@ -73,14 +73,6 @@
             "labelCss": "css"
         }
     ],
-    "selectEmpresa":{
-        "apiUrl":"Empresa",
-        "valueField":"id",
-        "labelField":"nombre",
-        "name":"idEmpresa",
-        "label":"Selecciona una empresa",
-        "errorContent":"Debe seleccionar una empresa"
-    },
     "buttons": [
         {
             "props": {

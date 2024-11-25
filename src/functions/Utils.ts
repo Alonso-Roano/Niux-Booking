@@ -173,11 +173,23 @@ const validateInputs = (body: { [key: string]: any }, data: any, setErrors: any)
         emptyFields.push("horaFin");
     }
 
-    if(data.imageUrl) if(data.imageUrl == "api/ImagenServicio/SubirImagen"){
+    if(data.imageUrl) if(data.imageUrl == "ImagenServicio/SubirImagen"){
         if(!body["image1"] && !body["image2"] && !body["image3"]){
             emptyFields.push("image1");
             emptyFields.push("image2");
             emptyFields.push("image3");
+        }
+    }
+    
+    if(Boolean(data.selectEmpresa)){
+        if(!body.idEmpresa){
+            emptyFields.push("idEmpresa");
+        }
+    }
+
+    if(Boolean(data.duracion)){
+        if(!body.duracion){
+            emptyFields.push("duracion");
         }
     }
 
@@ -220,7 +232,8 @@ function mapJsonToHtml(json: Record<string, any>): string {
     let imageHtml = '';
 
     for (const key in json) {
-        if ((key !== "id") && (key !== "idEmpresa") && (key !== "isDeleted") && (key !== "idServicio") && (key !== "idReserva") && (key !== "idCliente")) {
+        if ((key !== "id") && (key !== "idEmpresa") && (key !== "isDeleted") && (key !== "idServicio") && (key !== "idReserva") && (key !== "idCliente") && (key !== "slug") && (key !== "slugEmpresa")
+        && (key !== "idCategoria") && (key !== "idDireccion") && (key !== "idSocio") && (key !== "idApplicationUser")) {
             if (json.hasOwnProperty(key)) {
                 const value = json[key];
                 const traduccion = key === 'imagenes' ? 'Imagen' : getDefinition(key);
@@ -234,7 +247,12 @@ function mapJsonToHtml(json: Record<string, any>): string {
                                           </div>`;
                         }
                     });
-                } else if (typeof value === 'object' && value !== null) {
+                } else if (key === 'foto' || key === "avatarURL") {
+                    html += `<div class="viewCard">
+                                <h5>${traduccion}:</h5>
+                                <span>${value == null ? '<p>Sin foto</p>' : `<img src="${baseUrl}${value}" />`}</span>
+                            </div>`;
+                }else if (typeof value === 'object' && value !== null) {
                     html += `<div class="viewCard">
                                 <p><strong>${traduccion}:</strong></p>
                                 ${mapJsonToHtml(value)}
@@ -314,4 +332,12 @@ function transformData(body: any) {
     }
 }
 
-export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml, transformData };
+function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
+export default { checkJson, inputBody, formatProps, showToast, confirmToast, validateInputs, getDefinition, flattenObject, mapJsonToHtml, transformData, formatDate };

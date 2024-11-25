@@ -1,15 +1,13 @@
 import { BarChart } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
 import Requests from '../functions/Requests';
-import pureData from '../json/dashboardEmpresa.json'
-import { useAuthStore } from '../stores/auth/authStore';
+import pureData from '../json/dashboardAdmin.json'
 import Utils from '../functions/Utils';
 
-function Grafica({ data, setOpcion }: any) {
+function GraficaAdmin({ data, setOpcion }: any) {
   const [datos, setDatos] = useState<any>(false);
   const [objeto, setObjeto] = useState<any>(false);
   const [shadow, setShadow] = useState({ x: 0, y: 0 });
-  const {user} = useAuthStore();
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -38,7 +36,7 @@ function Grafica({ data, setOpcion }: any) {
   }, [datos]);
 
   useEffect(() => {
-    Requests.Get(`Empresa/DatosGraficas/${user?.idEmpresa}`, setDatos);
+    Requests.Get(`Estadisticas/GetDatosDashboard`, setDatos);
   }, []);
 
   const processDataForChart = (carts: any[]) => {
@@ -110,4 +108,4 @@ function Grafica({ data, setOpcion }: any) {
   );
 }
 
-export default Grafica;
+export default GraficaAdmin;

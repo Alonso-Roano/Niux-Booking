@@ -80,7 +80,7 @@ export const dictionary: Dictionary = {
     "titulo": "Título",
     "descripcion": "Descripción del servicio",
     "precio": "Precio",
-    "duracion": "Duración (minutos)",
+    "duracion": "Duración",
     "idempresa": "Id de la empresa",
     "empresa": "Empresa",
     "isdeleted": "Eliminado",
@@ -99,5 +99,14 @@ export const dictionary: Dictionary = {
     "nombre": "Nombre",
     "nombrereserva": "Nombre de la reserva",
     "monto": "Monto",
-    "estatus":"Estado del pago"
+    "estatus":"Estado del pago",
+    "ciudad": "Ciudad",
+    "estado": "Estado",
+    "foto": "Foto",
+    "nombrecategoria": "Nombre de la categoría",
+    "nombreempresa": "Nombre de la empresa",
+    "pais": "País",
+    "promediocalificacion": "Promedio de calificación",
+    "slugempresa": "Slug de la empresa",
+    "totalcomentarios": "Total de comentarios"
 };

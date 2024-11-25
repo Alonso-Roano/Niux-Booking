@@ -21,7 +21,7 @@ function Edit({ data, bodyDatos, setClose }: any) {
 
     useEffect(() => { 
         Request.Read(setDatos, data); setError({});
-        Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
+        if(user?.rol == "socio") Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
     }, [data, bodyDatos]);
 
     useEffect(() => { 
@@ -68,11 +68,12 @@ function Edit({ data, bodyDatos, setClose }: any) {
                 <Inputs data={datos.input} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
                 <Textarea data={datos.textarea} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
                 <Selects data={datos.select} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}/>
-                <TimeSelector data={datos?.duracion ? datos.duracion : null} startHour={"00:15:00"} endHour={"04:00:00"} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
+                <TimeSelector data={datos?.duracion ? datos.duracion : null} startHour={"0001-01-01T00:15:00"} endHour={"0001-01-01T04:00:00"} body={body} setBody={setBody} errors={error}editDatos={bodyDatos}></TimeSelector>
                 <TimeSelector data={datos?.horas?.horaInicio ? datos.horas.horaInicio : null} startHour={hours?.horaInicio} endHour={hours?.horaFin} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
                 <TimeSelector data={datos?.horas?.horaFin ? datos.horas.horaFin : null} startHour={hours?.horaInicio} endHour={hours?.horaFin} body={body} setBody={setBody} errors={error} editDatos={bodyDatos}></TimeSelector>
                 <APISelect data={datos.selectCliente} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}></APISelect>
                 <APISelect data={datos.selectServicio} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}></APISelect>
+                <APISelect data={datos.selectEmpresa} setBody={setBody} body={body} errors={error} editDatos={bodyDatos}></APISelect>
                 <InputsFile data={datos.inputsFile} setBody={setBody} body={body} errors={error} bodyDatos={bodyDatos}/>
                 {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}
             </>

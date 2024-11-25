@@ -1,0 +1,32 @@
+{
+    "title": "Editar Catgoria",
+    "url":"Categoria",
+    "input": [
+        {
+            "props": {
+                "id": "nombre",
+                "name": "nombre",
+                "placeholder": "Escribe el nombre de la categoria",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Nombre",
+            "labelCss": "css"
+        }
+    ],
+    "buttons": [
+        {
+            "props": {
+                "id": "submitBtn",
+                "name": "submit",
+                "type": "button",
+                "label": "Guardar",
+                "className": "button-guardar"
+            },
+            "onClickId": "editarServicio"
+        }
+    ]
+}
+

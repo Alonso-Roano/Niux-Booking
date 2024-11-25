@@ -61,10 +61,11 @@
             },
             "className": "css",
             "cantWrite": "",
-            "labelContent": "Título",
+            "labelContent": "Agregar imagen",
             "errorContent":"Inserte al menos una imagen",
             "otherLabelContent": "Imagen agregada",
-            "labelCss": "css"
+            "labelCss": "css",
+            "url":"ImagenServicio/ActualizarImagenServicio"
         },
         {
             "props": {
@@ -76,7 +77,7 @@
             },
             "className": "css",
             "cantWrite": "",
-            "labelContent": "Título",
+            "labelContent": "Agregar imagen",
             "errorContent":"Inserte al menos una imagen",
             "otherLabelContent": "Imagen agregada",
             "labelCss": "css"
@@ -91,7 +92,7 @@
             },
             "className": "css",
             "cantWrite": "",
-            "labelContent": "Título",
+            "labelContent": "Agregar imagen",
             "errorContent":"Inserte al menos una imagen",
             "otherLabelContent": "Imagen agregada",
             "labelCss": "css"

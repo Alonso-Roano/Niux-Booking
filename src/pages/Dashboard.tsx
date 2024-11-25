@@ -10,6 +10,8 @@ import Tooltip, { TooltipProps } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import data from "../json/dashboardAdmin.json";
 import Header from "../components/Header";
+import Company from "../svgs/Company";
+import Tag from "../svgs/Tag";
 
 function Dashboard() {
   const [opcion, setOpcion] = useState<any>(data.dashboard);
@@ -49,7 +51,7 @@ function Dashboard() {
         </CustomTooltip>
       </ListItem>
       <ListItem>
-        <CustomTooltip title="Clientes" arrow placement="right">
+        <CustomTooltip title="Usuarios" arrow placement="right">
           <Button onClick={() => setOpcion(data.clients)}>
             <Client />
           </Button>
@@ -57,7 +59,7 @@ function Dashboard() {
       </ListItem>
       <ListItem>
         <CustomTooltip title="Ventas" arrow placement="right">
-          <Button>
+        <Button onClick={() => setOpcion(data.sales)}>
             <Sale />
           </Button>
         </CustomTooltip>
@@ -66,6 +68,20 @@ function Dashboard() {
         <CustomTooltip title="Reservaciones" arrow placement="right">
           <Button>
             <Reservation />
+          </Button>
+        </CustomTooltip>
+      </ListItem>
+      <ListItem>
+        <CustomTooltip title="Empresas" arrow placement="right">
+          <Button onClick={() => setOpcion(data.company)}>
+            <Company />
+          </Button>
+        </CustomTooltip>
+      </ListItem>
+      <ListItem>
+        <CustomTooltip title="Categorias" arrow placement="right">
+          <Button onClick={() => setOpcion(data.tag)}>
+            <Tag />
           </Button>
         </CustomTooltip>
       </ListItem>
@@ -93,7 +109,6 @@ function Dashboard() {
         >
           {drawer}
         </Drawer>
-
         <DashContent data={opcion} setOpcion={setOpcion} />
       </Box>
     </>

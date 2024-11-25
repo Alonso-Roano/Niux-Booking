@@ -22,7 +22,7 @@ function Add({ data, setClose}: any) {
 
     useEffect(() => { 
         Request.Read(setDatos, data); setError({})
-        Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
+        if(user?.rol == "socio") Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
         setBody({});
     }, [data]);
 
@@ -79,6 +79,7 @@ function Add({ data, setClose}: any) {
                 <TimeSelector data={datos?.horas?.horaFin ? datos.horas.horaFin : null} startHour={hours?.horaInicio ? hours?.horaInicio : "0001-01-01T06:00:00" } endHour={hours?.horaFin ? hours?.horaFin : "0001-01-01T18:00:00"} body={body} setBody={setBody} errors={error}></TimeSelector>
                 <APISelect data={datos.selectCliente} setBody={setBody} body={body} errors={error}></APISelect>
                 <APISelect data={datos.selectServicio} setBody={setBody} body={body} errors={error}></APISelect>
+                <APISelect data={datos.selectEmpresa} setBody={setBody} body={body} errors={error}></APISelect>
                 {datos.buttons ? <Buttons data={datos} Click={click}></Buttons> : <></>}
             </>
            ) : (
