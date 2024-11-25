@@ -72,9 +72,14 @@ export default function Home() {
 
       try {
         const responseResenia = await niuxApi.get("/Resena");
+        console.log("resenias");
+
+        console.log(responseResenia);
 
         const fetchingClient = responseResenia.data.data.map(
           async (resenia: IResenia) => {
+            console.log(resenia);
+
             const clienteResponse = await niuxApi.get(
               `/Cliente/${resenia.idCliente}`
             );
@@ -83,7 +88,7 @@ export default function Home() {
           }
         );
         const promisesForClients = await Promise.all(fetchingClient);
-        const fetchingPerson = promisesForClients.map(
+        /*     const fetchingPerson = promisesForClients.map(
           async (resenia: IResenia) => {
             const person = await niuxApi.get(
               `/Persona/${resenia.cliente?.idPersona}`
@@ -94,8 +99,8 @@ export default function Home() {
             };
           }
         );
-        const promisesforPersons = await Promise.all(fetchingPerson);
-        setResenias(promisesforPersons);
+        const promisesforPersons = await Promise.all(fetchingPerson); */
+        setResenias(promisesForClients);
       } catch (error) {
         console.error("Error in fetchings: ", error);
       }
@@ -103,7 +108,6 @@ export default function Home() {
 
     fetchingData();
   }, []);
-
 
   return (
     <>
@@ -138,7 +142,10 @@ export default function Home() {
                 Encuentra y reserva los servicios ideales para ti, al instante y
                 desde cualquier lugar.
               </p>
-              <Link className=" border border-slate-400 h-10 w-[370px]   pl-4 mt-10 rounded-lg flex gap-2 items-center" to={"/Buscador"}>
+              <Link
+                className=" border border-slate-400 h-10 w-[370px]   pl-4 mt-10 rounded-lg flex gap-2 items-center"
+                to={"/Buscador"}
+              >
                 <button className=" text-red-500">
                   <Search />
                 </button>
@@ -330,7 +337,11 @@ export default function Home() {
                     >
                       <div className=" w-[320px] h-[170px] overflow-hidden group">
                         <img
-                          src={empresa.foto ? empresa.foto : GeneralBusiness}
+                          src={
+                            empresa.foto
+                              ? import.meta.env.VITE_BACKEND_API + empresa.foto
+                              : GeneralBusiness
+                          }
                           className=" w-full h-full object-cover rounded-t-md group-hover:scale-105 duration-300"
                           alt=""
                         />
@@ -458,11 +469,13 @@ export default function Home() {
                             />
                           </div>
                           <span>
-                            {resenia?.cliente?.persona?.nombres +
-                              " " +
-                              resenia?.cliente?.persona?.apellido1 +
-                              " " +
-                              resenia?.cliente?.persona?.apellido2}
+                            {
+                              /* resenia?.cliente?.persona?.nombres&&
+                              
+                              resenia?.cliente?.persona?.apellido1 
+                              &&
+                              resenia?.cliente?.persona?.apellido2 */ ""
+                            }
                           </span>
                         </section>
                       </footer>
