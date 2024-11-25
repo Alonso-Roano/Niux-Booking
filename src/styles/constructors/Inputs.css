@@ -4,6 +4,9 @@
     gap: 10px;
     margin-bottom: 10px;
 }
+.inputFile{
+    margin-top: 10px;
+}
 .textareaContainer{
     display: flex;
     flex-direction: column;

@@ -1,0 +1,58 @@
+{
+    "title":"Editar Compañia",
+    "url":"Empresa/ActualizarEmpresa",
+    "urlCrear":"Empresa/SubirImagenEmpresa",
+    "imageUrl":"Empresa/ActualizarImagenEmpresa",
+    "input": [
+        {
+            "props": {
+                "id": "titulo",
+                "name": "nombre",
+                "placeholder": "Escribe el nombre de la empresa",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Título",
+            "labelCss": "css"
+        }
+    ],
+    "selectServicio":{
+        "apiUrl":"Categoria",
+        "valueField":"id",
+        "labelField":"nombre",
+        "name":"idCategoria"
+    },
+    
+    "inputsFile": [
+        {
+            "props": {
+                "id": "image",
+                "name": "image1",
+                "placeholder": "Escribe el título del servicio",
+                "className": "input-text",
+                "type": "text"
+            },
+            "className": "css",
+            "cantWrite": "",
+            "labelContent": "Agregar imagen",
+            "errorContent":"Inserte al menos una imagen",
+            "otherLabelContent": "Imagen agregada",
+            "labelCss": "css",
+            "url":"Empresa/ActualizarImagenEmpresa"
+        }
+    ],
+    "buttons": [
+        {
+            "props": {
+                "id": "submitBtn",
+                "name": "submit",
+                "type": "button",
+                "label": "Guardar",
+                "className": "button-guardar"
+            },
+            "onClickId": "editarServicio"
+        }
+    ]
+}

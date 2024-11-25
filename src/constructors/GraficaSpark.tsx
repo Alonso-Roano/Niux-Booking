@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Requests from '../functions/Requests';
 import pureData from '../json/dashboardEmpresa.json';
 import { useAuthStore } from '../stores/auth/authStore';
+import Utils from '../functions/Utils';
 
 function GraficaSparklineChart({ data, setOpcion }: any) {
   const [datos, setDatos] = useState<any>(false);
@@ -42,7 +43,7 @@ function GraficaSparklineChart({ data, setOpcion }: any) {
 
   const processDataForChart = (carts: any[]) => {
     return {
-      xAxisData: carts.slice(-data.numeroBarras).map((cart: any) => cart.fecha),
+      xAxisData: carts.slice(-data.numeroBarras).map((cart: any) => Utils.formatDate(cart.fecha)),
       seriesData: carts.slice(-data.numeroBarras).map((cart: any) => cart[data["total"]]),
     };
   };
@@ -73,6 +74,7 @@ function GraficaSparklineChart({ data, setOpcion }: any) {
       <h2>{data.name}</h2>
       {datos && <h3>{objeto}</h3>}
       {datos ? (
+        chartData.seriesData.length > 0 ? (
         <LineChart
           series={[
             {
@@ -90,6 +92,10 @@ function GraficaSparklineChart({ data, setOpcion }: any) {
           ]}
           margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
         />
+      ) : (
+        <div className='noData'><p>Datos aún no agregados</p></div>
+        
+      )
       ) : (
         <div className="loaderContent">
           <div className="loader"></div>

@@ -17,6 +17,15 @@
     align-items: center;
     margin-bottom: 20px;
 }
+.dashGraficasAdmin {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    justify-content: center; 
+    align-items: center;
+    margin-bottom: 20px;
+}
 
 .dashGraficas > :first-child {
     grid-column: 1 / -1; 
@@ -48,4 +57,13 @@
     font-weight: 500;
     color: #474747;
     text-align: center;
+}
+
+.noData{
+    height: 200px;
+    width: 100%;
+    color: #474747;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

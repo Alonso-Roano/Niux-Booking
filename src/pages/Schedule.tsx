@@ -1,8 +1,6 @@
-import Header from "../components/Header";
-import ImgBusiness from "../images/services/barbershop-4762345_1280.jpg";
 import Star from "../svgs/Star";
 import { format } from "@formkit/tempo";
-import { json, Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../styles/components/Business.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -11,10 +9,8 @@ import GeneralBusiness from "../images/services/general-business.jpg";
 import Footer from "../components/Footer";
 import Calendar from "../svgs/Calendar";
 import Watch from "../svgs/Watch";
-import ArrowMonth from "../svgs/NextMonth";
 import NextMonth from "../svgs/NextMonth";
 import PreviousMonth from "../svgs/PreviousMonth";
-import { dividerClasses } from "@mui/material";
 interface IServicio {
   titulo: string;
   precio: number;
@@ -66,7 +62,6 @@ export default function Schedule() {
   const [servicio, setServicio] = useState<IServicio>(); //{}
   const [empresa, setEmpresa] = useState<IEmpresa>(); //{}
   const [horarios, setHorarios] = useState<any>(); //[{}]
-  const [horarioPivote, setHorarioPivote] = useState<any>(); //{}
 
   console.log("anitp");
 
@@ -118,8 +113,6 @@ export default function Schedule() {
     }
     return "";
   }
-  function formatPromedioReseña(reseña: number) {}
-  //useeffect para el servicio, horario, empresa,las citas y el mes actual y el dia actual
 
   console.log("h");
   console.log(horarios);
@@ -734,7 +727,7 @@ export default function Schedule() {
 
             <div className=" flex gap-4 overflow-x-scroll flex-shrink-0 mt-4 services-scroll">
               {diasDelMesSeleccionado &&
-                diasDelMesSeleccionado.map((dia: any, index: any) => {
+                diasDelMesSeleccionado.map((dia: any) => {
                   if (dia.fecha >= fechaActual) {
                     return (
                       <span

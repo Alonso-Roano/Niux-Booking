@@ -37,11 +37,10 @@
         }
     ],
     "selectServicio":{
-        "apiUrl":"Reserva/Empresa/{}",
+        "apiUrl":"Reserva",
         "valueField":"id",
         "labelField":"nombre",
-        "name":"idReserva",
-        "label":"Selecciona el servicio"
+        "name":"idReserva"
     },
     "buttons": [
         {
@@ -52,7 +51,7 @@
                 "label": "Guardar",
                 "className": "button-guardar"
             },
-            "onClickId": "guardarServicio"
+            "onClickId": "editarServicio"
         }
     ]
 }

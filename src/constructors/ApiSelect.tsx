@@ -76,8 +76,8 @@ function APISelect({
 
     return (
         <FormControl fullWidth>
-            <InputLabel id={`${data.name}-select-label`} sx={{ marginTop: 2 }}>
-                {data.label || "Selecciona una opción"}
+            <InputLabel id={`${data.name}-select-label`} sx={{ marginTop: 2, marginLeft: -2 }} error={Boolean(errors[data.name])}>
+            {Boolean(errors[data.name]) ? data.errorContent : data.label}
             </InputLabel>
             <Select
                 labelId={`${data.name}-select-label`}
