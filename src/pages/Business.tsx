@@ -15,16 +15,12 @@ import Swal from "sweetalert2";
 export default function Business() {
   const skeletons = [1, 2, 3, 4, 5];
 
-  console.log("local storage");
-  console.log(localStorage);
-
   /*   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const half = queryParams.get("half"); */
   const [promedioCalificacion, setPromedioCalificacion] = useState<number>();
   const [modal, setModal] = useState(false);
   const [autorizacion, setAutorizacion] = useState<any>();
-  console.log(promedioCalificacion);
   const diasSemana = [0, 1, 2, 3, 4, 5, 6];
   const dias = [
     "Lunes",
@@ -86,10 +82,6 @@ export default function Business() {
         `/Cliente/GetClienteByIdAppUser/${usuario.id}`
       );
 
-      console.log(servicioSeleccionado.id);
-      console.log(typeof servicioSeleccionado.id);
-      console.log(usuario.id);
-      console.log(typeof usuario.id);
 
       const resenaData = {
         isDeleted: false,
@@ -111,7 +103,6 @@ export default function Business() {
         "/Puntuacion/AgregarPuntuacionServicio",
         puntuacionData
       );
-      console.log("¡Reseña y puntuación enviadas con éxito!");
 
       closeModal(); // Cierra el modal después de enviar
       // Muestra el SweetAlert de éxito
@@ -129,10 +120,6 @@ export default function Business() {
     }
   };
 
-  console.log("dsih");
-
-  console.log(horarios);
-
   useEffect(() => {
     window.scrollTo(0, 0);
     let user: any;
@@ -143,8 +130,6 @@ export default function Business() {
       setAutorizacion(status);
       user = parsedData?.state?.user; // Accede al objeto "user"
       setUsuario(user);
-      console.log(status); // Esto debería mostrar "unauthorized"
-      console.log(user); // Esto debería mostrar "unauthorized"
     } else {
       setAutorizacion("unauthorized");
       setUsuario(null);
@@ -159,8 +144,6 @@ export default function Business() {
         const responseBusinesss: any = await niuxApi.get(
           `/Empresa/DatosEmpresaBySlug/${slugEmpresa}`
         );
-        console.log("empresa");
-        console.log(responseBusinesss.data);
 
         setPromedioCalificacion(
           responseBusinesss.data.data.promedioCalificacion
@@ -192,9 +175,6 @@ export default function Business() {
                 },
               }
             );
-            console.log("!contado");
-
-            console.log(countService.data);
 
             return {
               ...servicio,
@@ -203,9 +183,7 @@ export default function Business() {
           });
           const promiseServices = await Promise.all(mapServices);
           arService = promiseServices;
-          console.log("hupapi");
 
-          console.log(promiseServices);
         } else {
           arService = responseServicios.data.data;
         }
@@ -215,8 +193,6 @@ export default function Business() {
           const responseResenias = await niuxApi.get(
             `/Resena/GetResenasByIdServicio/${serviceId.id}`
           );
-          console.log("importante");
-          console.log(responseResenias.data.data);
           setResenias(responseResenias.data.data);
         }
 
@@ -248,18 +224,12 @@ export default function Business() {
         setEmpresa(responseBusinesss.data.data);
         setServicios(arService);
       } catch (error) {
-        console.log(error);
+       
       }
     };
     fetchingData();
   }, [slugEmpresa]);
-  /*   console.log("e");
-  console.log(empresa);
-  console.log("s");
-  console.log(servicios);
-  console.log("h");
-  console.log(horarios);
- */
+ 
   function formatDuration(minutes: number | undefined) {
     if (minutes) {
       const hours = Math.floor(minutes / 60); // Obtener las horas completas
@@ -288,8 +258,7 @@ export default function Business() {
   const toggleModal = (servicio: any) => {
     document.body.style.overflow = "hidden";
     setModal(!modal);
-    console.log("hey");
-    console.log(servicio);
+ 
     setServicioSeleccionado(servicio);
   };
   const closeModal = () => {

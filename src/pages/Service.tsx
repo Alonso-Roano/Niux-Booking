@@ -6,8 +6,7 @@ import { niuxApi } from "../api/niuxApi";
 export default function Services() {
   const { slugServicio } = useParams();
   const [servicio, setServicio] = useState();
-  console.log("slugservicio");
-  console.log(slugServicio);
+
   const fetchData = async () => {
     try {
       const responseServicio = await niuxApi.get(
@@ -15,10 +14,9 @@ export default function Services() {
       );
       setServicio(responseServicio.data.data);
     } catch (error) {
-      console.log(error);
+      
     }
   };
-  console.log(servicio);
 
   useEffect(() => {
     fetchData();
