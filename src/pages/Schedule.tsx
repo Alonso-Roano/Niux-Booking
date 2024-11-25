@@ -35,9 +35,16 @@ interface IEmpresa {
   horario: horario[];
 }
 export default function Schedule() {
+  const navegacion = useNavigate();
   //parametros de la ruta
   const { slugEmpresa, slugServicio } = useParams();
   //estados iniciales
+  const [usuario, setUsuario] = useState<any>();
+  const [autorizacion, setAutorizacion] = useState<any>();
+  const [fotoEmpresa, setFotoEmpresa] = useState<any>();
+  const [nombreEmpresa, setNombreEmpresa] = useState<any>();
+  const [nombreServicio, setNombreServicio] = useState<any>();
+  const [total, setTotal] = useState<any>();
   const [fechaActual, setFechaActual] = useState<any>(); //"2024-11-23"
   const [contadorMes, setContadorMes] = useState<any>();
   const [mesSeleccionado, setMesSeleccionado] = useState<number>(); //11
@@ -115,12 +122,18 @@ export default function Schedule() {
         `/Empresa/DatosEmpresaBySlug/${slugEmpresa}`
       );
 
+      setFotoEmpresa(responseEmpresa.data.data.fotoEmpresa);
+      setNombreEmpresa(responseEmpresa.data.data.nombreEmpresa);
+
       const responseServicio = await niuxApi.get(
         `/Servicio/GetServicioBySlug/${slugServicio}`
       );
       setDuracionServicio(responseServicio.data.data.duracion);
       setIdServicio(responseServicio.data.data.id);
       setServicio(responseServicio.data.data);
+
+      setNombreServicio(responseServicio.data.data.titulo);
+      setTotal(responseServicio.data.data.precio);
       setEmpresa(responseEmpresa.data.data);
 
       const businessId = responseEmpresa.data.data.id;
@@ -129,7 +142,7 @@ export default function Schedule() {
         const responseHorarios = await niuxApi.get(
           `/Horario/Empresa/${businessId}`
         );
-        console.log("prueba");
+        console.log("prueba hora");
         console.log(responseHorarios.data);
 
         let horariosTransformados = diasSemana.map((day: any) => {
@@ -138,14 +151,24 @@ export default function Schedule() {
           );
           if (busquedaDia) {
             return {
+              activo: busquedaDia.activo,
               dia: dias[day],
               horaInicio: busquedaDia.horaInicio,
               horaFin: busquedaDia.horaFin,
             };
           } else {
-            return { dia: dias[day], horaInicio: "", horaFin: "" };
+            return {
+              activo: false,
+              dia: dias[day],
+              horaInicio: "",
+              horaFin: "",
+            };
           }
         });
+        console.log("hor trans");
+
+        console.log(horariosTransformados);
+
         setHorarios(horariosTransformados);
         //empieza las fechas
         const currentMonth = fechaInicial.getMonth(); // 0 = enero, 1 = febrero, etc.
@@ -195,6 +218,7 @@ export default function Schedule() {
             //{horaInicio,HoraFin}
           );
           return {
+            activo: objeHorario?.activo,
             fecha: `${currentYear}-${mesCorrecto}-${dia > 9 ? dia : "0" + dia}`,
             diaSemana: diaDeLaSemanaNombre,
             dia: dia > 9 ? dia : parseInt("0" + dia),
@@ -213,8 +237,9 @@ export default function Schedule() {
         );
         if (objetoFechaSeleccionado) {
           if (
-            objetoFechaSeleccionado.horaFin == "" &&
-            objetoFechaSeleccionado.horaInicio == ""
+            objetoFechaSeleccionado.activo == false
+            /*   objetoFechaSeleccionado.horaFin == "" &&
+            objetoFechaSeleccionado.horaInicio == "" */
           ) {
             setIntervalosDisponibles([]);
           } else {
@@ -278,12 +303,10 @@ export default function Schedule() {
                 tiempoFin: fin,
                 horaInicio: format(horaInicioFormato, "h:mm a", "es"),
                 horaFin: format(horaFinFormato, "h:mm a", "es"),
-                horaInicioBD: `0001-01-01 ${Math.floor(inicio / 60)}:${
-                  inicio % 60
-                }:00.0000000`,
-                horaFinBD: `0001-01-01 ${Math.floor(fin / 60)}:${
-                  fin % 60
-                }:00.0000000`,
+                horaInicioBD: inicio,
+                horaFinBD: fin,
+                /* horaInicioBD: `${Math.floor(inicio / 60)}:${inicio % 60}`,
+                horaFinBD: `${Math.floor(fin / 60)}:${fin % 60}`, */
               });
 
               // Incrementar el tiempo evaluado en 15 minutos
@@ -380,15 +403,19 @@ export default function Schedule() {
     setHoraFinBd(horaFinBD);
   };
   const handleDiaSeleccionado = async (datos: any) => {
-    let { fecha, horaInicio, horaFin, dia } = datos;
+    let { fecha, horaInicio, horaFin, dia, activo } = datos;
     /*  let letFeSeleccionada = new Date(`${fecha} 00:00:00.0000000`); */
     setFechaSeleccionada(fecha);
+    console.log("dis");
+
+    console.log(datos);
+
     setFechaPresentacion("");
     setHoraInicio("");
     setHoraFin("");
     setHoraInicioBd("");
     setHoraFinBd("");
-    if (horaFin == "" && horaInicio == "") {
+    if (activo == false) {
       setIntervalosDisponibles([]);
       console.log("supasdod");
     } else {
@@ -437,12 +464,10 @@ export default function Schedule() {
           tiempoFin: fin,
           horaInicio: format(horaInicioFormato, "h:mm a", "es"),
           horaFin: format(horaFinFormato, "h:mm a", "es"),
-          horaInicioBD: `0001-01-01 ${Math.floor(inicio / 60)}:${
-            inicio % 60
-          }:00.0000000`,
-          horaFinBD: `0001-01-01 ${Math.floor(fin / 60)}:${
-            fin % 60
-          }:00.0000000`,
+          horaInicioBD: inicio,
+          horaFinBD: fin,
+          /*  horaInicioBD: `${Math.floor(inicio / 60)}:${inicio % 60}`,
+          horaFinBD: `${Math.floor(fin / 60)}:${fin % 60}`, */
         });
 
         // Incrementar el tiempo evaluado en 15 minutos
@@ -620,14 +645,50 @@ export default function Schedule() {
     }
   };
   console.log(contadorMes);
+  const SubmitReserva = () => {
+    // Crear un objeto con los valores
+    const datosReserva = {
+      fechaSeleccionada,
+      horaInicioBd,
+      horaFinBd,
+      horaInicio,
+      horaFin,
+      fechaPresentacion,
+      añoSeleccionado,
+      fotoEmpresa,
+      nombreEmpresa,
+      nombreServicio,
+      duracionServicio,
+      idServicio,
+      total,
+    };
+    localStorage.setItem("datosReserva", JSON.stringify(datosReserva));
+    navegacion(
+      `/detalle-reserva?fecha=${fechaSeleccionada}&horaInicio=${horaInicioBd}&horaFin=${horaFinBd}&s=${idServicio}`
+    );
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    let user: any;
+    const authData = localStorage.getItem("auth-storage"); // O sessionStorage.getItem()
+    if (authData) {
+      const parsedData = JSON.parse(authData); // Convierte el string en un objeto
+      const status = parsedData?.state?.status; // Accede a "status"
+      setAutorizacion(status);
+      user = parsedData?.state?.user; // Accede al objeto "user"
+      setUsuario(user);
+      console.log(status); // Esto debería mostrar "unauthorized"
+      console.log(user); // Esto debería mostrar "unauthorized"
+    } else {
+      setAutorizacion("unauthorized");
+      setUsuario(null);
+    }
     fetchData();
   }, []);
   return (
     <>
-      {/*   <Header /> */}
+      <Header />
 
       <section className=" roboto-regular lg:ml-10 ml-5 mb-5 min-h-screen">
         <div className=" mt-5">
@@ -759,11 +820,15 @@ export default function Schedule() {
                 <span className=" text-sm text-neutral-500">
                   {" "}
                   {empresa &&
-                    empresa.paisEmpresa +
+                  empresa.paisEmpresa &&
+                  empresa.ciudadEmpresa &&
+                  empresa.estadoEmpresa
+                    ? empresa?.paisEmpresa +
                       ", " +
-                      empresa.estadoEmpresa +
+                      empresa?.ciudadEmpresa +
                       ", " +
-                      empresa.ciudadEmpresa}
+                      empresa?.estadoEmpresa
+                    : "Sin Dirección de Empresa"}
                 </span>
               </div>
             </div>
@@ -800,23 +865,31 @@ export default function Schedule() {
               <span className=" font-semibold">${servicio?.precio} MXN</span>
             </div>
             {horaInicioBd && horaFinBd && fechaSeleccionada && idServicio ? (
-              <div className=" rounded-md mt-6 hover:bg-black/80   bg-black text-white flex justify-center items-center ">
-                <Link
-                  className=" font-medium w-full h-full text-center py-2"
-                  to={""}
-                >
-                  Continuar
-                </Link>
-              </div>
+              autorizacion == "unauthorized" ? (
+                <div className=" rounded-md mt-6 hover:bg-black/80   bg-black text-white flex justify-center items-center ">
+                  <Link
+                    className=" font-medium w-full h-full text-center py-2"
+                    to={"/login"}
+                  >
+                    Continuar
+                  </Link>
+                </div>
+              ) : (
+                <div className=" rounded-md mt-6 hover:bg-black/80   bg-black text-white flex justify-center items-center ">
+                  <button
+                    className=" font-medium w-full h-full text-center py-2"
+                    onClick={SubmitReserva}
+                  >
+                    Continuar
+                  </button>
+                </div>
+              )
             ) : (
-              <div className="rounded-md mt-6    bg-black/60 text-white flex justify-center items-center">
+              <div className="rounded-md mt-6  cursor-not-allowed   bg-black/60 text-white flex justify-center items-center">
                 {" "}
-                <button
-                  className=" font-medium w-full h-full text-center py-2"
-                  type="button"
-                >
+                <span className=" font-medium w-full h-full text-center py-2">
                   Continuar
-                </button>
+                </span>
               </div>
             )}
           </div>

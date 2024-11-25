@@ -72,6 +72,7 @@ function App() {
           path="/horario/:slugEmpresa/:slugServicio"
           element={<Schedule />}
         />
+        <Route path="/detalle-reserva" element={<DetallesReserva />} />
         <Route
           path="/reserva/resumen"
           element={
