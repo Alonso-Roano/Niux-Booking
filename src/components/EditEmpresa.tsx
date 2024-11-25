@@ -63,6 +63,7 @@ export const EditEmpresa: React.FC = () => {
   const fetchEmpresa = async (idEmpresa: number) => {
     try {
       const response = await niuxApi.get(`/Empresa/${idEmpresa}`);
+      console.log(response.data.data)
       setEmpresaNombre(response.data.data.nombre || "");
       
     } catch (error) {
