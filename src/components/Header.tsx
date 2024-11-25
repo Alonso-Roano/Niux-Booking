@@ -6,6 +6,7 @@ import Close from "../svgs/Close";
 import ArrowNext from "../svgs/ArrowNext";
 import { useAuthStore } from "../stores/auth/authStore"; // Importamos el store de auth
 import iconUser from "../../public/images/icons/icon-user.svg";
+import iconEmpresa from "../../public/images/icons/icon-empresa.svg";
 import iconLogout from "../../public/images/icons/icon-logout.svg";
 import DashboardIcon from "../svgs/Dashboard";
 import Service from "../svgs/Service";
@@ -133,15 +134,25 @@ export default function Header({ setOption }: Params) {
                   </p>
                   <button
                     onClick={openEditProfile}
-                    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
+                    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                   >
                     <img src={iconUser} alt="Perfil" className="w-5 h-5" />
                     <span>Perfil</span>
                   </button>
+                  {user?.rol === "Socio" && (
+  <Link
+    to={"/Editar/Empresa"}
+    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
+  >
+    <img src={iconEmpresa} alt="Editar Empresa" className="w-5 h-5" />
+    <span>Editar Empresa</span>
+  </Link>
+)}
                   <button
                     onClick={logoutUser}
-                    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-4 rounded-md transition-all"
+                    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                   >
+                    
                     <img
                       src={iconLogout}
                       alt="Cerrar sesión"
