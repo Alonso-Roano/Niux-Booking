@@ -99,7 +99,7 @@ class Post {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      if(response.data) console.log("imagen agregada");
+      
     } catch (error) {
       console.error("Error al subir el archivo:", error);
       Utils.showToast({ title: "Error al subir el archivo", icon: "error" });

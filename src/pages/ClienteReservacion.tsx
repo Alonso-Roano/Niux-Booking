@@ -178,7 +178,7 @@ const ClienteReservacion: React.FC = () => {
                     Reservación
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 mb-4">{selectedReserva.nombreEmpresa}</p>
+                <p className="text-md text-gray-500 mb-4">{selectedReserva.nombreEmpresa}</p>
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Resumen</h3>
                   <div className="flex items-center mb-2">

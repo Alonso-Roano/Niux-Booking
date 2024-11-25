@@ -103,10 +103,7 @@ export default function Home() {
 
     fetchingData();
   }, []);
-  /*   console.log("r");
-  console.log(resenias);
-  console.log("e");
-  console.log(empresas); */
+
 
   return (
     <>

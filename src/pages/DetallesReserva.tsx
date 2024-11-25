@@ -29,7 +29,7 @@ const DetallesReserva = () => {
     const authData = localStorage.getItem("auth-storage"); // O sessionStorage.getItem()
     if (authData) {
       const parsedData = JSON.parse(authData); // Convierte el string en un objeto
-      console.log(parsedData);
+     
       const status = parsedData?.state?.status; // Accede a "status"
       if (status !== "unauthorized") {
         setAutorizacion(status);
@@ -38,8 +38,7 @@ const DetallesReserva = () => {
 
         user = parsedData?.state?.user; // Accede al objeto "user"
         setUsuario(user);
-        console.log(status); // Esto debería mostrar "unauthorized"
-        console.log(user);
+     
         const storageReserva = localStorage.getItem("datosReserva");
         const datosReserva = storageReserva ? JSON.parse(storageReserva) : {};
         setDatosReserva(datosReserva);

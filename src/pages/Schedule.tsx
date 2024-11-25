@@ -64,8 +64,6 @@ export default function Schedule() {
   const [empresa, setEmpresa] = useState<IEmpresa>(); //{}
   const [horarios, setHorarios] = useState<any>(); //[{}]
 
-  console.log("anitp");
-
   const diasSemanaParaDate = [
     "Domingo",
     "Lunes",
@@ -115,8 +113,6 @@ export default function Schedule() {
     return "";
   }
 
-  console.log("h");
-  console.log(horarios);
   const fetchData = async (fechaInicial = new Date()) => {
     try {
       const responseEmpresa = await niuxApi.get(
@@ -143,8 +139,6 @@ export default function Schedule() {
         const responseHorarios = await niuxApi.get(
           `/Horario/Empresa/${businessId}`
         );
-        console.log("prueba hora");
-        console.log(responseHorarios.data);
 
         let horariosTransformados = diasSemana.map((day: any) => {
           const busquedaDia = responseHorarios.data.find(
@@ -166,9 +160,6 @@ export default function Schedule() {
             };
           }
         });
-        console.log("hor trans");
-
-        console.log(horariosTransformados);
 
         setHorarios(horariosTransformados);
         //empieza las fechas
@@ -201,7 +192,6 @@ export default function Schedule() {
         let hey = new Date(
           `${currentYear}-${mesCorrecto}-${currentDayMonth} 00:00:00.0000000`
         );
-        console.log(hey);
 
         // Generamos un array con los días del mes (del 1 al último día)
         let arrayMeses = Array.from(
@@ -227,8 +217,6 @@ export default function Schedule() {
             horaFin: objeHorario?.horaFin,
           };
         });
-        console.log("meses");
-        console.log(arrayFinal);
 
         setDiasDelMesSeleccionado(arrayFinal);
 
@@ -247,27 +235,16 @@ export default function Schedule() {
             let horaInicio = objetoFechaSeleccionado.horaInicio;
 
             let dateHoraInicio = new Date(horaInicio);
-            /*   console.log("sdh");
-
-            console.log(dateHoraInicio);
-
-            let dateHoraInicioFormat = format(dateHoraInicio, "h:mm a", "es");
-            console.log("dbsi");
-            console.log(dateHoraInicioFormat); */
+    
 
             let horaInicioMinutos =
               dateHoraInicio.getHours() * 60 + dateHoraInicio.getMinutes();
-            /*      console.log("hora inicio minutos");
-          console.log(horaInicioMinutos); */
+   
 
             let horaFin = objetoFechaSeleccionado.horaFin;
             let dateHoraFin = new Date(horaFin);
             let horaFinMinutos =
               dateHoraFin.getHours() * 60 + dateHoraFin.getMinutes();
-            /*     console.log("hora fin minutos");
-          console.log(horaFinMinutos);
-          console.log("hhh");
-          console.log(objetoFechaSeleccionado); */
 
             // Duración del servicio en minutos
             let servicioMinutos = responseServicio.data.data.duracion;
@@ -334,7 +311,7 @@ export default function Schedule() {
                   },
                 }
               );
-              console.log("reservaciones actuales");
+      
               let rePreFormateados = reservasActuales.data.data;
               let reActualesFormateados = rePreFormateados.map(
                 (reservacion: any) => {
@@ -353,10 +330,9 @@ export default function Schedule() {
                 }
               );
               reActuales = reActualesFormateados;
-              /*    console.log("reservacion formateados");
-            console.log(reActuales); */
+           
             } catch (error) {
-              console.log(error);
+             
             }
             if (reActuales.length > 0) {
               // Filtrar intervalos disponibles excluyendo los solapados
@@ -378,25 +354,22 @@ export default function Schedule() {
               );
             }
 
-            console.log("Intervalos disponibles:");
+          
             setIntervalosDisponibles(intervalosDisponibles);
-            console.log(intervalosDisponibles);
+            
           }
         }
       }
 
-      /* console.log("se");
-      console.log(responseServicio.data.data);
-      console.log("em");
-      console.log(responseEmpresa.data.data); */
+  
     } catch (error) {
-      console.log(error);
+     
     }
   };
   const handleIntervaloSeleccionado = (datos: any) => {
     const { fechaPresentacion, horaInicio, horaInicioBD, horaFin, horaFinBD } =
       datos;
-    console.log(datos);
+   
     setFechaPresentacion(fechaPresentacion);
     setHoraInicio(horaInicio);
     setHoraFin(horaFin);
@@ -407,9 +380,7 @@ export default function Schedule() {
     let { fecha, horaInicio, horaFin, dia, activo } = datos;
     /*  let letFeSeleccionada = new Date(`${fecha} 00:00:00.0000000`); */
     setFechaSeleccionada(fecha);
-    console.log("dis");
-    console.log("MOSTRANDO DATOS");
-    console.log(datos);
+  
 
     setFechaPresentacion("");
     setHoraInicio("");
@@ -418,7 +389,7 @@ export default function Schedule() {
     setHoraFinBd("");
     if (activo == false) {
       setIntervalosDisponibles([]);
-      console.log("supasdod");
+    
     } else {
       let letHoraInicio = horaInicio;
       let dateHoraInicio = new Date(letHoraInicio);
@@ -495,7 +466,7 @@ export default function Schedule() {
             },
           }
         );
-        console.log("reservaciones actuales");
+      
         let rePreFormateados = reservasActuales.data.data;
         let reActualesFormateados = rePreFormateados.map((reservacion: any) => {
           let horaInicioDate = new Date(reservacion.horaInicio);
@@ -511,10 +482,9 @@ export default function Schedule() {
           };
         });
         reActuales = reActualesFormateados;
-        /*    console.log("reservacion formateados");
-      console.log(reActuales); */
+      
       } catch (error) {
-        console.log(error);
+      
       }
       if (reActuales.length > 0) {
         // Filtrar intervalos disponibles excluyendo los solapados
@@ -534,12 +504,11 @@ export default function Schedule() {
         });
       }
 
-      console.log("Intervalos disponibles:");
       setIntervalosDisponibles(intervalosDisponibles);
-      console.log(intervalosDisponibles);
+   
     }
   };
-  console.log(horarios);
+ 
 
   const cambioDeMes = (accion: any, mesProp: any, añoProp: any) => {
     if (contadorMes <= 5) {
@@ -590,8 +559,7 @@ export default function Schedule() {
           }
           
         });
-        console.log("meses");
-        console.log(arrayFinal);
+      
         setDiasDelMesSeleccionado(arrayFinal);
         setMesSeleccionado(mes);
         setAñoSeleccionado(año);
@@ -603,9 +571,7 @@ export default function Schedule() {
         setHoraFinBd("");
         setIntervalosDisponibles([]);
         setContadorMes((prev: any) => prev + 1);
-        /*  console.log(fechaAumentada);
-        console.log(mes);
-        console.log(año); */
+      
       }
     }
     if (accion == "disminuir") {
@@ -653,8 +619,7 @@ export default function Schedule() {
           };
         }
       });
-      console.log("meses");
-      console.log(arrayFinal);
+      
       setDiasDelMesSeleccionado(arrayFinal);
       setMesSeleccionado(mes);
       setAñoSeleccionado(año);
@@ -666,12 +631,10 @@ export default function Schedule() {
       setHoraFinBd("");
       setIntervalosDisponibles([]);
       setContadorMes((prev: any) => prev - 1);
-      /*  console.log(fechaAumentada);
-        console.log(mes);
-        console.log(año); */
+    
     }
   };
-  console.log(contadorMes);
+ 
   const SubmitReserva = () => {
     // Crear un objeto con los valores
     const datosReserva = {
@@ -705,8 +668,6 @@ export default function Schedule() {
       setAutorizacion(status);
       user = parsedData?.state?.user; // Accede al objeto "user"
       setUsuario(user);
-      console.log(status); // Esto debería mostrar "unauthorized"
-      console.log(user); // Esto debería mostrar "unauthorized"
     } else {
       setAutorizacion("unauthorized");
       setUsuario(null);

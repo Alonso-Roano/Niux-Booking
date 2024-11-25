@@ -286,7 +286,7 @@ function transformData(body: any) {
         body.duracion = duracionEnMinutos;
     }
     if (body.horaInicio) {
-        console.log(body.horaInicio)
+       
         const [hours, minutes] = body.horaInicio.split(":").map(Number);
         const horaInicioDate = new Date(Date.UTC(
             new Date().getUTCFullYear(),
@@ -296,10 +296,10 @@ function transformData(body: any) {
             minutes
         ));
         body.horaInicio = horaInicioDate.toISOString();
-        console.log(body.horaInicio)
+        
     }
     if (body.horaFin) {
-        console.log(body.horaFin)
+       
         const [hours, minutes] = body.horaFin.split(":").map(Number);
         const horaFinDate = new Date(Date.UTC(
             new Date().getUTCFullYear(),
@@ -309,7 +309,7 @@ function transformData(body: any) {
             minutes
         ));
         body.horaFin = horaFinDate.toISOString();
-        console.log(body.horaFin)
+      
         
     }
     if (body.fechaReserva) {
