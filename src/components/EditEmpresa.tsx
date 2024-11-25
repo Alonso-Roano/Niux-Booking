@@ -184,8 +184,8 @@ export const EditEmpresa: React.FC = () => {
                 isDeleted: false,
                 idEmpresa: idEmpresa,
                 dia: diasSemana.indexOf(horario.dia),
-                horaInicio: `${new Date().toISOString().split("T")[0]}T${horario.horaInicio}:00.000Z`,
-                horaFin: `${new Date().toISOString().split("T")[0]}T${horario.horaFin}:00.000Z`,
+                horaInicio: `0001-01-01T${horario.horaInicio}:00.000Z`,
+                horaFin: `0001-01-01T${horario.horaFin}:00.000Z`,
                 activo: horario.activo,
             }));
 
