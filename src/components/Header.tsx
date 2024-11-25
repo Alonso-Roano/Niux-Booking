@@ -19,6 +19,7 @@ import Company from "../svgs/Company";
 import Tag from "../svgs/Tag";
 import OffCanvas from "../constructors/OffCanvas"; // Importamos OffCanvas
 import EditProfile from "./EditProfile"; // Importamos EditProfile
+import iconReservation from "../../public/images/icons/icon-reserva.svg";
 
 interface Params {
   setOption?: (option: any) => void;
@@ -70,14 +71,14 @@ export default function Header({ setOption }: Params) {
         <div className="flex justify-between px-9 w-full border relative h-full">
           {/* Logo y Nombre */}
           <Link
-          className="p-2"
+            className="p-2"
             to="/"
 
           >
-          <div className="flex gap-2 items-center">
-            <Logo />
-            <span className="font-medium text-[#484748]">NIUXBOOKING</span>
-          </div>
+            <div className="flex gap-2 items-center">
+              <Logo />
+              <span className="font-medium text-[#484748]">NIUXBOOKING</span>
+            </div>
           </Link>
 
           {/* Botones de Registro e Inicio de Sesión (solo si no está autenticado) */}
@@ -140,19 +141,30 @@ export default function Header({ setOption }: Params) {
                     <span>Perfil</span>
                   </button>
                   {user?.rol === "Socio" && (
-  <Link
-    to={"/Editar/Empresa"}
-    className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
-  >
-    <img src={iconEmpresa} alt="Editar Empresa" className="w-5 h-5" />
-    <span>Editar Empresa</span>
-  </Link>
-)}
+                    <Link
+                      to={"/Editar/Empresa"}
+                      className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
+                    >
+                      <img src={iconEmpresa} alt="Editar Empresa" className="w-5 h-5" />
+                      <span>Editar Empresa</span>
+                    </Link>
+                  )}
+
+                  {user?.rol === "Cliente" && (
+                    <Link
+                      to="/reservaciones"
+                      className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
+                    >
+                       <img src={iconReservation} alt="Reservaciones" className="w-5 h-5" />
+                      <span>Reservaciones</span>
+                      
+                    </Link>
+                  )}
                   <button
                     onClick={logoutUser}
                     className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                   >
-                    
+
                     <img
                       src={iconLogout}
                       alt="Cerrar sesión"
@@ -195,15 +207,7 @@ export default function Header({ setOption }: Params) {
                     <ArrowNext />
                   </Link>
                   {/* Mostrar el enlace de Reservas solo si el rol es Cliente */}
-                  {user?.rol === "Cliente" && (
-                    <Link
-                      to="/reservas"
-                      className="flex justify-between items-center hover:bg-[#F5F5F6] px-2 py-2 rounded-md mt-1 border"
-                    >
-                      Reservas
-                      <ArrowNext />
-                    </Link>
-                  )}
+
                   {user?.rol === "Socio" && (
                     <div className="dashSelection">
                       <button
