@@ -7,7 +7,6 @@ import Star from "../svgs/Star";
 import { Link } from "react-router-dom";
 import Location from "../svgs/Location";
 import StarForReview from "../svgs/StarForReview";
-import UserForReview from "../images/users/beard-1845166_1280.jpg";
 import Footer from "../components/Footer";
 import WeAreNiux from "../svgs/WeAreNiux";
 import { niuxApi } from "../api/niuxApi";
@@ -73,11 +72,13 @@ export default function Home() {
 
       try {
         const responseResenia = await niuxApi.get("/Resena");
+
         const fetchingClient = responseResenia.data.data.map(
           async (resenia: IResenia) => {
             const clienteResponse = await niuxApi.get(
               `/Cliente/${resenia.idCliente}`
             );
+
             return { ...resenia, cliente: clienteResponse.data.data };
           }
         );
@@ -140,7 +141,7 @@ export default function Home() {
                 Encuentra y reserva los servicios ideales para ti, al instante y
                 desde cualquier lugar.
               </p>
-              <div className=" border border-slate-400 h-10 w-[370px]   pl-4 mt-10 rounded-lg flex gap-2 items-center">
+              <Link className=" border border-slate-400 h-10 w-[370px]   pl-4 mt-10 rounded-lg flex gap-2 items-center" to={"/Buscador"}>
                 <button className=" text-red-500">
                   <Search />
                 </button>
@@ -149,7 +150,7 @@ export default function Home() {
                   placeholder="Buscar Reservaciones ..."
                   className="  focus:outline-none   h-9 rounded-lg pl-2 w-full"
                 />
-              </div>
+              </Link>
             </div>
             <div className="  max-h-[450px] max-w-[450px] mx-auto z-10   ">
               <img

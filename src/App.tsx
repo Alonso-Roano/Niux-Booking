@@ -14,6 +14,7 @@ import DetallesReserva from "./pages/DetallesReserva";
 import Schedule from "./pages/Schedule";
 import { EditEmpresa } from "./components/EditEmpresa";
 import ClienteReservacion from "./pages/ClienteReservacion";
+import Buscador from "./pages/Buscador";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
           path="/horario/:slugEmpresa/:slugServicio"
           element={<Schedule />}
         />
+        <Route path="/detalle-reserva" element={<DetallesReserva />} />
         <Route
           path="/reserva/resumen"
           element={
@@ -81,7 +83,7 @@ function App() {
           }
         />
 
-<Route
+        <Route
           path="/Editar/Empresa"
           element={
             <ProtectedRoute allowedRoles={["Socio"]}>
@@ -89,13 +91,18 @@ function App() {
             </ProtectedRoute>
           }
         />
-
 <Route
           path="/reservaciones"
           element={
             <ProtectedRoute allowedRoles={["Cliente"]}>
               <ClienteReservacion />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Buscador"
+          element={
+              <Buscador />
           }
         />
       </Routes>

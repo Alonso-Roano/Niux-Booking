@@ -227,7 +227,6 @@ function flattenObject(obj: any, prefix: string = ''): Record<string, any> {
 }
 
 function mapJsonToHtml(json: Record<string, any>): string {
-    const baseUrl = "https://localhost:7044/";
     let html = '';
     let imageHtml = '';
 
@@ -243,14 +242,14 @@ function mapJsonToHtml(json: Record<string, any>): string {
                         if (imagen.url) {
                             imageHtml += `<div class="viewCard">
                                             <h5>${traduccion}:</h5>
-                                            <span><img src="${baseUrl}${imagen.url}" /></span>
+                                            <span><img src="${import.meta.env.VITE_BACKEND_API}${imagen.url}" /></span>
                                           </div>`;
                         }
                     });
                 } else if (key === 'foto' || key === "avatarURL") {
                     html += `<div class="viewCard">
                                 <h5>${traduccion}:</h5>
-                                <span>${value == null ? '<p>Sin foto</p>' : `<img src="${baseUrl}${value}" />`}</span>
+                                <span>${value == null ? '<p>Sin foto</p>' : `<img src="${import.meta.env.VITE_BACKEND_API}${value}" />`}</span>
                             </div>`;
                 }else if (typeof value === 'object' && value !== null) {
                     html += `<div class="viewCard">
