@@ -69,7 +69,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
           confirmPassword,
           nombreEmpresa
         });
-        console.log(data)
+      
         Utils.showToast({title:data.message, icon:"success"})
       } else {
         // Llama al método de registro para clientes
@@ -102,7 +102,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
       <div className="flex w-full max-w-7xl p-1 justify-center rounded-lg overflow-hidden gap-x-20">
 
         {/* Formulario de registro */}
-        <div className="w-full lg:w-1/2  flex flex-col justify-center">
+        <div className="max-w-4xl w-full mx-auto">
 
          
           <div className="text-center mb-2">
