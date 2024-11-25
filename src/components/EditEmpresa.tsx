@@ -151,14 +151,6 @@ export const EditEmpresa: React.FC = () => {
   };
 
   const handleImageDelete = async () => {
-    if (!idEmpresa) {
-      Utils.showToast({
-        icon: "warning",
-        title: "No se puede eliminar la imagen sin un ID de empresa.",
-      });
-      return;
-    }
-
     try {
       const response = await niuxApi.delete(`/Empresa/EliminarImagenEmpresa/${idEmpresa}`);
 
@@ -184,13 +176,23 @@ export const EditEmpresa: React.FC = () => {
     }
   };
 
+  const confirmImageDelete = () => {
+    Utils.confirmToast(
+      {
+        title: "¿Eliminar imagen?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+      },
+      handleImageDelete,
+      null
+    );
+  };
+
   return (
     <>
       <Header />
-      <p className="bg-gray-100 text-center text-4xl pb-5 font-semibold">
-        Editar datos Empresa
-      </p>
-      <div className="flex justify-center items-center bg-gray-100">
+      
+      <div className="flex justify-center items-center bg-gray-100 pt-4">
         <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="p-6 bg-gray-50">
@@ -246,6 +248,9 @@ export const EditEmpresa: React.FC = () => {
             </div>
 
             <div className="p-6 flex flex-col items-center">
+            <p className="text-center text-xl pb-5 font-semibold">
+        Editar datos Empresa
+      </p>
               <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden mb-4">
                 {empresaImagen ? (
                   <img
@@ -274,26 +279,41 @@ export const EditEmpresa: React.FC = () => {
                 onChange={handleImageChange}
                 className="hidden"
               />
-              <label
-                htmlFor="empresaImagen"
-                className="text-[#7B6FCC] font-semibold cursor-pointer hover:underline"
-              >
-                Cambiar Imagen
-              </label>
+              <div className="flex gap-4">
+                <label
+                  htmlFor="empresaImagen"
+                  className="py-2 px-4 bg-white text-[#7B6FCC] border border-[#7B6FCC] font-semibold rounded-lg cursor-pointer hover:bg-[#5448A1] hover:text-white transition-colors"
+                >
+                  Cambiar Imagen
+                </label>
+                {empresaFoto && (
+                  <button
+                    onClick={confirmImageDelete}
+                    className="py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Eliminar Imagen
+                  </button>
+                )}
+              </div>
+              <div className="w-full mt-4">
+                <label htmlFor="empresaNombre" className="block text-sm font-medium text-gray-700">
+                  Nombre de la Empresa
+                </label>
+                <input
+                  id="empresaNombre"
+                  type="text"
+                  value={empresaNombre || ""} // Garantiza un valor controlado
+                  onChange={(e) => setEmpresaNombre(e.target.value)}
+                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                />
+              </div>
               <button
                 onClick={handleImageSubmit}
                 className="w-full mt-4 py-2 bg-[#7B6FCC] text-white font-semibold rounded-lg hover:bg-[#5448A1] transition-colors"
               >
                 Guardar Imagen
               </button>
-              {empresaFoto && (
-                <button
-                  onClick={handleImageDelete}
-                  className="w-full mt-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-500 transition-colors"
-                >
-                  Eliminar Imagen
-                </button>
-              )}
+              
             </div>
           </div>
         </div>
