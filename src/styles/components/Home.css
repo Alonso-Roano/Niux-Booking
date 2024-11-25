@@ -95,3 +95,31 @@
     translate: 0 0;
   }
 }
+
+.buscador{
+  background-color: #7B6FCC !important;
+  width: 100%;
+  max-width: 370px;
+  display: flex !important;
+  justify-content: start !important;
+  margin-top: 30px !important;
+}
+.buscador svg{
+  font-weight: bold;
+}
+.EmpresasBuscar{
+  width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    justify-content: center; 
+    align-items: center;
+    margin-bottom: 20px;
+}
+.EmpresasBuscar a{
+  width: 100%;
+  aspect-ratio: 16/9 !important;
+}
+.sectionBuscador{
+  padding: 20px 30px;
+}

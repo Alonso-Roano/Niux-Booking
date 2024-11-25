@@ -21,7 +21,7 @@ function Edit({ data, bodyDatos, setClose }: any) {
 
     useEffect(() => { 
         Request.Read(setDatos, data); setError({});
-        if(user?.rol == "socio") Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
+        if(user?.rol == "Socio") Request.Get(`Horario/Empresa/${user?.idEmpresa}`,setHoras);
     }, [data, bodyDatos]);
 
     useEffect(() => { 
