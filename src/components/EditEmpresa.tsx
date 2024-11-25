@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { niuxApi } from "../api/niuxApi";
 import { useAuthStore } from "../stores/auth/authStore";
-import Utils from "../functions/Utils"; // Importa el Utils
+import Utils from "../functions/Utils";
 import Header from "./Header";
 import negocioDefault from "../../public/images/negocio-default.webp";
 
 interface Horario {
   id: number;
-  dia: string; // Ejemplo: "LUNES", "MARTES", etc.
-  horaInicio: string; // Ejemplo: "09:00"
-  horaFin: string; // Ejemplo: "14:00"
+  dia: string;
+  horaInicio: string;
+  horaFin: string;
   activo: boolean;
-  [key: string]: any; // Permitir acceso dinámico
+  [key: string]: any;
 }
 
 const diasSemana = [
@@ -25,10 +25,11 @@ const diasSemana = [
 ];
 
 export const EditEmpresa: React.FC = () => {
-  const { user } = useAuthStore((state) => state); // Obtener el usuario autenticado
+  const { user } = useAuthStore((state) => state);
   const [horarios, setHorarios] = useState<Horario[]>([]);
-  const [empresaImagen, setEmpresaImagen] = useState<File | null>(null); // Imagen de la empresa
-  const [empresaNombre, setEmpresaNombre] = useState<string>(""); // Nombre de la empresa desde la API
+  const [empresaImagen, setEmpresaImagen] = useState<File | null>(null);
+  const [empresaFoto, setEmpresaFoto] = useState<string>(""); 
+  const [empresaNombre, setEmpresaNombre] = useState<string>("");
 
   const idEmpresa = user?.idEmpresa;
 
@@ -39,39 +40,33 @@ export const EditEmpresa: React.FC = () => {
     }
   }, [idEmpresa]);
 
-  // Obtener los horarios de atención de la empresa
   const fetchHorarios = async (idEmpresa: number) => {
     try {
       const response = await niuxApi.get(`/Horario/Empresa/${idEmpresa}`);
       const data = response.data.map((horario: any) => ({
         ...horario,
-        dia: diasSemana[horario.dia], // Mapear el número del día al nombre
-        horaInicio: horario.horaInicio.substring(11, 16), // Extraer HH:mm
-        horaFin: horario.horaFin.substring(11, 16),       // Extraer HH:mm
+        dia: diasSemana[horario.dia],
+        horaInicio: horario.horaInicio.substring(11, 16),
+        horaFin: horario.horaFin.substring(11, 16),
       }));
       setHorarios(data);
     } catch (error) {
-      console.error("Error al obtener los horarios:", error);
       Utils.showToast({
         icon: "error",
-        title: "Error al obtener los horarios de la empresa.",
+        title: "Error al obtener los horarios.",
       });
     }
   };
 
-  // Obtener el nombre de la empresa
   const fetchEmpresa = async (idEmpresa: number) => {
     try {
       const response = await niuxApi.get(`/Empresa/${idEmpresa}`);
-      console.log(response.data.data)
       setEmpresaNombre(response.data.data.nombre || "");
-      
+      setEmpresaFoto(response.data.data.foto || "");
     } catch (error) {
-      console.error("Error al obtener la información de la empresa:", error);
-      setEmpresaNombre("");
       Utils.showToast({
         icon: "error",
-        title: "Error al cargar los datos de la empresa.",
+        title: "Error al obtener la información de la empresa.",
       });
     }
   };
@@ -84,52 +79,108 @@ export const EditEmpresa: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      // Construir el payload con el formato esperado por la API
       const payload = horarios.map((horario) => ({
-        isDeleted: false, // Siempre falso según el ejemplo
-        idEmpresa: idEmpresa, // Agregar idEmpresa al payload
-        dia: diasSemana.indexOf(horario.dia), // Transformar nombre del día a índice
-        horaInicio: `${new Date().toISOString().split("T")[0]}T${horario.horaInicio}:00.000Z`, // Formato completo ISO 8601
-        horaFin: `${new Date().toISOString().split("T")[0]}T${horario.horaFin}:00.000Z`, // Mismo formato para horaFin
-        activo: horario.activo, // Booleano estricto
+        isDeleted: false,
+        idEmpresa: idEmpresa,
+        dia: diasSemana.indexOf(horario.dia),
+        horaInicio: `${new Date().toISOString().split("T")[0]}T${horario.horaInicio}:00.000Z`,
+        horaFin: `${new Date().toISOString().split("T")[0]}T${horario.horaFin}:00.000Z`,
+        activo: horario.activo,
       }));
 
-      console.log("Payload enviado:", payload); // Debug para revisar el payload
-
-      // Realizar la petición PUT con el payload completo
       await niuxApi.put(`/Horario/Empresa/${idEmpresa}`, payload);
 
-      // Mostrar un mensaje de éxito
       Utils.showToast({
         icon: "success",
         title: "Horarios actualizados correctamente.",
       });
 
-      // Actualizar la lista de horarios con una nueva petición GET
       if (idEmpresa) {
         fetchHorarios(idEmpresa);
       }
     } catch (error: any) {
-      console.error("Error al guardar los horarios:", error);
-
-      // Si el backend devuelve un mensaje de error, mostrarlo
-      if (error.response && error.response.data) {
-        Utils.showToast({
-          icon: "error",
-          title: error.response.data.title || "Ocurrió un error al actualizar los horarios.",
-        });
-      } else {
-        Utils.showToast({
-          icon: "error",
-          title: "Error desconocido al actualizar los horarios.",
-        });
-      }
+      Utils.showToast({
+        icon: "error",
+        title: "Error al actualizar los horarios.",
+      });
     }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setEmpresaImagen(e.target.files[0]);
+    }
+  };
+
+  const handleImageSubmit = async () => {
+    if (!empresaImagen || !idEmpresa) {
+      Utils.showToast({
+        icon: "warning",
+        title: "Selecciona una imagen antes de actualizar.",
+      });
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("IdEmpresa", idEmpresa.toString());
+      formData.append("Archivo", empresaImagen);
+
+      const response = await niuxApi.put("/Empresa/ActualizarImagenEmpresa", formData);
+
+      if (response.data.success) {
+        Utils.showToast({
+          icon: "success",
+          title: "Imagen actualizada correctamente.",
+        });
+
+        // Actualizar la foto después del éxito
+        fetchEmpresa(idEmpresa);
+      } else {
+        Utils.showToast({
+          icon: "error",
+          title: "Error al actualizar la imagen.",
+        });
+      }
+    } catch (error) {
+      Utils.showToast({
+        icon: "error",
+        title: "Error desconocido al actualizar la imagen.",
+      });
+    }
+  };
+
+  const handleImageDelete = async () => {
+    if (!idEmpresa) {
+      Utils.showToast({
+        icon: "warning",
+        title: "No se puede eliminar la imagen sin un ID de empresa.",
+      });
+      return;
+    }
+
+    try {
+      const response = await niuxApi.delete(`/Empresa/EliminarImagenEmpresa/${idEmpresa}`);
+
+      if (response.data.success) {
+        Utils.showToast({
+          icon: "success",
+          title: "Imagen eliminada correctamente.",
+        });
+
+        // Actualizar estado para eliminar la imagen localmente
+        setEmpresaFoto("");
+      } else {
+        Utils.showToast({
+          icon: "error",
+          title: "Error al eliminar la imagen.",
+        });
+      }
+    } catch (error) {
+      Utils.showToast({
+        icon: "error",
+        title: "Error desconocido al eliminar la imagen.",
+      });
     }
   };
 
@@ -142,7 +193,6 @@ export const EditEmpresa: React.FC = () => {
       <div className="flex justify-center items-center bg-gray-100">
         <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* Horarios */}
             <div className="p-6 bg-gray-50">
               <h2 className="text-xl font-bold text-gray-700 mb-4">
                 Edita el Horario de Atención
@@ -195,29 +245,28 @@ export const EditEmpresa: React.FC = () => {
               </button>
             </div>
 
-            {/* Información de la Empresa */}
             <div className="p-6 flex flex-col items-center">
               <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden mb-4">
                 {empresaImagen ? (
                   <img
                     src={URL.createObjectURL(empresaImagen)}
+                    alt="Imagen previsualizada"
+                    className="w-full h-full object-cover"
+                  />
+                ) : empresaFoto ? (
+                  <img
+                    src={import.meta.env.VITE_BACKEND_API + empresaFoto}
                     alt="Imagen de la empresa"
                     className="w-full h-full object-cover"
                   />
                 ) : (
                   <img
                     src={negocioDefault}
-                    alt="Imagen de la empresa"
+                    alt="Imagen predeterminada"
                     className="w-full h-full object-cover"
                   />
                 )}
               </div>
-              <label
-                htmlFor="empresaImagen"
-                className="text-[#7B6FCC] font-semibold cursor-pointer hover:underline"
-              >
-                Cambiar Imagen
-              </label>
               <input
                 type="file"
                 id="empresaImagen"
@@ -225,24 +274,26 @@ export const EditEmpresa: React.FC = () => {
                 onChange={handleImageChange}
                 className="hidden"
               />
-              <div className="w-full mt-4">
-                <label htmlFor="empresaNombre" className="block text-sm font-medium text-gray-700">
-                  Nombre de la Empresa
-                </label>
-                <input
-                  id="empresaNombre"
-                  type="text"
-                  value={empresaNombre || ""} // Garantiza un valor controlado
-                  onChange={(e) => setEmpresaNombre(e.target.value)}
-                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
-                />
-              </div>
+              <label
+                htmlFor="empresaImagen"
+                className="text-[#7B6FCC] font-semibold cursor-pointer hover:underline"
+              >
+                Cambiar Imagen
+              </label>
               <button
-                onClick={handleSubmit}
+                onClick={handleImageSubmit}
                 className="w-full mt-4 py-2 bg-[#7B6FCC] text-white font-semibold rounded-lg hover:bg-[#5448A1] transition-colors"
               >
-                Guardar Cambios
+                Guardar Imagen
               </button>
+              {empresaFoto && (
+                <button
+                  onClick={handleImageDelete}
+                  className="w-full mt-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-500 transition-colors"
+                >
+                  Eliminar Imagen
+                </button>
+              )}
             </div>
           </div>
         </div>
