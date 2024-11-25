@@ -83,7 +83,7 @@
   },
   "clients": {
     "name": "Clientes",
-    "add": "addClient.json",
+    "add": "addClientAdmin.json",
     "viewTitle": "Detalle de los usuarios",
     "getURL": "ClienteEmpresa/ListaDeClientes",
     "response": "products",

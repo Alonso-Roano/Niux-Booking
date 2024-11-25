@@ -137,6 +137,11 @@
     background-color: #6b61b3;
 }
 
+.buscadorEmpresa .MuiFormControl-root {
+    width: 100% !important;
+    border-radius: 10px;
+}
+
 .Mui-focused:focus svg {
     background-color: #8FBCFF;
 }
