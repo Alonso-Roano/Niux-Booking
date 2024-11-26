@@ -85,6 +85,25 @@ class Post {
     return this;
   }
 
+  private clearBodyProperties(): void {
+    if (typeof this.body === "object" && this.body !== null) {
+      Object.keys(this.body).forEach((key) => {
+        const value = this.body[key];
+        if(key == "sexo"){
+          this.body[key] = "h";
+        }else{
+          if (typeof value === "number" || !isNaN(Number(value))) {
+            this.body[key] = 0;
+          } else if (typeof value === "string") {
+            this.body[key] = "";
+          } else {
+            this.body[key] = null;
+          }
+        }
+      });
+    }
+  }
+
   private async uploadFile(file: File, id: string | number) {
     if (!this.fileUploadUrl) {
       throw new Error("No file upload URL specified.");
@@ -144,7 +163,10 @@ class Post {
         }
         
         if (this.setReponse) this.setReponse(response.data);
-        if (this.setBody) this.setBody({});        
+        if (this.setBody) {
+          this.clearBodyProperties();
+          this.setBody(this.body);
+        }       
 
         if(this.data?.imageUrl){
           const id = response.data?.data?.id;

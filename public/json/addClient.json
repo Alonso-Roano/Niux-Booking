@@ -64,8 +64,8 @@
                 "className": "input-select"
             },
             "options":[
-                {"label":"Hombre", "value":"0"},
-                {"label":"Mujer", "value":"1"}
+                {"label":"Hombre", "value":"h"},
+                {"label":"Mujer", "value":"m"}
             ],
             "className": "css",
             "cantWrite": "",

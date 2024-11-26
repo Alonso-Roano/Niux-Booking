@@ -278,7 +278,7 @@ function mapJsonToHtml(json: Record<string, any>): string {
   
 function transformData(body: any) {
     if (body.sexo) {
-        body.sexo = Number(body.sexo);
+        body.sexo = body.sexo == "h" ? 0 : 1;
     }
     if (body.duracion) {
         const [horas, minutos] = body.duracion.split(":").map(Number);
