@@ -76,18 +76,21 @@ export default function Home() {
 
         console.log(responseResenia);
 
-        const fetchingClient = responseResenia.data.data.map(
+        /*   const fetchingClient = responseResenia.data.data.map(
           async (resenia: IResenia) => {
             console.log(resenia);
 
             const clienteResponse = await niuxApi.get(
               `/Cliente/${resenia.idCliente}`
             );
+            console.log("cliente");
+
+            console.log(clienteResponse.data);
 
             return { ...resenia, cliente: clienteResponse.data.data };
           }
-        );
-        const promisesForClients = await Promise.all(fetchingClient);
+        ); */
+        const promisesForClients = await Promise.all(responseResenia.data.data);
         /*     const fetchingPerson = promisesForClients.map(
           async (resenia: IResenia) => {
             const person = await niuxApi.get(
@@ -105,6 +108,9 @@ export default function Home() {
         console.error("Error in fetchings: ", error);
       }
     };
+    console.log("resenias");
+
+    console.log(resenias);
 
     fetchingData();
   }, []);
