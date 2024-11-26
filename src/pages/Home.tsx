@@ -72,18 +72,26 @@ export default function Home() {
 
       try {
         const responseResenia = await niuxApi.get("/Resena");
+        console.log("resenias");
 
-        const fetchingClient = responseResenia.data.data.map(
+        console.log(responseResenia);
+
+        /*   const fetchingClient = responseResenia.data.data.map(
           async (resenia: IResenia) => {
+            console.log(resenia);
+
             const clienteResponse = await niuxApi.get(
               `/Cliente/${resenia.idCliente}`
             );
+            console.log("cliente");
+
+            console.log(clienteResponse.data);
 
             return { ...resenia, cliente: clienteResponse.data.data };
           }
-        );
-        const promisesForClients = await Promise.all(fetchingClient);
-        const fetchingPerson = promisesForClients.map(
+        ); */
+        const promisesForClients = await Promise.all(responseResenia.data.data);
+        /*     const fetchingPerson = promisesForClients.map(
           async (resenia: IResenia) => {
             const person = await niuxApi.get(
               `/Persona/${resenia.cliente?.idPersona}`
@@ -94,16 +102,18 @@ export default function Home() {
             };
           }
         );
-        const promisesforPersons = await Promise.all(fetchingPerson);
-        setResenias(promisesforPersons);
+        const promisesforPersons = await Promise.all(fetchingPerson); */
+        setResenias(promisesForClients);
       } catch (error) {
         console.error("Error in fetchings: ", error);
       }
     };
+    console.log("resenias");
+
+    console.log(resenias);
 
     fetchingData();
   }, []);
-
 
   return (
     <>
@@ -138,7 +148,10 @@ export default function Home() {
                 Encuentra y reserva los servicios ideales para ti, al instante y
                 desde cualquier lugar.
               </p>
-              <Link className=" border border-slate-400 h-10 w-[370px]   pl-4 mt-10 rounded-lg flex gap-2 items-center" to={"/Buscador"}>
+              <Link
+                className=" border border-slate-400 h-10 w-[370px]   pl-4 mt-10 rounded-lg flex gap-2 items-center"
+                to={"/Buscador"}
+              >
                 <button className=" text-red-500">
                   <Search />
                 </button>
@@ -159,163 +172,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* Recent */}
-        <section className="  ml-5 lg:ml-10 mt-16 mb-32 section-recent">
-          <h2 className=" font-semibold text-2xl mb-4">Vistos Recientemente</h2>
-          <div className=" overflow-hidden">
-            <div className=" flex gap-6 pt-2 px-1 pb-3 carrusel-scroll  items-center overflow-x-scroll">
-              <Link
-                to={""}
-                className=" w-[320px] min-h-[300px]  shadow-lg rounded-md"
-              >
-                <div className=" w-[320px] h-[170px] overflow-hidden group">
-                  <img
-                    src={RecentBarber}
-                    className=" w-full h-full object-cover rounded-t-md group-hover:scale-105 duration-300"
-                    alt=""
-                  />
-                </div>
-                <footer>
-                  <h3 className=" pl-3 pt-2 font-medium text-lg">
-                    Barber Shop
-                  </h3>
-                  <section className=" pl-3 pt-1">
-                    <div className=" flex items-center gap-1">
-                      <span>5.0</span>
-                      <div>
-                        <Star />
-                      </div>
-                      <span>(1000)</span>
-                    </div>
-                  </section>
-                  <section className=" pl-3 pt-1 flex items-center gap-1">
-                    <Location />
-                    <p className=" text-[#707070]">
-                      Av. las Torres Blv. Kukulkan
-                    </p>
-                  </section>
-                  <section className=" pl-3 pt-2 pb-2">
-                    <button className=" border p-1 px-2 rounded-2xl hover:bg-[#F5F5F6] ">
-                      Barberia
-                    </button>
-                  </section>
-                </footer>
-              </Link>
-              <Link
-                to={""}
-                className=" w-[320px] min-h-[300px]  shadow-lg rounded-md"
-              >
-                <div className=" w-[320px] h-[170px] overflow-hidden group">
-                  <img
-                    src={RecentBarber}
-                    className=" w-full h-full object-cover rounded-t-md group-hover:scale-105 duration-300"
-                    alt=""
-                  />
-                </div>
-                <footer>
-                  <h3 className=" pl-3 pt-2 font-medium text-lg">
-                    Barber Shop
-                  </h3>
-                  <section className=" pl-3 pt-1">
-                    <div className=" flex items-center gap-1">
-                      <span>5.0</span>
-                      <div>
-                        <Star />
-                      </div>
-                      <span>(1000)</span>
-                    </div>
-                  </section>
-                  <section className=" pl-3 pt-1 flex items-center gap-1">
-                    <Location />
-                    <p className=" text-[#707070]">
-                      Av. las Torres Blv. Kukulkan
-                    </p>
-                  </section>
-                  <section className=" pl-3 pt-2 pb-2">
-                    <button className=" border p-1 px-2 rounded-2xl hover:bg-[#F5F5F6] ">
-                      Barberia
-                    </button>
-                  </section>
-                </footer>
-              </Link>
-              <Link
-                to={""}
-                className=" w-[320px] min-h-[300px]  shadow-lg rounded-md"
-              >
-                <div className=" w-[320px] h-[170px] overflow-hidden group">
-                  <img
-                    src={RecentBarber}
-                    className=" w-full h-full object-cover rounded-t-md group-hover:scale-105 duration-300"
-                    alt=""
-                  />
-                </div>
-                <footer>
-                  <h3 className=" pl-3 pt-2 font-medium text-lg">
-                    Barber Shop
-                  </h3>
-                  <section className=" pl-3 pt-1">
-                    <div className=" flex items-center gap-1">
-                      <span>5.0</span>
-                      <div>
-                        <Star />
-                      </div>
-                      <span>(1000)</span>
-                    </div>
-                  </section>
-                  <section className=" pl-3 pt-1 flex items-center gap-1">
-                    <Location />
-                    <p className=" text-[#707070]">
-                      Av. las Torres Blv. Kukulkan
-                    </p>
-                  </section>
-                  <section className=" pl-3 pt-2 pb-2">
-                    <button className=" border p-1 px-2 rounded-2xl hover:bg-[#F5F5F6] ">
-                      Barberia
-                    </button>
-                  </section>
-                </footer>
-              </Link>
 
-              <Link
-                to={""}
-                className=" w-[320px] min-h-[300px]  shadow-lg rounded-md"
-              >
-                <div className=" w-[320px] h-[170px] overflow-hidden group">
-                  <img
-                    src={RecentBarber}
-                    className=" w-full h-full object-cover rounded-t-md group-hover:scale-105 duration-300"
-                    alt=""
-                  />
-                </div>
-                <footer>
-                  <h3 className=" pl-3 pt-2 font-medium text-lg">
-                    Barber Shop
-                  </h3>
-                  <section className=" pl-3 pt-1">
-                    <div className=" flex items-center gap-1">
-                      <span>5.0</span>
-                      <div>
-                        <Star />
-                      </div>
-                      <span>(1000)</span>
-                    </div>
-                  </section>
-                  <section className=" pl-3 pt-1 flex items-center gap-1">
-                    <Location />
-                    <p className=" text-[#707070]">
-                      Av. las Torres Blv. Kukulkan
-                    </p>
-                  </section>
-                  <section className=" pl-3 pt-2 pb-2">
-                    <button className=" border p-1 px-2 rounded-2xl hover:bg-[#F5F5F6] ">
-                      Barberia
-                    </button>
-                  </section>
-                </footer>
-              </Link>
-            </div>
-          </div>
-        </section>
         {/* Recomendations */}
         <section className="  ml-5 lg:ml-10 mt-16 mb-32 section-recent">
           <h2 className=" font-semibold text-2xl mb-4">Recomendaciones</h2>
@@ -330,7 +187,11 @@ export default function Home() {
                     >
                       <div className=" w-[320px] h-[170px] overflow-hidden group">
                         <img
-                          src={empresa.foto ? empresa.foto : GeneralBusiness}
+                          src={
+                            empresa.foto
+                              ? import.meta.env.VITE_BACKEND_API + empresa.foto
+                              : GeneralBusiness
+                          }
                           className=" w-full h-full object-cover rounded-t-md group-hover:scale-105 duration-300"
                           alt=""
                         />
@@ -458,11 +319,13 @@ export default function Home() {
                             />
                           </div>
                           <span>
-                            {resenia?.cliente?.persona?.nombres +
-                              " " +
-                              resenia?.cliente?.persona?.apellido1 +
-                              " " +
-                              resenia?.cliente?.persona?.apellido2}
+                            {
+                              /* resenia?.cliente?.persona?.nombres&&
+                              
+                              resenia?.cliente?.persona?.apellido1 
+                              &&
+                              resenia?.cliente?.persona?.apellido2 */ ""
+                            }
                           </span>
                         </section>
                       </footer>

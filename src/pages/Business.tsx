@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { niuxApi } from "../api/niuxApi";
 import { format } from "@formkit/tempo";
 import Swal from "sweetalert2";
+import GeneralBusiness from "../images/services/general-business.jpg";
 
 export default function Business() {
   const skeletons = [1, 2, 3, 4, 5];
@@ -81,7 +82,6 @@ export default function Business() {
       const datosCliente = await niuxApi.get(
         `/Cliente/GetClienteByIdAppUser/${usuario.id}`
       );
-
 
       const resenaData = {
         isDeleted: false,
@@ -183,7 +183,6 @@ export default function Business() {
           });
           const promiseServices = await Promise.all(mapServices);
           arService = promiseServices;
-
         } else {
           arService = responseServicios.data.data;
         }
@@ -223,13 +222,11 @@ export default function Business() {
         );
         setEmpresa(responseBusinesss.data.data);
         setServicios(arService);
-      } catch (error) {
-       
-      }
+      } catch (error) {}
     };
     fetchingData();
   }, [slugEmpresa]);
- 
+
   function formatDuration(minutes: number | undefined) {
     if (minutes) {
       const hours = Math.floor(minutes / 60); // Obtener las horas completas
@@ -258,7 +255,7 @@ export default function Business() {
   const toggleModal = (servicio: any) => {
     document.body.style.overflow = "hidden";
     setModal(!modal);
- 
+
     setServicioSeleccionado(servicio);
   };
   const closeModal = () => {
@@ -268,6 +265,10 @@ export default function Business() {
   if (!closeModal) {
     document.body.style.overflow = "auto";
   }
+
+  console.log("empresa");
+
+  console.log(empresa);
 
   return (
     <>
@@ -408,22 +409,34 @@ export default function Business() {
         <section className=" grid grid-cols-3 gap-6 lg:mr-10 mr-5 mt-6 mb-6 max-h-[500px]  border">
           <div className=" col-span-2 max-h-[500px] ">
             <img
-              src={Barber}
+              src={
+                empresa && empresa.fotoEmpresa
+                  ? import.meta.env.VITE_BACKEND_API + empresa?.fotoEmpresa
+                  : GeneralBusiness
+              }
               alt=""
               className=" object-cover rounded-md h-full w-full"
             />
           </div>
           <div className=" col-span-1 flex   gap-6   flex-col  max-h-[500px]">
-            <div className="    ">
+            <div className="   max-h-[220px]  ">
               <img
-                src={Barber}
+                src={
+                  empresa && empresa.fotoEmpresa
+                    ? import.meta.env.VITE_BACKEND_API + empresa?.fotoEmpresa
+                    : GeneralBusiness
+                }
                 alt=""
                 className=" object-cover rounded-md h-full w-full"
               />
             </div>
-            <div className=" max-h-[226px] ">
+            <div className=" max-h-[220px] ">
               <img
-                src={Barber}
+                src={
+                  empresa && empresa.fotoEmpresa
+                    ? import.meta.env.VITE_BACKEND_API + empresa?.fotoEmpresa
+                    : GeneralBusiness
+                }
                 alt=""
                 className=" object-cover rounded-md h-full w-full"
               />
