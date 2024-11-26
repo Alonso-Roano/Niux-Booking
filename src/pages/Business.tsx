@@ -266,6 +266,10 @@ export default function Business() {
     document.body.style.overflow = "auto";
   }
 
+  console.log("empresa");
+
+  console.log(empresa);
+
   return (
     <>
       <Header />
@@ -406,8 +410,8 @@ export default function Business() {
           <div className=" col-span-2 max-h-[500px] ">
             <img
               src={
-                empresa && empresa.foto
-                  ? import.meta.env.VITE_BACKEND_API + empresa?.foto
+                empresa && empresa.fotoEmpresa
+                  ? import.meta.env.VITE_BACKEND_API + empresa?.fotoEmpresa
                   : GeneralBusiness
               }
               alt=""
@@ -415,22 +419,22 @@ export default function Business() {
             />
           </div>
           <div className=" col-span-1 flex   gap-6   flex-col  max-h-[500px]">
-            <div className="    ">
+            <div className="   max-h-[220px]  ">
               <img
                 src={
-                  empresa && empresa.foto
-                    ? import.meta.env.VITE_BACKEND_API + empresa?.foto
+                  empresa && empresa.fotoEmpresa
+                    ? import.meta.env.VITE_BACKEND_API + empresa?.fotoEmpresa
                     : GeneralBusiness
                 }
                 alt=""
                 className=" object-cover rounded-md h-full w-full"
               />
             </div>
-            <div className=" max-h-[226px] ">
+            <div className=" max-h-[220px] ">
               <img
                 src={
-                  empresa && empresa.foto
-                    ? import.meta.env.VITE_BACKEND_API + empresa?.foto
+                  empresa && empresa.fotoEmpresa
+                    ? import.meta.env.VITE_BACKEND_API + empresa?.fotoEmpresa
                     : GeneralBusiness
                 }
                 alt=""
