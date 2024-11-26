@@ -406,8 +406,8 @@ export default function Business() {
           <div className=" col-span-2 max-h-[500px] ">
             <img
               src={
-                empresa.foto
-                  ? import.meta.env.VITE_BACKEND_API + empresa.foto
+                empresa && empresa.foto
+                  ? import.meta.env.VITE_BACKEND_API + empresa?.foto
                   : GeneralBusiness
               }
               alt=""
@@ -418,8 +418,8 @@ export default function Business() {
             <div className="    ">
               <img
                 src={
-                  empresa.foto
-                    ? import.meta.env.VITE_BACKEND_API + empresa.foto
+                  empresa && empresa.foto
+                    ? import.meta.env.VITE_BACKEND_API + empresa?.foto
                     : GeneralBusiness
                 }
                 alt=""
@@ -429,8 +429,8 @@ export default function Business() {
             <div className=" max-h-[226px] ">
               <img
                 src={
-                  empresa.foto
-                    ? import.meta.env.VITE_BACKEND_API + empresa.foto
+                  empresa && empresa.foto
+                    ? import.meta.env.VITE_BACKEND_API + empresa?.foto
                     : GeneralBusiness
                 }
                 alt=""
