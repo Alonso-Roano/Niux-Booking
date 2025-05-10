@@ -5,9 +5,9 @@ import MenuHamburger from "../svgs/MenuHamburger";
 import Close from "../svgs/Close";
 import ArrowNext from "../svgs/ArrowNext";
 import { useAuthStore } from "../stores/auth/authStore"; // Importamos el store de auth
-import iconUser from "../../public/images/icons/icon-user.svg";
-import iconEmpresa from "../../public/images/icons/icon-empresa.svg";
-import iconLogout from "../../public/images/icons/icon-logout.svg";
+import iconUser from "/images/icons/icon-user.svg";
+import iconEmpresa from "/images/icons/icon-empresa.svg";
+import iconLogout from "/images/icons/icon-Logout.svg";
 import DashboardIcon from "../svgs/Dashboard";
 import Service from "../svgs/Service";
 import Client from "../svgs/Client";
@@ -19,7 +19,7 @@ import Company from "../svgs/Company";
 import Tag from "../svgs/Tag";
 import OffCanvas from "../constructors/OffCanvas"; // Importamos OffCanvas
 import EditProfile from "./EditProfile"; // Importamos EditProfile
-import iconReservation from "../../public/images/icons/icon-reserva.svg";
+import iconReservation from "/images/icons/icon-reserva.svg";
 
 interface Params {
   setOption?: (option: any) => void;
@@ -70,11 +70,7 @@ export default function Header({ setOption }: Params) {
       <header className="h-[70px] shadow-md sticky top-0 bg-white roboto-regular z-20">
         <div className="flex justify-between px-9 w-full border relative h-full">
           {/* Logo y Nombre */}
-          <Link
-            className="p-2"
-            to="/"
-
-          >
+          <Link className="p-2" to="/">
             <div className="flex gap-2 items-center">
               <Logo />
               <span className="font-medium text-[#484748]">NIUXBOOKING</span>
@@ -145,7 +141,11 @@ export default function Header({ setOption }: Params) {
                       to={"/Editar/Empresa"}
                       className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                     >
-                      <img src={iconEmpresa} alt="Editar Empresa" className="w-5 h-5" />
+                      <img
+                        src={iconEmpresa}
+                        alt="Editar Empresa"
+                        className="w-5 h-5"
+                      />
                       <span>Editar Empresa</span>
                     </Link>
                   )}
@@ -155,16 +155,18 @@ export default function Header({ setOption }: Params) {
                       to="/reservaciones"
                       className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                     >
-                       <img src={iconReservation} alt="Reservaciones" className="w-5 h-5" />
+                      <img
+                        src={iconReservation}
+                        alt="Reservaciones"
+                        className="w-5 h-5"
+                      />
                       <span>Reservaciones</span>
-                      
                     </Link>
                   )}
                   <button
                     onClick={logoutUser}
                     className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                   >
-
                     <img
                       src={iconLogout}
                       alt="Cerrar sesión"
