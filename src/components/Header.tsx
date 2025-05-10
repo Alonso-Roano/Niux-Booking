@@ -73,7 +73,9 @@ export default function Header({ setOption }: Params) {
           <Link className="p-2" to="/">
             <div className="flex gap-2 items-center">
               <Logo />
-              <span className="font-medium text-[#484748]">NIUXBOOKING</span>
+              <span className="font-medium tracking-wider text-[#484748]">
+                NIUXBOOKING
+              </span>
             </div>
           </Link>
 
