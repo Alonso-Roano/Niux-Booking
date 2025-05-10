@@ -1,7 +1,7 @@
 import iconLocation from "../../public/images/icons/icon-location.svg";
-import iconService from "/images/icons/icon-service.svg";
-import iconTime from "/images/icons/icon-time.svg";
-import iconCalendar from "/images/icons/icon-calendar.svg";
+import iconService from "../../public/images/icons/icon-service.svg";
+import iconTime from "../../public/images/icons/icon-time.svg";
+import iconCalendar from "../../public/images/icons/icon-calendar.svg";
 import Header from "../components/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ const DetallesReserva = () => {
     const authData = localStorage.getItem("auth-storage"); // O sessionStorage.getItem()
     if (authData) {
       const parsedData = JSON.parse(authData); // Convierte el string en un objeto
-
+     
       const status = parsedData?.state?.status; // Accede a "status"
       if (status !== "unauthorized") {
         setAutorizacion(status);
@@ -38,7 +38,7 @@ const DetallesReserva = () => {
 
         user = parsedData?.state?.user; // Accede al objeto "user"
         setUsuario(user);
-
+     
         const storageReserva = localStorage.getItem("datosReserva");
         const datosReserva = storageReserva ? JSON.parse(storageReserva) : {};
         setDatosReserva(datosReserva);

@@ -15,21 +15,31 @@
   }
   50% {
     transform: translateX(
-      1200px
+      100px
     ); /* Ajusta el valor para el desplazamiento deseado */
   }
 }
 
-
+@keyframes slideVertical {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(
+      100px
+    ); /* Ajusta el valor para el desplazamiento deseado */
+  }
+}
 
 @keyframes slideRight {
   0%,
   100% {
     transform: translateX(0);
   }
-  100% {
+  50% {
     transform: translateX(
-      -1200px
+      -100px
     ); /* Ajusta el valor para el desplazamiento deseado */
   }
 }
