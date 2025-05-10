@@ -1,10 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-.button-guardar{
-    background-color: #8FBCFF !important;
-    border-radius: 15px !important;
+@import "tailwindcss";
+.button-guardar {
+  background-color: #8fbcff !important;
+  border-radius: 15px !important;
 }
-.button-guardar:hover{
-    background-color: #7FACEF !important;
+.button-guardar:hover {
+  background-color: #7facef !important;
 }
+
+

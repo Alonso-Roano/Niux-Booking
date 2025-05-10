@@ -5,9 +5,9 @@ import MenuHamburger from "../svgs/MenuHamburger";
 import Close from "../svgs/Close";
 import ArrowNext from "../svgs/ArrowNext";
 import { useAuthStore } from "../stores/auth/authStore"; // Importamos el store de auth
-import iconUser from "../../public/images/icons/icon-user.svg";
-import iconEmpresa from "../../public/images/icons/icon-empresa.svg";
-import iconLogout from "../../public/images/icons/icon-logout.svg";
+import iconUser from "/images/icons/icon-user.svg";
+import iconEmpresa from "/images/icons/icon-empresa.svg";
+import iconLogout from "/images/icons/icon-Logout.svg";
 import DashboardIcon from "../svgs/Dashboard";
 import Service from "../svgs/Service";
 import Client from "../svgs/Client";
@@ -19,7 +19,7 @@ import Company from "../svgs/Company";
 import Tag from "../svgs/Tag";
 import OffCanvas from "../constructors/OffCanvas"; // Importamos OffCanvas
 import EditProfile from "./EditProfile"; // Importamos EditProfile
-import iconReservation from "../../public/images/icons/icon-reserva.svg";
+import iconReservation from "/images/icons/icon-reserva.svg";
 
 interface Params {
   setOption?: (option: any) => void;
@@ -67,32 +67,32 @@ export default function Header({ setOption }: Params) {
 
   return (
     <>
-      <header className="h-[70px] shadow-md sticky top-0 bg-white roboto-regular z-20">
-        <div className="flex justify-between px-9 w-full border relative h-full">
+      <header className="h-[70px] sticky top-0 border-b border-gray-200 roboto-regular z-20   bg-white  ">
+        <div className="flex justify-between items-center px-9 w-full  relative h-full">
           {/* Logo y Nombre */}
-          <Link
-            className="p-2"
-            to="/"
 
-          >
-            <div className="flex gap-2 items-center">
+          <Link className="p-2 select-none" to="/">
+            <div className="flex gap-2 items-center  ">
               <Logo />
-              <span className="font-medium text-[#484748]">NIUXBOOKING</span>
+              <span className="font-medium tracking-wider  text-black">
+                NIUXBOOKING
+              </span>
             </div>
           </Link>
 
           {/* Botones de Registro e Inicio de Sesión (solo si no está autenticado) */}
           {status !== "authorized" && (
-            <div className="md:flex items-center gap-5 hidden">
+            <div className="md:flex items-center gap-5 hidden select-none">
               <Link
                 to="/registro-type"
-                className="border-transparent border-b-2 duration-300 font-medium hover:border-[#7B6FCC] m-1"
+                className="border-transparent   inline-block relative group  duration-300 font-medium  p-1"
               >
                 Registrarse
+                <span className="absolute group-hover:flex hidden  -bottom-1 animate-bounce left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[5px] border-r-[5px] border-b-[5px] border-transparent border-b-violet-500"></span>
               </Link>
               <Link
                 to="/login"
-                className="p-1 bg-[#7B6FCC] px-2 text-white rounded-md font-medium hover:bg-[#5448A1] duration-300"
+                className="p-1 bg-violet-400/20 text-violet-500 px-3  duration-100 rounded-md font-medium hover:outline-2 hover:outline-violet-200   "
               >
                 Iniciar Sesión
               </Link>
@@ -145,7 +145,11 @@ export default function Header({ setOption }: Params) {
                       to={"/Editar/Empresa"}
                       className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                     >
-                      <img src={iconEmpresa} alt="Editar Empresa" className="w-5 h-5" />
+                      <img
+                        src={iconEmpresa}
+                        alt="Editar Empresa"
+                        className="w-5 h-5"
+                      />
                       <span>Editar Empresa</span>
                     </Link>
                   )}
@@ -155,16 +159,18 @@ export default function Header({ setOption }: Params) {
                       to="/reservaciones"
                       className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                     >
-                       <img src={iconReservation} alt="Reservaciones" className="w-5 h-5" />
+                      <img
+                        src={iconReservation}
+                        alt="Reservaciones"
+                        className="w-5 h-5"
+                      />
                       <span>Reservaciones</span>
-                      
                     </Link>
                   )}
                   <button
                     onClick={logoutUser}
                     className="flex items-center justify-left gap-2 w-full bg-white text-gray-700 hover:bg-gray-100 py-3 px-1 rounded-md transition-all"
                   >
-
                     <img
                       src={iconLogout}
                       alt="Cerrar sesión"
