@@ -375,9 +375,7 @@ export default function Business() {
           </div>
         )}
 
-        <h2 className=" text-5xl  font-semibold tracking-wider">
-          {empresa?.nombreEmpresa}
-        </h2>
+        <h2 className=" text-5xl  font-semibold">{empresa?.nombreEmpresa}</h2>
         <div className=" flex items-center gap-4 mt-3">
           <div className=" flex gap-2 items-center ">
             <span className=" font-medium">
@@ -408,8 +406,8 @@ export default function Business() {
             </span>
           </div>
         </div>
-        <section className=" grid lg:grid-cols-3  grid-cols-2 gap-6  lg:mr-10 mr-5 mt-6 mb-6  ">
-          <div className=" col-span-2   ">
+        <section className=" grid grid-cols-3 gap-6 lg:mr-10 mr-5 mt-6 mb-6 max-h-[500px]  border">
+          <div className=" col-span-2 max-h-[500px] ">
             <img
               src={
                 empresa && empresa.fotoEmpresa
@@ -417,11 +415,11 @@ export default function Business() {
                   : GeneralBusiness
               }
               alt=""
-              className=" object-cover aspect-square rounded-md h-[500px] w-full"
+              className=" object-cover rounded-md h-full w-full"
             />
           </div>
-          <div className=" lg:col-span-1 col-span-2 flex   gap-6 box-border    lg:flex-col   max-h-[500px]">
-            <div className="  box-border  flex-1 overflow-hidden">
+          <div className=" col-span-1 flex   gap-6   flex-col  max-h-[500px]">
+            <div className="   max-h-[220px]  ">
               <img
                 src={
                   empresa && empresa.fotoEmpresa
@@ -429,10 +427,10 @@ export default function Business() {
                     : GeneralBusiness
                 }
                 alt=""
-                className=" object-cover aspect-square rounded-md size-full  "
+                className=" object-cover rounded-md h-full w-full"
               />
             </div>
-            <div className="  box-border    flex-1 overflow-hidden ">
+            <div className=" max-h-[220px] ">
               <img
                 src={
                   empresa && empresa.fotoEmpresa
@@ -440,7 +438,7 @@ export default function Business() {
                     : GeneralBusiness
                 }
                 alt=""
-                className=" object-cover aspect-square size-full rounded-md  "
+                className=" object-cover rounded-md h-full w-full"
               />
             </div>
           </div>
