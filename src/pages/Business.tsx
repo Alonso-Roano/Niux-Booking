@@ -1,8 +1,7 @@
 import Header from "../components/Header";
 import Location from "../svgs/Location";
 import Star from "../svgs/Star";
-import Barber from "../images/services/barbershop-4762345_1280.jpg";
-import { json, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import "../styles/components/Business.css";
 import ImgUser from "../images/users/beard-1845166_1280.jpg";
 import Footer from "../components/Footer";
@@ -376,6 +375,7 @@ export default function Business() {
         )}
 
         <h2 className=" text-5xl  font-semibold tracking-wider">
+         
           {empresa?.nombreEmpresa}
         </h2>
         <div className=" flex items-center gap-4 mt-3">

@@ -7,4 +7,19 @@
   background-color: #7facef !important;
 }
 
+  
 
+
+body::-webkit-scrollbar {
+  width: 7px; /* Grosor de la barra de desplazamiento */
+}
+
+body::-webkit-scrollbar-track {
+  background:  white; /* Color de fondo de la pista */
+}
+
+body::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 0.9;
+  background-color: rgb(207, 206, 206);
+  border-radius: 4px; /* Bordes redondeados */
+}
