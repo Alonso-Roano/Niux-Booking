@@ -99,58 +99,41 @@ export default function Home() {
     <>
       <Header />
       <div className="  bg-white overflow-hidden roboto-regular">
-        <section className=" ml-5 lg:ml-10 roboto-regular mt-10  relative  bg-white">
-          <div className=" grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0">
-            <span
-              className=" bg-[#b6cef7]    h-60 w-64 blur-3xl     absolute top-2  left-10 "
-              style={{ animation: "slideHorizontal 8s infinite" }}
-            ></span>
-            <span
-              className=" bg-[#b6cef7]   h-60 w-64 blur-3xl    absolute top-8  left-[300px] "
-              style={{ animation: "slideVertical 5s infinite" }}
-            ></span>
+        <section className="relative backdrop-blur-sm bg-transparent   z-10 py-20">
+          <span  style={{ animation: "slideHorizontal 40s infinite" }} className="absolute  size-10 blur-sm bg-gradient-to-b -z-10 from-white via-fuchsia-200 to-white"></span>
+          <span  style={{ animation: "slideHorizontal 40s infinite" }} className="absolute top-10 right-10  size-10 blur-sm bg-gradient-to-b -z-10 from-white via-fuchsia-200 to-white"></span>
+          <span  style={{ animation: "slideRight 40s infinite" }} className="absolute top-20 right-20  size-10 blur-sm bg-gradient-to-b -z-10 from-white via-fuchsia-200 to-white"></span>
+          <span  style={{ animation: "slideHorizontal 40s infinite" }} className="absolute top-30 right-30  size-10 blur-sm bg-gradient-to-b -z-10 from-white via-fuchsia-200 to-white"></span>
+          <span  style={{ animation: "slideHorizontal 40s infinite" }} className="absolute top-40 left-40  size-10 blur-sm bg-gradient-to-b -z-10 from-white via-fuchsia-200 to-white"></span>
+          <span  style={{ animation: "slideRight 40s infinite" }} className="absolute top-50 left-50  size-10 blur-sm bg-gradient-to-b -z-10 from-white via-fuchsia-200 to-white"></span>
 
-            <span
-              className=" bg-[#a29edb]  h-64 w-64 blur-3xl  absolute top-0  left-1/2"
-              style={{ animation: "slideHorizontal 10s infinite" }}
-            ></span>
-            <span
-              className=" bg-[#a29edb]  h-64 w-64 blur-3xl    absolute top-0  right-0"
-              style={{ animation: "slideRight 7s infinite" }}
-            ></span>
-
-            <div className=" z-10">
-              <p className=" font-bold text-5xl max-w-[500px] text-balance  leading-snug">
-                Encuentra y reserva los servicios ideales para ti, al instante y
+          <div className=" flex justify-center items-center text-center"> 
+              <p className=" font-bold  text-black   text-4xl   text-balance   leading-snug">
+                Encuentra y  <span className=" -skew-y-3 bg-linear-to-bl    from-violet-500 to-fuchsia-500 inline-block text-white px-2 ">reserva</span> los servicios ideales para ti, al instante y
                 desde cualquier lugar.
               </p>
-              <p className="  text-2xl max-w-[500px] text-pretty mt-6 text-gray-500">
-                Encuentra y reserva los servicios ideales para ti, al instante y
-                desde cualquier lugar.
-              </p>
+          </div>
+             
               <Link
-                className=" border border-slate-400 h-10 w-[370px]   pl-4 mt-10 rounded-lg flex gap-2 items-center"
+                className=" border-[1.5px] border-gray-200      mt-10 flex rounded-xl relative  hover:border-purple-400 duration-200    h-10 w-[370px]  mx-auto "
                 to={"/Buscador"}
               >
-                <button className=" text-red-500">
-                  <Search />
+                <div className=" bg-white pl-2  rounded-xl flex items-center  absolute inset-0">
+                <button className=" ">
+                  <span className=" cursor-pointer ">
+
+                  <Search   />
+                  </span>
                 </button>
-                <input
+                  <input
                   type="text"
                   placeholder="Buscar Reservaciones ..."
-                  className="  focus:outline-hidden   h-9 rounded-lg pl-2 w-full"
-                />
+                  className="  focus:outline-none  placeholder:text-gray-800   h-9 rounded-lg pl-2 w-full"
+                  />
+                  </div>
+                  
               </Link>
-            </div>
-            <div className="  max-h-[450px] max-w-[450px] mx-auto z-10   ">
-              <img
-                src={ImgGirlBooking}
-                alt=""
-                className=" w-full h-full duration-1000 mix-blend-multiply mask-[linear-gradient(black_60%,transparent)]     "
-                style={{ animation: "customBounce 5s infinite" }}
-              />
-            </div>
-          </div>
+         
         </section>
 
         {/* Recomendations */}
@@ -229,9 +212,9 @@ export default function Home() {
                     <div
                       key={e}
                       role="status"
-                      className="max-w-sm p-4 border border-gray-200 rounded-sm shadow-sm animate-pulse md:p-6 "
+                      className="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 "
                     >
-                      <div className="flex items-center justify-center h-48 mb-4 bg-gray-400 rounded-sm ">
+                      <div className="flex items-center justify-center h-48 mb-4 bg-gray-400 rounded ">
                         <svg
                           className="w-10 h-10 text-gray-300 "
                           aria-hidden="true"
