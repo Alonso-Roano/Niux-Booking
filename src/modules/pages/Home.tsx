@@ -138,7 +138,7 @@ export default function Home() {
                 <input
                   type="text"
                   placeholder="Buscar Reservaciones ..."
-                  className="  focus:outline-none   h-9 rounded-lg pl-2 w-full"
+                  className="  focus:outline-hidden   h-9 rounded-lg pl-2 w-full"
                 />
               </Link>
             </div>
@@ -146,7 +146,7 @@ export default function Home() {
               <img
                 src={ImgGirlBooking}
                 alt=""
-                className=" w-full h-full duration-1000 mix-blend-multiply [mask-image:linear-gradient(black_60%,transparent)]     "
+                className=" w-full h-full duration-1000 mix-blend-multiply mask-[linear-gradient(black_60%,transparent)]     "
                 style={{ animation: "customBounce 5s infinite" }}
               />
             </div>
@@ -229,9 +229,9 @@ export default function Home() {
                     <div
                       key={e}
                       role="status"
-                      className="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 "
+                      className="max-w-sm p-4 border border-gray-200 rounded-sm shadow-sm animate-pulse md:p-6 "
                     >
-                      <div className="flex items-center justify-center h-48 mb-4 bg-gray-400 rounded ">
+                      <div className="flex items-center justify-center h-48 mb-4 bg-gray-400 rounded-sm ">
                         <svg
                           className="w-10 h-10 text-gray-300 "
                           aria-hidden="true"

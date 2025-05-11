@@ -123,7 +123,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
               <input
                 id="name"
                 type="text"
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                 placeholder="Nombre(s)"
                 value={nombres}
                 onChange={(e) => setNombres(e.target.value)}
@@ -138,7 +138,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
                 <input
                   id="apellido1"
                   type="text"
-                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                   placeholder="Apellido Paterno"
                   value={apellido1}
                   onChange={(e) => setApellido1(e.target.value)}
@@ -152,7 +152,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
                 <input
                   id="apellido2"
                   type="text"
-                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                   placeholder="Apellido Materno"
                   value={apellido2}
                   onChange={(e) => setApellido2(e.target.value)}
@@ -167,7 +167,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
               <input
                 id="email"
                 type="email"
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                 placeholder="Correo electrónico"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -184,7 +184,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
                 <input
                   id="password"
                   type={passwordVisible ? 'text' : 'password'}
-                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                   placeholder="Contraseña"
                   value={password}
                   onChange={(e) => {
@@ -207,7 +207,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
                 <input
                   id="confirmPassword"
                   type={confirmPasswordVisible ? 'text' : 'password'}
-                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                  className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                   placeholder="Confirmar Contraseña"
                   value={confirmPassword}
                   onChange={(e) => {
@@ -251,7 +251,7 @@ export default function RegistroDash({tipoUsuario, setClose}:any) {
                 <input
                   id="nombreEmpresa"
                   type="text"
-                  className="w-full mt-1 px-4 py-2 border mb-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                  className="w-full mt-1 px-4 py-2 border mb-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                   placeholder="Nombre de tu Negocio"
                   value={nombreEmpresa}
                   onChange={(e) => setNombreEmpresa(e.target.value)}

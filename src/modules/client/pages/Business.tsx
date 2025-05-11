@@ -284,7 +284,7 @@ export default function Business() {
           >
             <div className="relative p-4 w-full max-w-md max-h-full">
               {/* Modal content */}
-              <div className="relative bg-white rounded-lg shadow ">
+              <div className="relative bg-white rounded-lg shadow-sm ">
                 {/* Modal header */}
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
                   <h3 className="text-xl font-semibold text-gray-900 ">
@@ -363,7 +363,7 @@ export default function Business() {
                     <button
                       type="submit"
                       onClick={handleSubmit}
-                      className="w-full text-white bg-black hover:bg-black/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   "
+                      className="w-full text-white bg-black hover:bg-black/80 focus:ring-4 focus:outline-hidden focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   "
                     >
                       Enviar
                     </button>
@@ -452,14 +452,14 @@ export default function Business() {
             <div className=" flex items-center gap-2 my-2   overflow-x-scroll services-scroll font-medium">
               {servicios &&
                 servicios.map((service: any) => (
-                  <button className=" px-3 py-[6px]  rounded-3xl bg-black text-white max-w-[180px] flex-shrink-0 truncate ">
+                  <button className=" px-3 py-[6px]  rounded-3xl bg-black text-white max-w-[180px] shrink-0 truncate ">
                     {service.titulo}
                   </button>
                 ))}
               {/*   <Link
                 to={""}
-                className=" px-3 py-[6px]  rounded-3xl bg-black text-white max-w-[180px] flex-shrink-0 truncate "
-                 px-3 py-[6px] rounded-3xl flex-shrink-0   hover:bg-[#F5F5F6] max-w-[180px] truncate 
+                className=" px-3 py-[6px]  rounded-3xl bg-black text-white max-w-[180px] shrink-0 truncate "
+                 px-3 py-[6px] rounded-3xl shrink-0   hover:bg-[#F5F5F6] max-w-[180px] truncate 
               >
                 Destacados
               </Link> */}
@@ -514,7 +514,7 @@ export default function Business() {
                   role="status"
                   className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
                 >
-                  <div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
+                  <div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded-sm sm:w-96 dark:bg-gray-700">
                     <svg
                       className="w-10 h-10 text-gray-200 dark:text-gray-600"
                       aria-hidden="true"
@@ -558,7 +558,7 @@ export default function Business() {
               ) : (
                 <div
                   role="status"
-                  className="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
+                  className="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded-sm shadow-sm animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -616,7 +616,7 @@ export default function Business() {
                   return (
                     <div
                       key={resenia.id}
-                      className="  shadow rounded-lg bg-neutral-50 p-5 max-h-[150px] min-h-[150px]"
+                      className="  shadow-sm rounded-lg bg-neutral-50 p-5 max-h-[150px] min-h-[150px]"
                     >
                       <div className=" flex gap-2 items-center ">
                         <div className=" h-10 w-10">

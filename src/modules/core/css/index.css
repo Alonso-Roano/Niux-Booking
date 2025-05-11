@@ -1,10 +1,44 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-.button-guardar{
-    background-color: #8FBCFF !important;
-    border-radius: 15px !important;
+@import 'tailwindcss';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
-.button-guardar:hover{
-    background-color: #7FACEF !important;
+
+.button-guardar {
+  background-color: #8fbcff !important;
+  border-radius: 15px !important;
+}
+.button-guardar:hover {
+  background-color: #7facef !important;
+}
+
+  
+
+
+body::-webkit-scrollbar {
+  width: 7px; /* Grosor de la barra de desplazamiento */
+}
+
+body::-webkit-scrollbar-track {
+  background:  white; /* Color de fondo de la pista */
+}
+
+body::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 0.9;
+  background-color: rgb(207, 206, 206);
+  border-radius: 4px; /* Bordes redondeados */
 }

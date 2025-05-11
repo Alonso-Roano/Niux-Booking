@@ -31,7 +31,7 @@ const PageNotFound = () => {
                     <li className="w-full flex justify-center items-center">
                         <Link
                         to="/"
-                        className="inline-block px-4 py-2 bg-[#7B6FCC] w-1/2 text-center text-white font-semibold rounded-lg shadow hover:bg-[#6B5FbC] transition-colors duration-200"
+                        className="inline-block px-4 py-2 bg-[#7B6FCC] w-1/2 text-center text-white font-semibold rounded-lg shadow-sm hover:bg-[#6B5FbC] transition-colors duration-200"
                         >
                         Página de inicio
                         </Link>
@@ -39,7 +39,7 @@ const PageNotFound = () => {
                     <li className="w-full flex justify-center items-center">
                         <Link
                         to="/Buscador"
-                        className="inline-block px-4 py-2 bg-[#7B6FCC] w-1/2 text-center text-white font-semibold rounded-lg shadow hover:bg-[#6B5FbC] transition-colors duration-200"
+                        className="inline-block px-4 py-2 bg-[#7B6FCC] w-1/2 text-center text-white font-semibold rounded-lg shadow-sm hover:bg-[#6B5FbC] transition-colors duration-200"
                         >
                         Buscador
                         </Link>

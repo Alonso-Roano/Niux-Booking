@@ -713,7 +713,7 @@ export default function Schedule() {
               </div>
             </div>
 
-            <div className=" flex gap-4 overflow-x-scroll flex-shrink-0 mt-4 services-scroll">
+            <div className=" flex gap-4 overflow-x-scroll shrink-0 mt-4 services-scroll">
               {diasDelMesSeleccionado &&
                 diasDelMesSeleccionado.map((dia: any) => {
                   if (dia.fecha >= fechaActual) {
@@ -721,7 +721,7 @@ export default function Schedule() {
                       <span
                         key={dia.fecha}
                         onClick={() => handleDiaSeleccionado({ ...dia })}
-                        className={`hover:cursor-pointer font-medium text-xl flex-shrink-0 h-16 w-16 rounded-full flex justify-center items-center p-4  ${
+                        className={`hover:cursor-pointer font-medium text-xl shrink-0 h-16 w-16 rounded-full flex justify-center items-center p-4  ${
                           dia.fecha === fechaSeleccionada
                             ? "bg-[#7B6FCC] text-white hover:bg-[#5448A1]"
                             : "border hover:bg-[#F5F5F6]"

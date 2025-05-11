@@ -272,7 +272,7 @@ export const EditEmpresa: React.FC = () => {
                                                 onChange={(e) =>
                                                     handleHorarioChange(index, "activo", e.target.checked)
                                                 }
-                                                className="h-4 w-4 text-[#7B6FCC] border-gray-300 rounded"
+                                                className="h-4 w-4 text-[#7B6FCC] border-gray-300 rounded-sm"
                                             />
                                             <span className="text-gray-700">{horario.dia}</span>
                                         </label>
@@ -284,7 +284,7 @@ export const EditEmpresa: React.FC = () => {
                                                     onChange={(e) =>
                                                         handleHorarioChange(index, "horaInicio", e.target.value)
                                                     }
-                                                    className="px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                                                    className="px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                                                 />
                                                 <span>-</span>
                                                 <input
@@ -293,7 +293,7 @@ export const EditEmpresa: React.FC = () => {
                                                     onChange={(e) =>
                                                         handleHorarioChange(index, "horaFin", e.target.value)
                                                     }
-                                                    className="px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                                                    className="px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                                                 />
                                             </div>
                                         ) : (
@@ -367,7 +367,7 @@ export const EditEmpresa: React.FC = () => {
                                     type="text"
                                     value={empresaNombre || ""} // Garantiza un valor controlado
                                     onChange={(e) => setEmpresaNombre(e.target.value)}
-                                    className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                                    className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                                 />
                             </div>
                             <div className="w-full mt-4">
@@ -378,7 +378,7 @@ export const EditEmpresa: React.FC = () => {
                                     id="categoria"
                                     value={selectedCategoria}
                                     onChange={(e) => setSelectedCategoria(e.target.value)}
-                                    className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
+                                    className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-hidden"
                                 >
                                     <option value="Selecciona una categoría">Selecciona una categoría</option>
                                     {categorias.map((categoria) => (

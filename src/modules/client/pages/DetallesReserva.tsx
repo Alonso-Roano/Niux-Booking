@@ -155,7 +155,7 @@ const DetallesReserva = () => {
       <Header />
       <div className=" bg-neutral-200 roboto-general min-h-screen  flex">
         {/* Resumen */}
-        <div className=" w-[500px] h-fit border mx-auto mt-5 border-gray-300 bg-white rounded-lg p-8  shadow-sm">
+        <div className=" w-[500px] h-fit border mx-auto mt-5 border-gray-300 bg-white rounded-lg p-8  shadow-xs">
           <h2 className="text-4xl font-bold ">Detalles de la reserva</h2>
           <div className="flex  mt-6 gap-4 mb-2">
             <div className=" h-20 w-20 rounded-full">

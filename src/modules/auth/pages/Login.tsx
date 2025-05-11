@@ -85,7 +85,7 @@ export default function Login() {
               <input
                 id="email"
                 type="email"
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                 placeholder="Correo electrónico"
                 required
               />
@@ -100,7 +100,7 @@ export default function Login() {
               <input
                 id="password"
                 type="password"
-                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B6FCC] outline-hidden"
                 placeholder="Contraseña"
                 required
               />

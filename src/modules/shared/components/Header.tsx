@@ -77,7 +77,7 @@ export default function Header({ setOption }: Params) {
           >
             <div className="flex gap-2 items-center">
               <Logo />
-              <span data-text="NIUXBOOKING" className="   focus:outline-none link-header font-medium tracking-wider  text-black link-header">
+              <span data-text="NIUXBOOKING" className="   focus:outline-hidden link-header font-medium tracking-wider  text-black link-header">
                 NIUXBOOKING
               </span>
             </div>

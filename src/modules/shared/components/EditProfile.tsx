@@ -164,7 +164,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             value={profileData.nombres}
             onChange={handleInputChange}
             placeholder="Nombre(s)"
-            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
+            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-hidden"
           />
         </div>
         <div>
@@ -177,7 +177,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             value={profileData.apellido1}
             onChange={handleInputChange}
             placeholder="Apellido Paterno"
-            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
+            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-hidden"
           />
         </div>
         <div>
@@ -190,7 +190,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             value={profileData.apellido2}
             onChange={handleInputChange}
             placeholder="Apellido Materno"
-            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
+            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-hidden"
           />
         </div>
         <div>
@@ -203,7 +203,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             value={profileData.edad}
             onChange={handleInputChange}
             placeholder="Edad (Ej. 18)"
-            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
+            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-hidden"
           />
         </div>
         <div>
@@ -214,7 +214,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
             id="sexo"
             value={profileData.sexo}
             onChange={handleInputChange}
-            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-none"
+            className="mt-1 block w-full rounded-md border border-gray-300 focus:ring-2 p-1 focus:ring-[#7B6FCC] outline-hidden"
           >
             <option value={0}>No especificar</option>
             <option value={1}>Masculino</option>
@@ -224,7 +224,7 @@ function EditProfile({ closeOffcanvas }: { closeOffcanvas: () => void }) {
         </div>
         <button
           type="submit"
-          className="mt-4 w-full bg-[#7B6FCC] text-white py-2 px-4 rounded-md shadow-sm hover:bg-[#5a54a4] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7B6FCC]"
+          className="mt-4 w-full bg-[#7B6FCC] text-white py-2 px-4 rounded-md shadow-xs hover:bg-[#5a54a4] focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-[#7B6FCC]"
         >
           Guardar
         </button>
