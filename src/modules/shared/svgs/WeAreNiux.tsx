@@ -8,14 +8,16 @@ export default function WeAreNiux() {
         height="420.000000pt"
         viewBox="0 0 396.000000 420.000000"
         preserveAspectRatio="xMidYMid meet"
-        className="size-56"
+        className="size-40 "
       >
         <g
           transform="translate(0.000000,420.000000) scale(0.100000,-0.100000)"
-          fill="#484748"
+          fill="currentColor"
+        
           stroke="none"
         >
           <path
+          
             d="M1844 4189 c-321 -37 -547 -301 -609 -713 -8 -54 -16 -101 -19 -103
        -2 -2 -41 16 -87 41 -130 70 -240 98 -379 99 -104 0 -124 -3 -209 -32 -165
        -56 -302 -155 -379 -274 -125 -194 -178 -429 -138 -611 28 -125 86 -227 185
@@ -58,6 +60,7 @@ export default function WeAreNiux() {
        -82 -212 -119 -345 -109 -299 22 -485 207 -485 483 0 64 2 73 18 73 10 0 118
        -52 240 -115 122 -63 228 -115 234 -115 7 0 121 54 253 119 132 66 250 120
        263 120 20 1 22 -3 22 -52z"
+      
           />
         </g>
       </svg>

@@ -2,6 +2,7 @@ import Header from "@shared/components/Header";
 import ImgGirlBooking from "@shared/images/Imagen3-Photoroom.png";
 import Search from "@shared/svgs/Search";
 import "@shared/styles/components/Home.css";
+import IconBusiness from "@shared/svgs/Business";
 import Star from "@shared/svgs/Star";
 import { Link } from "react-router-dom";
 import Location from "@shared/svgs/Location";
@@ -54,12 +55,15 @@ export default function Home() {
     isDeleted: boolean;
     createdAt: string;
   }
-  const skeletons = [1, 2, 3, 4, 5];
+  const skeletons = [1, 2, 3, 4, 5,6,7];
   const [empresas, setEmpresas] = useState<IEmpresa[]>();
+  const [empresasLoading, setEmpresasLoading] = useState<boolean>(false);
+  const [reseniasLoading, setReseniasLoading] = useState<boolean>(false);
   const [resenias, setResenias] = useState<any>();
 
   useEffect(() => {
     const fetchingData = async () => {
+      setEmpresasLoading(true);
       try {
         const EmpresasResponse = await niuxApi.get("/Empresa/ListaEmpresas", {
           params: { cantidadEmpresas: 10 },
@@ -67,44 +71,21 @@ export default function Home() {
         setEmpresas(EmpresasResponse.data.data);
       } catch (error) {
         console.error("Error fetching empresas: ", error);
+      }finally{
+        setEmpresasLoading(false);
       }
 
       try {
+        setReseniasLoading(true);
         const responseResenia = await niuxApi.get("/Resena");
         console.log("resenias");
-
         console.log(responseResenia);
-
-        /*   const fetchingClient = responseResenia.data.data.map(
-          async (resenia: IResenia) => {
-            console.log(resenia);
-
-            const clienteResponse = await niuxApi.get(
-              `/Cliente/${resenia.idCliente}`
-            );
-            console.log("cliente");
-
-            console.log(clienteResponse.data);
-
-            return { ...resenia, cliente: clienteResponse.data.data };
-          }
-        ); */
         const promisesForClients = await Promise.all(responseResenia.data.data);
-        /*     const fetchingPerson = promisesForClients.map(
-          async (resenia: IResenia) => {
-            const person = await niuxApi.get(
-              `/Persona/${resenia.cliente?.idPersona}`
-            );
-            return {
-              ...resenia,
-              cliente: { ...resenia.cliente, persona: person.data.data },
-            };
-          }
-        );
-        const promisesforPersons = await Promise.all(fetchingPerson); */
         setResenias(promisesForClients);
       } catch (error) {
         console.error("Error in fetchings: ", error);
+      }finally{
+        setReseniasLoading(false);
       }
     };
     console.log("resenias");
@@ -173,16 +154,22 @@ export default function Home() {
         </section>
 
         {/* Recomendations */}
-        <section className="  ml-5 lg:ml-10 mt-16 mb-32 section-recent">
-          <h2 className=" font-semibold text-2xl mb-4">Recomendaciones</h2>
+        <section className="  ml-5 lg:ml-10 mt-16 mb-32    ">
+       
+
+        
+    
+          <h2 className=" font-semibold text-2xl mb-4 tracking-wider text-gray-700 underline underline-offset-4 select-none cursor-default ">Recomendaciones</h2>
+          
+
           <div className=" overflow-hidden">
-            <div className=" flex gap-6 pt-2 px-1 pb-3 carrusel-scroll  items-center overflow-x-scroll">
+            <div className=" flex gap-8 pt-2 px-1 pb-3 carrusel-scroll  items-center overflow-x-scroll">
               {empresas
                 ? empresas.map((empresa) => (
                     <Link
                       key={empresa.id}
                       to={`/negocio/${empresa.slugEmpresa}`}
-                      className=" w-[320px] min-h-[300px]  shadow-lg rounded-md"
+                      className=" min-w-[320px] min-h-[300px] group      overflow-hidden  rounded-md"
                     >
                       <div className=" w-[320px] h-[170px] overflow-hidden group">
                         <img
@@ -191,33 +178,36 @@ export default function Home() {
                               ? import.meta.env.VITE_BACKEND_API + empresa.foto
                               : GeneralBusiness
                           }
-                          className=" w-full h-full object-cover rounded-t-md group-hover:scale-105 duration-300"
+                          className=" w-full h-full  object-cover rounded-t-md group-hover:scale-105 duration-300"
                           alt=""
                         />
                       </div>
-                      <footer>
-                        <h3 className=" pl-3 pt-2 font-medium text-lg">
+                      <footer className=" border  bg-white  border-gray-200 group-hover:border-gray-300/70 border-t-0 rounded-b-md">
+                        <h3 className=" pl-2 pt-2 font-medium truncate line-clamp-1 text-gray-800 tracking-wide  capitalize text-lg flex items-center gap-2">
+                          <span className=" text-gray-500 bg-gray-400/20 rounded-full p-1 ">
+                            <IconBusiness />
+                          </span>
                           {empresa.nombreEmpresa}
                         </h3>
                         <section className=" pl-3 pt-1">
                           <div className=" flex items-center gap-1">
-                            <span>
+                            <span className=" font-medium text-gray-800 text-sm">
                               {" "}
                               {empresa?.promedioCalificacion !== undefined
                                 ? Number.isInteger(empresa.promedioCalificacion)
-                                  ? `${empresa.promedioCalificacion}.0` // Si es entero, agrega .0
+                                  ? `${empresa.promedioCalificacion}.0` 
                                   : empresa.promedioCalificacion
                                 : null}
                             </span>
                             <div>
                               <Star />
                             </div>
-                            <span>({empresa.totalComentarios})</span>
+                            <span className=" text-neutral-600 text-sm">({empresa.totalComentarios})</span>
                           </div>
                         </section>
                         <section className=" pl-3 pt-1 flex items-center gap-1">
                           <Location />
-                          <p className=" text-[#707070]">
+                          <p className=" text-neutral-600  truncate line-clamp-1  ">
                             {empresa.pais +
                               ", " +
                               empresa.ciudad +
@@ -226,14 +216,16 @@ export default function Home() {
                           </p>
                         </section>
                         <section className=" pl-3 pt-2 pb-2">
-                          <button className=" border p-1 px-2 rounded-2xl hover:bg-[#F5F5F6] ">
+                          <button className="text-blue-500 bg-blue-500/10 p-1 relative px-3 pl-4.5 text-sm font-medium rounded-2xl hover:bg-blue-400/20 ">
                             {empresa.nombreCategoria}
+                            <span className="absolute  border   left-2 top-1/2 -translate-y-1/2    size-1 bg-blue-500   rounded-full"></span>
                           </button>
                         </section>
                       </footer>
                     </Link>
                   ))
-                : skeletons.map((e) => (
+                : empresasLoading ? (
+                    skeletons.map((e) => (
                     <div
                       key={e}
                       role="status"
@@ -270,15 +262,19 @@ export default function Home() {
                           <div className="w-48 h-2 bg-gray-300 rounded-full " />
                         </div>
                       </div>
-                      <span className="sr-only">Loading...</span>
+                      
                     </div>
-                  ))}
+                  ))
+                ): <div className="flex flex-col items-center gap-2  justify-center lg:mr-10 mr-5 text-center  flex-1 h-full py-20 rounded-md bg-gray-100">
+                  <span className=" text-gray-600 font-medium cursor-default  ">No se encontraron las empresas, intentalo más tarde.</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className=" size-10 text-gray-400" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="64" stroke-dashoffset="64" d="M12 3c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9c-4.97 0 -9 -4.03 -9 -9c0 -4.97 4.03 -9 9 -9Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/></path><path stroke-dasharray="8" stroke-dashoffset="8" d="M12 7v6"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="8;0"/></path><path stroke-dasharray="2" stroke-dashoffset="2" d="M12 17v0.01"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" values="2;0"/></path></g></svg>
+                  </div>}
             </div>
           </div>
         </section>
         {/*   Reviews */}
-        <section className="  ml-5 lg:ml-10 mt-16 mb-32 section-recent">
-          <h2 className=" font-semibold text-2xl mb-4">Reseñas</h2>
+        <section className="  ml-5 lg:ml-10 mt-16 mb-32 ">
+          <h2 className=" font-semibold text-2xl mb-4 text-gray-700 tracking-wider underline underline-offset-4 cursor-default select-none">Reseñas</h2>
           <div className=" overflow-hidden">
             <div className=" flex gap-6 pt-2 px-1 pb-3 carrusel-scroll  items-center overflow-x-scroll">
               {resenias
@@ -318,19 +314,13 @@ export default function Home() {
                             />
                           </div>
                           <span>
-                            {
-                              /* resenia?.cliente?.persona?.nombres&&
-                              
-                              resenia?.cliente?.persona?.apellido1 
-                              &&
-                              resenia?.cliente?.persona?.apellido2 */ ""
-                            }
+                         
                           </span>
                         </section>
                       </footer>
                     </Link>
                   ))
-                : skeletons.map((e) => (
+                : reseniasLoading ?(skeletons.map((e) => (
                     <div
                       key={e}
                       role="status"
@@ -345,29 +335,39 @@ export default function Home() {
                       <div className="h-2 bg-gray-300 rounded-full  max-w-[360px]" />
                       <span className="sr-only">Loading...</span>
                     </div>
-                  ))}
+                  ))):<div className="flex flex-col items-center gap-2 justify-center lg:mr-10 mr-5 text-center flex-1 h-full py-20 rounded-md bg-gray-100">
+                  <span className=" text-gray-600 font-medium cursor-default ">No se encontraron las reseñas, intentalo más tarde. </span>
+
+                  <svg xmlns="http://www.w3.org/2000/svg" className=" size-10 text-gray-400" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="64" stroke-dashoffset="64" d="M12 3c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9c-4.97 0 -9 -4.03 -9 -9c0 -4.97 4.03 -9 9 -9Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/></path><path stroke-dasharray="8" stroke-dashoffset="8" d="M12 7v6"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="8;0"/></path><path stroke-dasharray="2" stroke-dashoffset="2" d="M12 17v0.01"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" values="2;0"/></path></g></svg>
+                  </div>}
             </div>
           </div>
         </section>
 
         {/* we are niux */}
-        <section className=" ml-5 lg:ml-10 mt-4 mb-10">
-          <div className=" grid lg:grid-cols-3 gap-10 lg:gap-0  grid-cols-1 px-16   lg:px-24">
-            <div className=" col-span-1 flex justify-start items-center ">
-              <WeAreNiux />
-            </div>
-            <div className=" col-span-2 flex gap-2 flex-col">
-              <span className=" font-semibold text-3xl ">Somos Niux</span>
-              <p className=" text-[#474747] text-xl">
-                En Niux, somos una empresa de desarrollo de software enfocada en
+        <section className=" ml-5 lg:ml-10 mt-4 mb-16 ">
+          <div className=" flex justify-center items-center gap-16">
+            
+            <div className="  flex gap-2 flex-col">
+              <span className=" font-semibold text-2xl tracking-wider text-gray-600 underline underline-offset-4 cursor-default select-none ">Somos Niux</span>
+              <p className="  text-gray-600 max-w-[480px] mb-2">
+                En Niux, somos una empresa de <span className=" font-semibold text-purple-600  ">desarrollo de software</span> enfocada en
                 brindar soluciones tecnológicas innovadoras y personalizadas
-                para satisfacer las necesidades de nuestros clientes. Desde
+                para satisfacer las necesidades de nuestros clientes.
+              
+              </p>
+              <p className="  text-gray-600 max-w-[480px]">
+             
+                Desde
                 nuestra creación, nos hemos comprometido a ser un aliado
                 estratégico para empresas y profesionales que buscan mejorar su
                 eficiencia, fortalecer su presencia digital y optimizar sus
                 procesos de negocio mediante herramientas tecnológicas
                 avanzadas.
               </p>
+            </div>
+            <div className="  flex justify-start items-center ">
+              <WeAreNiux />
             </div>
           </div>
         </section>

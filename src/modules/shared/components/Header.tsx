@@ -67,8 +67,8 @@ export default function Header({ setOption }: Params) {
 
   return (
     <>
-      <header className="h-[70px] shadow-md sticky top-0 bg-white roboto-regular z-20">
-        <div className="flex justify-between px-9 w-full border relative h-full">
+      <header className="h-[70px] sticky top-0 border-b border-gray-200 roboto-regular z-20   bg-white  ">
+        <div className="flex justify-between items-center   px-9 w-full  relative h-full">
           {/* Logo y Nombre */}
           <Link
             className="p-2"
@@ -77,7 +77,9 @@ export default function Header({ setOption }: Params) {
           >
             <div className="flex gap-2 items-center">
               <Logo />
-              <span className="font-medium text-[#484748]">NIUXBOOKING</span>
+              <span data-text="NIUXBOOKING" className="   focus:outline-none link-header font-medium tracking-wider  text-black link-header">
+                NIUXBOOKING
+              </span>
             </div>
           </Link>
 
@@ -89,6 +91,7 @@ export default function Header({ setOption }: Params) {
                 className="border-transparent border-b-2 duration-300 font-medium hover:border-[#7B6FCC] m-1"
               >
                 Registrarse
+                <span className="absolute group-hover:animate-bounce   -bottom-1  left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[5px] border-r-[5px] border-b-[5px] border-transparent border-b-violet-500"></span>
               </Link>
               <Link
                 to="/login"
@@ -201,7 +204,7 @@ export default function Header({ setOption }: Params) {
                 <>
                   <Link
                     to="/perfil"
-                    className="flex justify-between items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-2 px-2 border  text-[#474747]"
+                    className="flex justify-between  items-center rounded-md hover:bg-[#F5F5F6] py-2 mt-1 mb-2 px-2 border  text-[#474747]"
                   >
                     Perfil
                     <ArrowNext />

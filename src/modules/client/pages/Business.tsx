@@ -374,7 +374,10 @@ export default function Business() {
           </div>
         )}
 
-        <h2 className=" text-5xl  font-semibold">{empresa?.nombreEmpresa}</h2>
+        <h2 className=" text-5xl  font-semibold tracking-wider">
+         
+          {empresa?.nombreEmpresa}
+        </h2>
         <div className=" flex items-center gap-4 mt-3">
           <div className=" flex gap-2 items-center ">
             <span className=" font-medium">
