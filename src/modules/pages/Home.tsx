@@ -108,7 +108,7 @@ export default function Home() {
           <span  style={{ animation: "slideRight 40s infinite" }} className="absolute top-50 left-50  size-10 blur-sm bg-gradient-to-b -z-10 from-white via-fuchsia-200 to-white"></span>
 
           <div className=" flex justify-center items-center text-center"> 
-              <p className=" font-bold  text-black   text-4xl   text-balance   leading-snug">
+              <p className=" font-bold  text-black   text-4xl max-w-[800px]    text-balance   leading-snug">
                 Encuentra y  <span className=" -skew-y-3 bg-linear-to-bl    from-violet-500 to-fuchsia-500 inline-block text-white px-2 ">reserva</span> los servicios ideales para ti, al instante y
                 desde cualquier lugar.
               </p>
