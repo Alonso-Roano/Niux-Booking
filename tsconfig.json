@@ -3,5 +3,19 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@admin/*": ["src/modules/admin/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@client/*": ["src/modules/client/*"],
+      "@company/*": ["src/modules/company/*"],
+      "@core/*": ["src/modules/core/*"],
+      "@shared/*": ["src/modules/shared/*"],
+      "@pages/*": ["src/modules/pages/*"]
+    }
+  }
 }
